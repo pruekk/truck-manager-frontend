@@ -26,7 +26,7 @@ const App = () => {
 const theme = createTheme({
   typography: {
     allVariants: {
-      fontFamily: 'Sarabun'
+      fontFamily: 'TTNormsPro Regular,Sukhumvit Tadmai Regular,sans-serif'
     },
   },
 });
