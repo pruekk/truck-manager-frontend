@@ -1,25 +1,46 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 
-function App() {
+//Material UI
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+//Components
+import NavigationBar from "./components/navigationbar/NavigationBar";
+import HomePage from "./components/homepage/HomePage";
+import Footer from "./components/footer/Footer";
+
+//Others
+
+const NotFound = () => {
+  return <h1>Not Found</h1>;
+};
+
+const App = () => {
+  let routes = useRoutes([
+    { path: "/", element: <HomePage /> },
+    { path: "*", element: <NotFound /> }
+  ]);
+  return routes;
+};
+
+const theme = createTheme({
+  typography: {
+    allVariants: {
+      fontFamily: 'Sarabun'
+    },
+  },
+});
+
+const AppWrapper = () => {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ThemeProvider theme={theme}>
+      <Router>
+        <NavigationBar />
+        <App />
+        <Footer />
+      </Router>
+    </ThemeProvider>
   );
-}
+};
 
-export default App;
+export default AppWrapper;
