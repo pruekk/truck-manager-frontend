@@ -9,8 +9,9 @@ import Typography from "@mui/material/Typography";
 //Icons
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear();
   return (
-    <Grid container style={{ marginTop: "100px", position: "fixed", bottom: 0 }}>
+    <Grid container style={{ marginTop: "100px", bottom: 0 }}>
       <Grid item xs={12}>
         <Divider />
       </Grid>
@@ -24,7 +25,7 @@ export default function Footer() {
           >
             <Grid item align="center" xs={12}>
               <Typography variant="body1" style={{ color: "#bbb8bb" }}>
-                2020 - 2021 © บริษัท ธ.นุชาพร จำกัด
+                2020 - {currentYear} © บริษัท ธ.นุชาพร จำกัด
               </Typography>
             </Grid>
           </Grid>

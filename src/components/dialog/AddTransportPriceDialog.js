@@ -24,14 +24,11 @@ import moment from "moment";
 import TextField from "@mui/material/TextField";
 
 const temp = [
-  "โรงงาน 1",
-  "โรงงาน 2",
-  "โรงงาน 3",
-  "โรงงาน 4",
-  "โรงงาน 5",
-  "โรงงาน 6",
-  "โรงงาน 7",
-  "โรงงาน 8",
+  "หนองใหญ่",
+  "บ้านบึง",
+  "ปลวกแดง",
+  "หนองไผ่แก้ว",
+  "วังจันทร์",
 ];
 
 export default function AddTransportPriceDialog(props) {
@@ -59,7 +56,7 @@ export default function AddTransportPriceDialog(props) {
       onClose={props.handleCloseDialog}
     >
       <DialogTitle>
-        เพิ่มค่าขนส่ง
+        เพิ่มรายการค่าขนส่ง
         <IconButton
           aria-label="close"
           onClick={props.handleCloseDialog}

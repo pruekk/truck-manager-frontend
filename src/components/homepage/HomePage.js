@@ -9,10 +9,10 @@ import Typography from "@mui/material/Typography";
 
 //Icons
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-import DriveFileRenameOutlineRoundedIcon from "@mui/icons-material/DriveFileRenameOutlineRounded";
-import FileCopyRoundedIcon from "@mui/icons-material/FileCopyRounded";
-import RemoveCircleRoundedIcon from "@mui/icons-material/RemoveCircleRounded";
-import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
+// import DriveFileRenameOutlineRoundedIcon from "@mui/icons-material/DriveFileRenameOutlineRounded";
+// import FileCopyRoundedIcon from "@mui/icons-material/FileCopyRounded";
+// import RemoveCircleRoundedIcon from "@mui/icons-material/RemoveCircleRounded";
+// import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 
 import AddTransportPriceDialog from "../dialog/AddTransportPriceDialog";
 
@@ -28,7 +28,7 @@ function HomePage() {
   };
 
   return (
-    <Container sx={{ paddingTop: "50px" }}>
+    <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
       <AddTransportPriceDialog
         openDialog={openDialog}
         handleClickOpenDialog={handleClickOpenDialog}
@@ -62,7 +62,7 @@ function HomePage() {
                 Add
               </Button>
             </Grid>
-            <Grid item>
+            {/* <Grid item>
               <Button
                 disableElevation
                 variant="contained"
@@ -117,7 +117,7 @@ function HomePage() {
               >
                 Delete
               </Button>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Grid>
         <Grid item xs={12}>
