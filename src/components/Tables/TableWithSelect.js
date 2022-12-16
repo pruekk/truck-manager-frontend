@@ -12,10 +12,9 @@ import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
+import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
-import KeyboardArrowUpIcon from "@mui/icons-material/KeyboardArrowUp";
 
 //Functions
 import { createData } from "../../functions/TableFunctions";
@@ -72,13 +71,13 @@ function Row(props) {
             }}
           />
         </TableCell>
-        <TableCell>
+        <TableCell sx={{ width: '30px' }}>
           <IconButton
             aria-label="expand row"
             size="small"
             onClick={() => setOpen(!open)}
           >
-            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            {open ? <KeyboardArrowDownIcon /> : <KeyboardArrowRightIcon />}
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
@@ -86,8 +85,6 @@ function Row(props) {
         </TableCell>
         <TableCell align="right">{row.calories}</TableCell>
         <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell
@@ -98,12 +95,9 @@ function Row(props) {
           colSpan={6}
         >
           <Collapse in={open} timeout="auto" unmountOnExit>
-            <Typography variant="h6" gutterBottom component="div">
-              ตารางค่าขนส่ง
-            </Typography>
             <Grid
               container
-              sx={{ margin: 1, maxWidth: "1000px", overflowX: "auto" }}
+              sx={{ margin: "1rem auto", maxWidth: "auto", overflowX: "auto" }}
             >
               <Grid align="center" xs={12}>
                 <CompareTable isEditable={false} />
@@ -135,11 +129,15 @@ Row.propTypes = {
 };
 
 const rows = [
-  createData("Frozen yoghurt", 159, 6.0, 24, 4.0, 3.99),
-  createData("Ice cream sandwich", 237, 9.0, 37, 4.3, 4.99),
-  createData("Eclair", 262, 16.0, 24, 6.0, 3.79),
-  createData("Cupcake", 305, 3.7, 67, 4.3, 2.5),
-  createData("Gingerbread", 356, 16.0, 49, 3.9, 1.5),
+  createData("หนองใหญ่", "1/10/2022", "15/10/2022"), 
+  createData("บ้านบึง", "1/10/2022", "15/10/2022"),
+  createData("ปลวกแดง", "1/10/2022", "15/10/2022"),
+  createData("หนองไผ่แก้ว", "1/10/2022", "15/10/2022"),
+  createData("วังจันทร์", "1/10/2022", "15/10/2022"),
+  createData("หนองใหญ่", "16/10/2022", "31/10/2022"),
+  createData("บ้านบึง", "16/10/2022", "20/10/2022"),
+  createData("บ้านบึง", "21/10/2022", "25/10/2022"),
+  createData("บ้านบึง", "26/10/2022", "31/10/2022"),
 ];
 
 function TableWithSelect() {
@@ -150,11 +148,9 @@ function TableWithSelect() {
           <TableRow>
             <TableCell />
             <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell sx={{ fontWeight: "bold" }}>โรงงาน</TableCell>
+            <TableCell align="right" sx={{ fontWeight: "bold" }}>จากวันที่</TableCell>
+            <TableCell align="right" sx={{ fontWeight: "bold" }}>ถึงวันที่</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
