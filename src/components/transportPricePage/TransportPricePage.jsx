@@ -9,10 +9,6 @@ import Typography from "@mui/material/Typography";
 
 //Icons
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
-// import DriveFileRenameOutlineRoundedIcon from "@mui/icons-material/DriveFileRenameOutlineRounded";
-// import FileCopyRoundedIcon from "@mui/icons-material/FileCopyRounded";
-// import RemoveCircleRoundedIcon from "@mui/icons-material/RemoveCircleRounded";
-// import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
 
 import AddTransportPriceDialog from "../dialog/AddTransportPriceDialog";
 

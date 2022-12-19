@@ -5,12 +5,6 @@ import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
-//Icons
-// import DriveFileRenameOutlineRoundedIcon from "@mui/icons-material/DriveFileRenameOutlineRounded";
-// import FileCopyRoundedIcon from "@mui/icons-material/FileCopyRounded";
-// import RemoveCircleRoundedIcon from "@mui/icons-material/RemoveCircleRounded";
-// import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-
 
 function HomePage() {
   return (

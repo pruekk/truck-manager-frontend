@@ -52,6 +52,8 @@ export default function PriceListTableModal(props) {
           <th
             style={{ border: "1px solid black", borderCollapse: "collapse" }}
           />
+
+          {/*Modal table header*/}
           {props.priceListArr[0].value.map((value, index) => {
             return (
               <th
@@ -75,7 +77,7 @@ export default function PriceListTableModal(props) {
           </IconButton>
         </tr>
 
-        {/* Modal */}
+        {/*Modal input*/}
         {props.priceListArr?.map((obj, index) => {
           return (
             /*======= Column =======*/
