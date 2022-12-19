@@ -24,6 +24,7 @@ export default function PriceListTable(props) {
                 style={{
                   border: "1px solid black",
                   borderCollapse: "collapse",
+                  height: "30px",
                 }}
               >
                 {(0.25 * (index + 1)).toFixed(2)}
@@ -46,6 +47,8 @@ export default function PriceListTable(props) {
                   border: "1px solid black",
                   borderCollapse: "collapse",
                   textAlign: "center",
+                  height: "30px",
+                  minWidth: "40px",
                 }}
               >
                 {yValue.name}
@@ -59,7 +62,9 @@ export default function PriceListTable(props) {
                       style={{
                         border: "1px solid black",
                         borderCollapse: "collapse",
-                        textAlign: "end",
+                        textAlign: "center",
+                        height: "30px",
+                        minWidth: "70px",
                       }}
                     >
                       {data.toFixed(2)}
