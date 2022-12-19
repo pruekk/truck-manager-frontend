@@ -105,8 +105,9 @@ export default function PriceListTableModal(props) {
                   }}
                   style={{
                     width: "60px",
-                    textAlign: "end",
+                    textAlign: "center",
                     borderColor: "transparent",
+                    fontWeight: "bold"
                   }}
                 />
               </td>
