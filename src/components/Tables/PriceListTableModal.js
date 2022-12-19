@@ -65,85 +65,80 @@ export default function PriceListTableModal(props) {
               </th>
             );
           })}
-          {props.isEditable && (
-            <IconButton
-              aria-label="add-button"
-              onClick={() => {
-                handleAddColumn();
-              }}
-            >
-              <AddBoxRoundedIcon />
-            </IconButton>
-          )}
+          <IconButton
+            aria-label="add-button"
+            onClick={() => {
+              handleAddColumn();
+            }}
+          >
+            <AddBoxRoundedIcon />
+          </IconButton>
         </tr>
 
         {/* Modal */}
-        {props.isEditable &&
-          props.priceListArr?.map((obj, index) => {
-            return (
-              /*======= Column =======*/
-              <tr
-                key={`${obj.name}-${index}`}
+        {props.priceListArr?.map((obj, index) => {
+          return (
+            /*======= Column =======*/
+            <tr
+              key={`${obj.name}-${index}`}
+              style={{
+                border: "1px solid black",
+                borderCollapse: "collapse",
+                height: "30px",
+              }}
+            >
+              <td
                 style={{
                   border: "1px solid black",
                   borderCollapse: "collapse",
-                  height: "30px",
+                  textAlign: "center",
+                  fontWeight: "bold",
                 }}
               >
-                <td
-                  style={{
-                    border: "1px solid black",
-                    borderCollapse: "collapse",
-                    textAlign: "center",
-                    fontWeight: "bold",
+                <input
+                  type="string"
+                  defaultValue={obj.name}
+                  onChange={(event) => {
+                    onChangeRowKey(event, index);
                   }}
-                >
-                  <input
-                    type="string"
-                    defaultValue={obj.name}
-                    onChange={(event) => {
-                      onChangeRowKey(event, index);
-                    }}
-                    style={{
-                      width: "60px",
-                      textAlign: "end",
-                      borderColor: "transparent",
-                    }}
-                  />
-                </td>
+                  style={{
+                    width: "60px",
+                    textAlign: "end",
+                    borderColor: "transparent",
+                  }}
+                />
+              </td>
 
-                {/*======= ROW =======*/}
-                {obj.value.map((value, index) => {
-                  return (
-                    <td
-                      key={`${value}-${index}`}
-                      style={{
-                        border: "1px solid black",
-                        borderCollapse: "collapse",
+              {/*======= ROW =======*/}
+              {obj.value.map((value, index) => {
+                return (
+                  <td
+                    key={`${value}-${index}`}
+                    style={{
+                      border: "1px solid black",
+                      borderCollapse: "collapse",
+                    }}
+                  >
+                    <input
+                      type="string"
+                      onChange={(event) => {
+                        onChangeValue(event, obj.name, index);
                       }}
-                    >
-                      <input
-                        type="string"
-                        onChange={(event) => {
-                          onChangeValue(event, obj.name, index);
-                        }}
-                        style={{
-                          width: "60px",
-                          textAlign: "end",
-                          borderColor: "transparent",
-                        }}
-                      />
-                    </td>
-                  );
-                })}
-              </tr>
-            );
-          })}
-        {props.isEditable && (
-          <IconButton aria-label="add-button" onClick={handleAddRow}>
-            <AddBoxRoundedIcon />
-          </IconButton>
-        )}
+                      style={{
+                        width: "60px",
+                        textAlign: "end",
+                        borderColor: "transparent",
+                      }}
+                    />
+                  </td>
+                );
+              })}
+            </tr>
+          );
+        })}
+        <IconButton aria-label="add-button" onClick={handleAddRow}>
+          <AddBoxRoundedIcon />
+        </IconButton>
       </table>
     </div>
   );

@@ -56,7 +56,7 @@ function Row(props) {
         role="checkbox"
         aria-checked={isItemSelected}
         tabIndex={-1}
-        key={row.factory}
+        key={`${row.factory}_${row.from}-${row.to}`}
         selected={isItemSelected}
         sx={{ "& > *": { borderBottom: "unset" } }}
       >
