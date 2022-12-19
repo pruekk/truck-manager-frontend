@@ -8,6 +8,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import NavigationBar from "./components/navigationbar/NavigationBar";
 import HomePage from "./components/homepage/HomePage";
 import Footer from "./components/footer/Footer";
+import TransportPricePage from "./components/transportPricePage/TransportPricePage";
 
 //Others
 
@@ -18,6 +19,7 @@ const NotFound = () => {
 const App = () => {
   let routes = useRoutes([
     { path: "/", element: <HomePage /> },
+    { path: "/transport-price", element: <TransportPricePage /> },
     { path: "*", element: <NotFound /> }
   ]);
   return routes;
@@ -26,7 +28,8 @@ const App = () => {
 const theme = createTheme({
   typography: {
     allVariants: {
-      fontFamily: 'TTNormsPro Regular,Sukhumvit Tadmai Regular,sans-serif'
+      //fontFamily: 'TTNormsPro Regular,Sukhumvit Tadmai Regular,sans-serif'
+      fontFamily: 'Kanit'
     },
   },
 });
