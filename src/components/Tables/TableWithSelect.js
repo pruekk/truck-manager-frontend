@@ -1,5 +1,4 @@
 import React from "react";
-import PropTypes from "prop-types";
 
 //Material UI
 import Collapse from "@mui/material/Collapse";
@@ -17,8 +16,7 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 //Functions
-import { createData } from "../../functions/TableFunctions";
-import CompareTable from "./CompareTable";
+import PriceListTable from "./PriceListTable";
 
 function Row(props) {
   const { row, index } = props;
@@ -47,31 +45,32 @@ function Row(props) {
     setSelected(newSelected);
   };
 
-  const isItemSelected = isSelected(row.name);
+  const isItemSelected = isSelected(row.factory);
   const labelId = `enhanced-table-checkbox-${index}`;
 
   return (
     <React.Fragment>
       <TableRow
         hover
-        onClick={(event) => handleClick(event, row.name)}
+        //onClick={(event) => handleClick(event, row.name)}
         role="checkbox"
         aria-checked={isItemSelected}
         tabIndex={-1}
-        key={row.name}
+        key={row.factory}
         selected={isItemSelected}
         sx={{ "& > *": { borderBottom: "unset" } }}
       >
         <TableCell padding="checkbox">
           <Checkbox
             color="primary"
+            onClick={(event) => handleClick(event, row.factory)}
             checked={isItemSelected}
             inputProps={{
               "aria-labelledby": labelId,
             }}
           />
         </TableCell>
-        <TableCell sx={{ width: '30px' }}>
+        <TableCell sx={{ width: "30px" }}>
           <IconButton
             aria-label="expand row"
             size="small"
@@ -81,10 +80,10 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row">
-          {row.name}
+          {row.factory}
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
+        <TableCell align="right">{row.from}</TableCell>
+        <TableCell align="right">{row.to}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell
@@ -99,8 +98,8 @@ function Row(props) {
               container
               sx={{ margin: "1rem auto", maxWidth: "auto", overflowX: "auto" }}
             >
-              <Grid align="center" xs={12}>
-                <CompareTable isEditable={false} />
+              <Grid item align="center" xs={12}>
+                <PriceListTable isEditable={false} priceListArr={row.arr} />
               </Grid>
             </Grid>
           </Collapse>
@@ -110,37 +109,8 @@ function Row(props) {
   );
 }
 
-Row.propTypes = {
-  row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      })
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
-  }).isRequired,
-};
 
-const rows = [
-  createData("หนองใหญ่", "1/10/2022", "15/10/2022"), 
-  createData("บ้านบึง", "1/10/2022", "15/10/2022"),
-  createData("ปลวกแดง", "1/10/2022", "15/10/2022"),
-  createData("หนองไผ่แก้ว", "1/10/2022", "15/10/2022"),
-  createData("วังจันทร์", "1/10/2022", "15/10/2022"),
-  createData("หนองใหญ่", "16/10/2022", "31/10/2022"),
-  createData("บ้านบึง", "16/10/2022", "20/10/2022"),
-  createData("บ้านบึง", "21/10/2022", "25/10/2022"),
-  createData("บ้านบึง", "26/10/2022", "31/10/2022"),
-];
-
-function TableWithSelect() {
+function TableWithSelect(props) {
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
@@ -149,13 +119,17 @@ function TableWithSelect() {
             <TableCell />
             <TableCell />
             <TableCell sx={{ fontWeight: "bold" }}>โรงงาน</TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>จากวันที่</TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>ถึงวันที่</TableCell>
+            <TableCell align="right" sx={{ fontWeight: "bold" }}>
+              จากวันที่
+            </TableCell>
+            <TableCell align="right" sx={{ fontWeight: "bold" }}>
+              ถึงวันที่
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row, index) => (
-            <Row key={row.name} row={row} index={index} />
+          {props.rows?.map((row, index) => (
+            <Row key={`${row.factory}${row.from}-${row.to}`} row={row} index={index} />
           ))}
         </TableBody>
       </Table>

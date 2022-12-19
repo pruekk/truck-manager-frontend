@@ -5,7 +5,6 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import CompareTable from "../Tables/CompareTable";
 import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
@@ -22,16 +21,118 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import moment from "moment";
 import TextField from "@mui/material/TextField";
+import PriceListTableModal from "../Tables/PriceListTableModal";
 
-const temp = [
-  "หนองใหญ่",
-  "บ้านบึง",
-  "ปลวกแดง",
-  "หนองไผ่แก้ว",
-  "วังจันทร์",
-];
+const temp = ["หนองใหญ่", "บ้านบึง", "ปลวกแดง", "หนองไผ่แก้ว", "วังจันทร์"];
 
 export default function AddTransportPriceDialog(props) {
+  const [priceListArr, setPriceListArr] = React.useState([
+    {
+      name: "L",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "Y",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "Z",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "1",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "2",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "3",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "4",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "5",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "6",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "7",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "8",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "A",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "B",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "C",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+    {
+      name: "D",
+      value: [
+        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+        0, 0, 0, 0,
+      ],
+    },
+  ]);
   const [factory, setFactory] = React.useState("");
   const [dateFrom, setDateFrom] = React.useState(moment().format());
   const [dateTo, setDateTo] = React.useState(moment().format());
@@ -41,11 +142,11 @@ export default function AddTransportPriceDialog(props) {
   };
 
   const handleChangeDateFrom = (date) => {
-    setDateFrom(date);
+    setDateFrom(moment(date).format());
   };
 
   const handleChangeDateTo = (date) => {
-    setDateTo(date);
+    setDateTo(moment(date).format());
   };
 
   return (
@@ -124,12 +225,22 @@ export default function AddTransportPriceDialog(props) {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <CompareTable isEditable={true} />
+            <PriceListTableModal
+              isEditable={true}
+              priceListArr={priceListArr}
+              setPriceListArr={setPriceListArr}
+            />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={props.handleCloseDialog}>Save</Button>
+        <Button
+          onClick={() => {
+            props.addNewPrice(priceListArr, factory, moment(dateFrom).format("DD/MM/YYYY"), moment(dateTo).format("DD/MM/YYYY"));
+          }}
+        >
+          Save
+        </Button>
       </DialogActions>
     </Dialog>
   );
