@@ -6,89 +6,32 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
 //List
-import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
-import Avatar from '@mui/material/Avatar';
-import Tooltip from '@mui/material/Tooltip';
+import Box from "@mui/material/Box";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Avatar from "@mui/material/Avatar";
+import Tooltip from "@mui/material/Tooltip";
+import Paper from '@mui/material/Paper';
 
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import { Link } from "react-router-dom";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 
-import LocalShippingRoundedIcon from '@mui/icons-material/LocalShippingRounded';
-import BusinessRoundedIcon from '@mui/icons-material/BusinessRounded';
-import BadgeRoundedIcon from '@mui/icons-material/BadgeRounded';
-import ParkRoundedIcon from '@mui/icons-material/ParkRounded';
-import PercentRoundedIcon from '@mui/icons-material/PercentRounded';
-import ContentPasteSearchRoundedIcon from '@mui/icons-material/ContentPasteSearchRounded';
-import SettingsRoundedIcon from '@mui/icons-material/SettingsRounded';
-import PersonRoundedIcon from '@mui/icons-material/PersonRounded';
+import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 // import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
-const menus = [
-  {
-    main: "รถโม่",
-    sub: [
-      "ค่าขนส่ง",
-      "รายการเดินรถ"
-    ],
-    icon: <LocalShippingRoundedIcon />
-  },
-  {
-    main: "บริษัท",
-    sub: [
-      "รายได้",
-      "รายจ่าย"
-    ],
-    icon: <BusinessRoundedIcon />
-  },
-  {
-    main: "พนักงาน",
-    sub: [
-      "คนขับรถโม่",
-      "เสมียร"
-    ],
-    icon: <BadgeRoundedIcon />
-  },
-  {
-    main: "สวนปาล์ม",
-    sub: [
-      "รายได้",
-      "รายจ่าย"
-    ],
-    icon: <ParkRoundedIcon />
-  },
-  {
-    main: "ภาษี",
-    sub: [
-      "ประกันสังคม",
-      "ภงด1"
-    ],
-    icon: <PercentRoundedIcon />
-  },
-  {
-    main: "รายงานผล",
-    sub: [
-      "เหมาน้ำมัน",
-      "ค่าขนส่งรายเดือน"
-    ],
-    icon: <ContentPasteSearchRoundedIcon />
-  },
-  {
-    main: "ตั้งค่า",
-    sub: [
-      "ข้อมูลบริษัท",
-      "ข้อมูลสิทธิการเข้าดู"
-    ],
-    icon: <SettingsRoundedIcon />
-  },
-]
+//Constants
+import * as NavigationBarConstants from "../../constants/NavigationBarConstants";
 
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function NavigationBar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
+  const [clickedMain, setClickedMain] = React.useState("");
   const [anchorElUser, setAnchorElUser] = React.useState(null);
-  const handleOpenNavMenu = (event) => {
+
+  const handleOpenNavMenu = (event, main) => {
+    setClickedMain(main);
     setAnchorElNav(event.currentTarget);
   };
   const handleOpenUserMenu = (event) => {
@@ -116,46 +59,95 @@ function NavigationBar() {
             href="/"
             sx={{
               mr: 5,
-              display: { xs: 'none', md: 'flex' },
+              display: { xs: "none", md: "flex" },
               // fontFamily: 'monospace',
               fontWeight: 700,
-              letterSpacing: '.3rem',
-              color: 'inherit',
-              textDecoration: 'none',
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
             }}
           >
             TNCP
           </Typography>
-          <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-            {menus.map((menu) => (
-              <Box sx={{ flexGrow: 0 }}>
-                <IconButton onClick={handleOpenNavMenu} sx={{ p: 0, paddingRight: "1rem" }}>
-                  {menu.icon}
-                  <Typography textAlign="center" sx={{ paddingLeft: '0.2rem', paddingRight: '0.2rem' }}>{menu.main}</Typography>
-                  {/* <KeyboardArrowDownIcon /> */}
-                </IconButton>
-                <Menu
-                  sx={{ mt: '45px' }}
-                  id="menu-appbar"
-                  anchorEl={anchorElNav}
-                  anchorOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+          <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
+            {NavigationBarConstants.menus.map((menu) => (
+              <Box key={menu.main} sx={{ flexGrow: 0, padding: "5px" }}>
+                <Button
+                  variant="text"
+                  startIcon={menu.icon}
+                  onClick={(event) => {
+                    handleOpenNavMenu(event, menu.main);
                   }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: 'top',
-                    horizontal: 'right',
+                  sx={{
+                    color: "black",
+                    "&:hover": {
+                      background: "#f8f8f8",
+                    },
                   }}
-                  open={Boolean(anchorElNav)}
-                  onClose={handleCloseNavMenu}
                 >
-                  {menu.sub.map((sub) => (
-                    <MenuItem key={sub} onClick={handleCloseNavMenu}>
-                      <Typography textAlign="center">{sub}</Typography>
-                    </MenuItem>
-                  ))}
-                </Menu>
+                  <Typography textAlign="center">{menu.main}</Typography>
+                </Button>
+                {/*<IconButton
+                  onClick={handleOpenNavMenu}
+                  sx={{ p: 0, paddingRight: "1rem", borderRadius: "0px" }}
+                >
+                  {menu.icon}
+                  <Typography
+                    textAlign="center"
+                    sx={{ paddingLeft: "0.2rem", paddingRight: "0.2rem" }}
+                  >
+                    {menu.main}
+                  </Typography>
+                </IconButton>*/}
+                <Paper>
+                  <Menu
+                    sx={{ mt: "45px" }}
+                    id="menu-appbar"
+                    anchorEl={anchorElNav}
+                    anchorOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    keepMounted
+                    transformOrigin={{
+                      vertical: "top",
+                      horizontal: "left",
+                    }}
+                    elevation={1}
+                    open={Boolean(anchorElNav)}
+                    onClose={handleCloseNavMenu}
+                  >
+                    {NavigationBarConstants.menus
+                      .filter((menu) => menu.main === clickedMain)[0]
+                      ?.sub?.map((sub) =>
+                        sub.name === "ค่าขนส่ง" ? (
+                          <Link
+                            key={sub.name}
+                            to={sub.url}
+                            style={{ textDecoration: "none", color: "black" }}
+                          >
+                            <MenuItem
+                              disabled={sub.name !== "ค่าขนส่ง"}
+                              onClick={handleCloseNavMenu}
+                            >
+                              <Typography textAlign="center">
+                                {sub.name}
+                              </Typography>
+                            </MenuItem>
+                          </Link>
+                        ) : (
+                          <MenuItem
+                            disabled={sub.name !== "ค่าขนส่ง"}
+                            onClick={handleCloseNavMenu}
+                          >
+                            <Typography textAlign="center">
+                              {sub.name}
+                            </Typography>
+                          </MenuItem>
+                        )
+                      )}
+                  </Menu>
+                </Paper>
               </Box>
             ))}
           </Box>
@@ -219,25 +211,23 @@ function NavigationBar() {
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-              <Avatar
-                sx={{ bgcolor: "black" }}
-              >
-                <PersonRoundedIcon />
-              </Avatar>
+                <Avatar sx={{ bgcolor: "black" }}>
+                  <PersonRoundedIcon />
+                </Avatar>
               </IconButton>
             </Tooltip>
             <Menu
-              sx={{ mt: '45px' }}
+              sx={{ mt: "45px" }}
               id="menu-appbar"
               anchorEl={anchorElUser}
               anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               keepMounted
               transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
+                vertical: "top",
+                horizontal: "right",
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
