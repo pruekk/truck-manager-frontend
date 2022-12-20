@@ -23,6 +23,9 @@ import moment from "moment";
 import TextField from "@mui/material/TextField";
 import PriceListTableModal from "../Tables/PriceListTableModal";
 
+//Constants
+import * as NavigationBarConstants from "../../constants/NavigationBarConstants";
+
 const temp = ["หนองใหญ่", "บ้านบึง", "ปลวกแดง", "หนองไผ่แก้ว", "วังจันทร์"];
 
 export default function AddTransportPriceDialog(props) {
@@ -157,7 +160,7 @@ export default function AddTransportPriceDialog(props) {
       onClose={props.handleCloseDialog}
     >
       <DialogTitle>
-        เพิ่มรายการค่าขนส่ง
+        เพิ่ม{NavigationBarConstants.menus[0].sub[0].name}
         <IconButton
           aria-label="close"
           onClick={props.handleCloseDialog}
