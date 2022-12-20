@@ -203,7 +203,7 @@ export default function AddTransportPriceDialog(props) {
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                   <MobileDatePicker
                     label="ตั้งแต่"
-                    inputFormat="MM/DD/YYYY"
+                    inputFormat="DD/MM/YYYY"
                     value={dateTo}
                     onChange={handleChangeDateTo}
                     renderInput={(params) => (
@@ -216,7 +216,7 @@ export default function AddTransportPriceDialog(props) {
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                   <MobileDatePicker
                     label="จนถึง"
-                    inputFormat="MM/DD/YYYY"
+                    inputFormat="DD/MM/YYYY"
                     value={dateFrom}
                     onChange={handleChangeDateFrom}
                     renderInput={(params) => (
