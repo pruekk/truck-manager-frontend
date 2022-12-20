@@ -120,14 +120,14 @@ function NavigationBar() {
                     {NavigationBarConstants.menus
                       .filter((menu) => menu.main === clickedMain)[0]
                       ?.sub?.map((sub) =>
-                        sub.name === "ค่าขนส่ง" ? (
+                        sub.name === "ใบราคาค่าขนส่ง" ? (
                           <Link
                             key={sub.name}
                             to={sub.url}
                             style={{ textDecoration: "none", color: "black" }}
                           >
                             <MenuItem
-                              disabled={sub.name !== "ค่าขนส่ง"}
+                              disabled={sub.name !== "ใบราคาค่าขนส่ง"}
                               onClick={handleCloseNavMenu}
                             >
                               <Typography textAlign="center">
@@ -137,7 +137,7 @@ function NavigationBar() {
                           </Link>
                         ) : (
                           <MenuItem
-                            disabled={sub.name !== "ค่าขนส่ง"}
+                            disabled={sub.name !== "ใบราคาค่าขนส่ง"}
                             onClick={handleCloseNavMenu}
                           >
                             <Typography textAlign="center">

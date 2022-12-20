@@ -17,6 +17,7 @@ import { createData } from "../../functions/TableFunctions";
 
 //Constatns
 import * as TableConstants from "../../constants/TableConstants";
+import * as NavigationBarConstants from "../../constants/NavigationBarConstants";
 
 function TransportPricePage() {
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -51,7 +52,7 @@ function TransportPricePage() {
             gutterBottom
             sx={{ fontWeight: 700, color: "#828080" }}
           >
-            ค่าขนส่ง
+            {NavigationBarConstants.menus[0].sub[0].name}
           </Typography>
         </Grid>
         <Grid item xs={12}>
