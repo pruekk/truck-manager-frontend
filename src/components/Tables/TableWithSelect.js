@@ -96,7 +96,7 @@ function Row(props) {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Grid
               container
-              sx={{ margin: "1rem auto", maxWidth: "auto", overflowX: "auto" }}
+              sx={{ margin: "1rem auto", maxWidth: "90rem", overflowX: "auto" }}
             >
               <Grid item align="center" xs={12}>
                 <PriceListTable isEditable={false} priceListArr={row.arr} />
