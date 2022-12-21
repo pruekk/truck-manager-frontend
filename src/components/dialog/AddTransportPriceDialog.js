@@ -25,6 +25,7 @@ import PriceListTableModal from "../Tables/PriceListTableModal";
 
 //Constants
 import * as NavigationBarConstants from "../../constants/NavigationBarConstants";
+import * as CalendarConstants from "../../constants/CalendarConstants";
 
 const temp = ["หนองใหญ่", "บ้านบึง", "ปลวกแดง", "หนองไผ่แก้ว", "วังจันทร์"];
 
@@ -203,7 +204,7 @@ export default function AddTransportPriceDialog(props) {
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                   <MobileDatePicker
                     label="ตั้งแต่"
-                    inputFormat="DD/MM/YYYY"
+                    inputFormat={CalendarConstants.dateFormat}
                     value={dateTo}
                     onChange={handleChangeDateTo}
                     renderInput={(params) => (
@@ -216,7 +217,7 @@ export default function AddTransportPriceDialog(props) {
                 <LocalizationProvider dateAdapter={AdapterMoment}>
                   <MobileDatePicker
                     label="จนถึง"
-                    inputFormat="DD/MM/YYYY"
+                    inputFormat={CalendarConstants.dateFormat}
                     value={dateFrom}
                     onChange={handleChangeDateFrom}
                     renderInput={(params) => (
@@ -239,7 +240,12 @@ export default function AddTransportPriceDialog(props) {
       <DialogActions>
         <Button
           onClick={() => {
-            props.addNewPrice(priceListArr, factory, moment(dateFrom).format("DD/MM/YYYY"), moment(dateTo).format("DD/MM/YYYY"));
+            props.addNewPrice(
+              priceListArr,
+              factory,
+              moment(dateFrom).format(CalendarConstants.dateFormat),
+              moment(dateTo).format(CalendarConstants.dateFormat)
+            );
           }}
         >
           Save
