@@ -140,8 +140,12 @@ export default function AddTransportPriceDialog(props) {
   const [factory, setFactory] = React.useState("");
   const [dateFrom, setDateFrom] = React.useState(moment().format());
   const [dateTo, setDateTo] = React.useState(moment().format());
+  const [isEmptyFactory, setIsEmptyFactory] = React.useState(false);
 
   const handleChangeFactory = (event) => {
+    if (event.target.value !== "") {
+      setIsEmptyFactory(false);
+    }
     setFactory(event.target.value);
   };
 
@@ -151,6 +155,20 @@ export default function AddTransportPriceDialog(props) {
 
   const handleChangeDateTo = (date) => {
     setDateTo(moment(date).format());
+  };
+
+  const onClickAddNewPrice = () => {
+    if (factory !== "") {
+      props.addNewPrice(
+        priceListArr,
+        factory,
+        moment(dateFrom).format(CalendarConstants.dateFormat),
+        moment(dateTo).format(CalendarConstants.dateFormat)
+      );
+    }
+    if (factory === "") {
+      setIsEmptyFactory(true);
+    }
   };
 
   return (
@@ -180,7 +198,11 @@ export default function AddTransportPriceDialog(props) {
           <Grid item xs={12}>
             <Grid container spacing={1}>
               <Grid item>
-                <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+                <FormControl
+                  sx={{ m: 1, minWidth: 120 }}
+                  size="small"
+                  error={isEmptyFactory}
+                >
                   <InputLabel id="select-factory-small">โรงงาน</InputLabel>
                   <Select
                     labelId="select-factory-small"
@@ -238,18 +260,7 @@ export default function AddTransportPriceDialog(props) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button
-          onClick={() => {
-            props.addNewPrice(
-              priceListArr,
-              factory,
-              moment(dateFrom).format(CalendarConstants.dateFormat),
-              moment(dateTo).format(CalendarConstants.dateFormat)
-            );
-          }}
-        >
-          Save
-        </Button>
+        <Button onClick={onClickAddNewPrice}>Save</Button>
       </DialogActions>
     </Dialog>
   );
