@@ -22,7 +22,7 @@ export default function DeleteConfirmationDialog(props) {
     return (
         <Dialog
             fullWidth={true}
-            maxWidth="xl"
+            maxWidth="sm"
             open={props.openDialog}
         //onClose={props.handleCloseDeleteDialog}
         >

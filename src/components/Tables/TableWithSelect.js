@@ -2,7 +2,6 @@ import React from "react";
 
 //Material UI
 import Collapse from "@mui/material/Collapse";
-import Container from '@mui/material/Container';
 import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
@@ -115,7 +114,7 @@ function Row(props) {
 
 function TableWithSelect(props) {
   return (
-    <Container>
+    <div>
       <DeleteConfirmationDialog openDialog={props.openDeleteDialog} onClickCloseDeleteDialog={props.handleCloseDeleteDialog} removePrice={props.removePrice} selectedRow={props.selectedRow} />
 
       <TableContainer component={Paper}>
@@ -140,7 +139,7 @@ function TableWithSelect(props) {
           </TableBody>
         </Table>
       </TableContainer>
-    </Container>
+    </div>
   );
 }
 
