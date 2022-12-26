@@ -147,7 +147,7 @@ export default function AddTransportPriceDialog(props) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const preparePriceList = () => {
-    if (props.selectedRow.length === 1) {
+    if (props.selectedRow.length === 1 && props.isEdit) {
       setFactory(props.selectedRow[0].factory);
       setDateFrom(moment(props.selectedRow[0].from, "DD-MM-YYYY").format());
       setDateTo(moment(props.selectedRow[0].to, "DD-MM-YYYY").format());
