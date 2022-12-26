@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 
 //Icons
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 
 import AddTransportPriceDialog from "../dialog/AddTransportPriceDialog";
 
@@ -21,7 +22,9 @@ import * as NavigationBarConstants from "../../constants/NavigationBarConstants"
 
 function TransportPricePage() {
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [dataRow, setDataRow] = React.useState(TableConstants.dummyData);
+  const [selectedRow, setSelectedRow] = React.useState([]);
 
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -31,11 +34,32 @@ function TransportPricePage() {
     setOpenDialog(false);
   };
 
+  const handleOpenDeleteDialog = () => {
+    setOpenDeleteDialog(true);
+  }
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+  }
+
   const addNewPrice = (priceListArr, factory, dateFrom, dateTo) => {
     dataRow.push(createData(factory, dateFrom, dateTo, priceListArr));
     setDataRow([...dataRow]);
     setOpenDialog(false);
   };
+
+  const removePrice = (selectedRow) => {
+    selectedRow.map((row) => {
+      const dataIndex = dataRow.findIndex((obj) => obj.factory === row.factory && obj.from === row.from && obj.to === row.to);
+      dataRow.splice(dataIndex, 1);
+
+      return dataRow;
+    })
+
+    setDataRow([...dataRow]);
+    setSelectedRow([]);
+    handleCloseDeleteDialog();
+  }
 
   return (
     <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
@@ -73,6 +97,24 @@ function TransportPricePage() {
                 Add
               </Button>
             </Grid>
+            {selectedRow.length !== 0 &&
+              <Grid item>
+                <Button
+                  disableElevation
+                  variant="contained"
+                  startIcon={<RemoveCircleRoundedIcon />}
+                  sx={{
+                    backgroundColor: "#c91e24",
+                    "&:hover": {
+                      backgroundColor: "#eb8a8d",
+                    },
+                  }}
+                  onClick={handleOpenDeleteDialog}
+                >
+                  Delete
+                </Button>
+              </Grid>
+            }
             {/* <Grid item>
               <Button
                 disableElevation
@@ -114,25 +156,11 @@ function TransportPricePage() {
                 Search
               </Button>
             </Grid>
-            <Grid item>
-              <Button
-                disableElevation
-                variant="contained"
-                startIcon={<RemoveCircleRoundedIcon />}
-                sx={{
-                  backgroundColor: "#c91e24",
-                  "&:hover": {
-                    backgroundColor: "#eb8a8d",
-                  },
-                }}
-              >
-                Delete
-              </Button>
-            </Grid> */}
+            */}
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <TableWithSelect rows={dataRow} />
+          <TableWithSelect rows={dataRow} selectedRow={selectedRow} openDeleteDialog={openDeleteDialog} handleCloseDeleteDialog={handleCloseDeleteDialog} setSelectedRow={setSelectedRow} removePrice={removePrice} />
         </Grid>
       </Grid>
     </Container>

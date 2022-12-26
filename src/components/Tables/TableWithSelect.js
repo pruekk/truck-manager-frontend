@@ -18,34 +18,36 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 //Functions
 import PriceListTable from "./PriceListTable";
 
+//Dialogs
+import DeleteConfirmationDialog from "../dialog/DeleteConfirmationDialog";
+
 function Row(props) {
   const { row, index } = props;
   const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState([]);
 
-  const isSelected = (name) => selected.indexOf(name) !== -1;
+  const isSelected = (name) => props.selectedRow.indexOf(name) !== -1;
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, name, selectedRow) => {
+    const selectedIndex = props.selectedRow.indexOf(selectedRow);
     let newSelected = [];
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(props.selectedRow, selectedRow);
     } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
+      newSelected = newSelected.concat(props.selectedRow.slice(1));
+    } else if (selectedIndex === props.selectedRow.length - 1) {
+      newSelected = newSelected.concat(props.selectedRow.slice(0, -1));
     } else if (selectedIndex > 0) {
       newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
+        props.selectedRow.slice(0, selectedIndex),
+        props.selectedRow.slice(selectedIndex + 1)
       );
     }
 
-    setSelected(newSelected);
+    props.setSelectedRowProps(newSelected);
   };
 
-  const isItemSelected = isSelected(row.factory);
+  const isItemSelected = isSelected(row);
   const labelId = `enhanced-table-checkbox-${index}`;
 
   return (
@@ -63,7 +65,7 @@ function Row(props) {
         <TableCell padding="checkbox">
           <Checkbox
             color="primary"
-            onClick={(event) => handleClick(event, row.factory)}
+            onClick={(event) => handleClick(event, row.factory, row)}
             checked={isItemSelected}
             inputProps={{
               "aria-labelledby": labelId,
@@ -112,28 +114,32 @@ function Row(props) {
 
 function TableWithSelect(props) {
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="collapsible table">
-        <TableHead>
-          <TableRow>
-            <TableCell />
-            <TableCell />
-            <TableCell sx={{ fontWeight: "bold" }}>โรงงาน</TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              จากวันที่
+    <div>
+      <DeleteConfirmationDialog openDialog={props.openDeleteDialog} onClickCloseDeleteDialog={props.handleCloseDeleteDialog} removePrice={props.removePrice} selectedRow={props.selectedRow} />
+
+      <TableContainer component={Paper}>
+        <Table aria-label="collapsible table">
+          <TableHead>
+            <TableRow>
+              <TableCell />
+              <TableCell />
+              <TableCell sx={{ fontWeight: "bold" }}>โรงงาน</TableCell>
+              <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                จากวันที่
             </TableCell>
-            <TableCell align="right" sx={{ fontWeight: "bold" }}>
-              ถึงวันที่
+              <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                ถึงวันที่
             </TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {props.rows?.map((row, index) => (
-            <Row key={`${row.factory}${row.from}-${row.to}`} row={row} index={index} />
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {props.rows?.map((row, index) => (
+              <Row key={`${row.factory}${row.from}-${row.to}`} row={row} index={index} setSelectedRowProps={props.setSelectedRow} selectedRow={props.selectedRow} />
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 }
 
