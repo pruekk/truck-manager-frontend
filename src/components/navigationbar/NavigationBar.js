@@ -119,10 +119,10 @@ function NavigationBar() {
                   >
                     {NavigationBarConstants.menus
                       .filter((menu) => menu.main === clickedMain)[0]
-                      ?.sub?.map((sub) =>
+                      ?.sub?.map((sub, index) =>
                         sub.name === "ใบราคาค่าขนส่ง" ? (
                           <Link
-                            key={sub.name}
+                            key={`${sub.name}-${index}`}
                             to={sub.url}
                             style={{ textDecoration: "none", color: "black" }}
                           >

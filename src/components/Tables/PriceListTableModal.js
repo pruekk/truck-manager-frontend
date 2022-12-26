@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //Material UI
 import IconButton from "@mui/material/IconButton";
@@ -10,6 +10,16 @@ import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 import "./PriceListTable.css";
 
 export default function PriceListTableModal(props) {
+  useEffect(() => {
+    preparePriceList();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const preparePriceList = () => {
+    if (props.selectedRow.length === 1) {
+      props.setPriceListArr([...props.selectedRow[0].arr]);
+    }
+  }
+
   const handleAddColumn = async () => {
     props.priceListArr.map(async (obj, index) => {
       props.priceListArr[index].value.push(0);
@@ -124,6 +134,7 @@ export default function PriceListTableModal(props) {
                   >
                     <input
                       type="string"
+                      defaultValue={props.isEdit ? value : ""}
                       onChange={(event) => {
                         onChangeValue(event, obj.name, index);
                       }}

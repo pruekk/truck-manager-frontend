@@ -9,6 +9,7 @@ import Typography from "@mui/material/Typography";
 
 //Icons
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 
 import AddTransportPriceDialog from "../dialog/AddTransportPriceDialog";
@@ -22,12 +23,19 @@ import * as NavigationBarConstants from "../../constants/NavigationBarConstants"
 
 function TransportPricePage() {
   const [openDialog, setOpenDialog] = React.useState(false);
+  const [isEdit, setIsEdit] = React.useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [dataRow, setDataRow] = React.useState(TableConstants.dummyData);
   const [selectedRow, setSelectedRow] = React.useState([]);
 
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
+    setIsEdit(false);
+  };
+
+  const handleClickOpenEditDialog = () => {
+    setOpenDialog(true);
+    setIsEdit(true);
   };
 
   const handleCloseDialog = () => {
@@ -48,6 +56,22 @@ function TransportPricePage() {
     setOpenDialog(false);
   };
 
+  const editPrice = (priceListArr, factory, dateFrom, dateTo) => {
+    dataRow.some(function (obj) {
+      console.log(obj, selectedRow);
+      if (obj.factory === selectedRow[0].factory && obj.from === selectedRow[0].from && obj.to === selectedRow[0].to) {
+        obj.factory = factory;
+        obj.from = dateFrom;
+        obj.to = dateTo;
+        obj.arr = priceListArr;
+        return true;
+      }
+    });
+    
+    setDataRow([...dataRow]);
+    setOpenDialog(false);
+  }
+
   const removePrice = (selectedRow) => {
     selectedRow.map((row) => {
       const dataIndex = dataRow.findIndex((obj) => obj.factory === row.factory && obj.from === row.from && obj.to === row.to);
@@ -63,12 +87,15 @@ function TransportPricePage() {
 
   return (
     <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
-      <AddTransportPriceDialog
+      {openDialog && <AddTransportPriceDialog
         openDialog={openDialog}
+        selectedRow={selectedRow}
+        isEdit={isEdit}
         addNewPrice={addNewPrice}
+        editPrice={editPrice}
         handleClickOpenDialog={handleClickOpenDialog}
         handleCloseDialog={handleCloseDialog}
-      />
+      />}
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography
@@ -97,6 +124,24 @@ function TransportPricePage() {
                 Add
               </Button>
             </Grid>
+            {selectedRow.length === 1 &&
+              <Grid item>
+                <Button
+                  disableElevation
+                  variant="contained"
+                  onClick={handleClickOpenEditDialog}
+                  startIcon={<DriveFileRenameOutlineRoundedIcon />}
+                  sx={{
+                    backgroundColor: "#7b7a7a",
+                    "&:hover": {
+                      backgroundColor: "#c8cccc",
+                    },
+                  }}
+                >
+                  Edit
+              </Button>
+              </Grid>
+            }
             {selectedRow.length !== 0 &&
               <Grid item>
                 <Button
@@ -115,21 +160,7 @@ function TransportPricePage() {
                 </Button>
               </Grid>
             }
-            {/* <Grid item>
-              <Button
-                disableElevation
-                variant="contained"
-                startIcon={<DriveFileRenameOutlineRoundedIcon />}
-                sx={{
-                  backgroundColor: "#7b7a7a",
-                  "&:hover": {
-                    backgroundColor: "#c8cccc",
-                  },
-                }}
-              >
-                Edit
-              </Button>
-            </Grid>
+            {/* 
             <Grid item>
               <Button
                 disableElevation
@@ -160,7 +191,14 @@ function TransportPricePage() {
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <TableWithSelect rows={dataRow} selectedRow={selectedRow} openDeleteDialog={openDeleteDialog} handleCloseDeleteDialog={handleCloseDeleteDialog} setSelectedRow={setSelectedRow} removePrice={removePrice} />
+          <TableWithSelect
+            rows={dataRow}
+            selectedRow={selectedRow}
+            openDeleteDialog={openDeleteDialog}
+            handleCloseDeleteDialog={handleCloseDeleteDialog}
+            setSelectedRow={setSelectedRow}
+            removePrice={removePrice}
+          />
         </Grid>
       </Grid>
     </Container>

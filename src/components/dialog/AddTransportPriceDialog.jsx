@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -142,6 +142,20 @@ export default function AddTransportPriceDialog(props) {
   const [dateTo, setDateTo] = React.useState(moment().format());
   const [isEmptyFactory, setIsEmptyFactory] = React.useState(false);
 
+  useEffect(() => {
+    preparePriceList();
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const preparePriceList = () => {
+    if (props.selectedRow.length === 1) {
+      setFactory(props.selectedRow[0].factory);
+      setDateFrom(moment(props.selectedRow[0].from, "DD-MM-YYYY").format());
+      setDateTo(moment(props.selectedRow[0].to, "DD-MM-YYYY").format());
+    }
+
+    console.log(props.selectedRow[0].to, moment(props.selectedRow[0].to, "DD-MM-YYYY").format());
+  }
+
   const handleChangeFactory = (event) => {
     if (event.target.value !== "") {
       setIsEmptyFactory(false);
@@ -150,6 +164,7 @@ export default function AddTransportPriceDialog(props) {
   };
 
   const handleChangeDateFrom = (date) => {
+    console.log(date);
     setDateFrom(moment(date).format());
   };
 
@@ -157,14 +172,24 @@ export default function AddTransportPriceDialog(props) {
     setDateTo(moment(date).format());
   };
 
-  const onClickAddNewPrice = () => {
+  const onClickSaveNewPrice = () => {
     if (factory !== "") {
-      props.addNewPrice(
-        priceListArr,
-        factory,
-        moment(dateFrom).format(CalendarConstants.dateFormat),
-        moment(dateTo).format(CalendarConstants.dateFormat)
-      );
+      if (props.isEdit) {
+        props.editPrice(
+          priceListArr,
+          factory,
+          moment(dateFrom).format(CalendarConstants.dateFormat),
+          moment(dateTo).format(CalendarConstants.dateFormat)
+        )
+      } if (!props.isEdit) {
+        props.addNewPrice(
+          priceListArr,
+          factory,
+          moment(dateFrom).format(CalendarConstants.dateFormat),
+          moment(dateTo).format(CalendarConstants.dateFormat)
+        );
+      }
+
     }
     if (factory === "") {
       setIsEmptyFactory(true);
@@ -227,7 +252,7 @@ export default function AddTransportPriceDialog(props) {
                   <MobileDatePicker
                     label="ตั้งแต่"
                     inputFormat={CalendarConstants.dateFormat}
-                    value={dateTo}
+                    value={dateFrom}
                     onChange={handleChangeDateTo}
                     renderInput={(params) => (
                       <TextField size="small" sx={{ m: 1 }} {...params} />
@@ -240,7 +265,7 @@ export default function AddTransportPriceDialog(props) {
                   <MobileDatePicker
                     label="จนถึง"
                     inputFormat={CalendarConstants.dateFormat}
-                    value={dateFrom}
+                    value={dateTo}
                     onChange={handleChangeDateFrom}
                     renderInput={(params) => (
                       <TextField size="small" sx={{ m: 1 }} {...params} />
@@ -254,13 +279,15 @@ export default function AddTransportPriceDialog(props) {
             <PriceListTableModal
               isEditable={true}
               priceListArr={priceListArr}
+              selectedRow={props.selectedRow}
+              isEdit={props.isEdit}
               setPriceListArr={setPriceListArr}
             />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClickAddNewPrice}>Save</Button>
+        <Button onClick={onClickSaveNewPrice}>Save</Button>
       </DialogActions>
     </Dialog>
   );
