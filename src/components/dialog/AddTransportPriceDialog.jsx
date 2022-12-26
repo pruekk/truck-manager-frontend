@@ -152,8 +152,6 @@ export default function AddTransportPriceDialog(props) {
       setDateFrom(moment(props.selectedRow[0].from, "DD-MM-YYYY").format());
       setDateTo(moment(props.selectedRow[0].to, "DD-MM-YYYY").format());
     }
-
-    console.log(props.selectedRow[0].to, moment(props.selectedRow[0].to, "DD-MM-YYYY").format());
   }
 
   const handleChangeFactory = (event) => {
