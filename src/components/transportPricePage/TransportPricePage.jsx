@@ -57,8 +57,7 @@ function TransportPricePage() {
   };
 
   const editPrice = (priceListArr, factory, dateFrom, dateTo) => {
-    dataRow.some(function (obj) {
-      console.log(obj, selectedRow);
+    dataRow.some((obj) => {
       if (obj.factory === selectedRow[0].factory && obj.from === selectedRow[0].from && obj.to === selectedRow[0].to) {
         obj.factory = factory;
         obj.from = dateFrom;
@@ -66,6 +65,7 @@ function TransportPricePage() {
         obj.arr = priceListArr;
         return true;
       }
+      return false;
     });
     
     setDataRow([...dataRow]);
