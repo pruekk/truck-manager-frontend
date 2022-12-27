@@ -9,6 +9,7 @@ import NavigationBar from "./components/navigationbar/NavigationBar";
 import HomePage from "./components/homepage/HomePage";
 import Footer from "./components/footer/Footer";
 import TransportPricePage from "./components/transportPricePage/TransportPricePage";
+import DPSchedulePage from "./components/dp/DPSchedulePage";
 
 //Others
 
@@ -20,6 +21,7 @@ const App = () => {
   let routes = useRoutes([
     { path: "/", element: <HomePage /> },
     { path: "/transport-price", element: <TransportPricePage /> },
+    { path: "/dp-schedule", element: <DPSchedulePage /> },
     { path: "*", element: <NotFound /> }
   ]);
   return routes;
