@@ -49,3 +49,8 @@ export function generateString(length) {
 
   return result;
 }
+
+//Calculation
+export function calculateSum(array) {
+  return array.reduce((accumulator, value) => accumulator + value, 0);
+}

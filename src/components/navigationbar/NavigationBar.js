@@ -70,8 +70,8 @@ function NavigationBar() {
             TNCP
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
-            {NavigationBarConstants.menus.map((menu) => (
-              <Box key={menu.main} sx={{ flexGrow: 0, padding: "5px" }}>
+            {NavigationBarConstants.menus.map((menu, index) => (
+              <Box key={`${menu.main}-${index}`} sx={{ flexGrow: 0, padding: "5px" }}>
                 <Button
                   variant="text"
                   startIcon={menu.icon}
@@ -120,14 +120,14 @@ function NavigationBar() {
                     {NavigationBarConstants.menus
                       .filter((menu) => menu.main === clickedMain)[0]
                       ?.sub?.map((sub, index) =>
-                        sub.name === "ใบราคาค่าขนส่ง" ? (
+                        sub.isAvailable ? (
                           <Link
                             key={`${sub.name}-${index}`}
                             to={sub.url}
                             style={{ textDecoration: "none", color: "black" }}
                           >
                             <MenuItem
-                              disabled={sub.name !== "ใบราคาค่าขนส่ง"}
+                              disabled={!sub.isAvailable}
                               onClick={handleCloseNavMenu}
                             >
                               <Typography textAlign="center">
@@ -136,15 +136,16 @@ function NavigationBar() {
                             </MenuItem>
                           </Link>
                         ) : (
-                          <MenuItem
-                            disabled={sub.name !== "ใบราคาค่าขนส่ง"}
-                            onClick={handleCloseNavMenu}
-                          >
-                            <Typography textAlign="center">
-                              {sub.name}
-                            </Typography>
-                          </MenuItem>
-                        )
+                            <MenuItem
+                              key={`${sub.name}-${index}`}
+                              disabled={!sub.isAvailable}
+                              onClick={handleCloseNavMenu}
+                            >
+                              <Typography textAlign="center">
+                                {sub.name}
+                              </Typography>
+                            </MenuItem>
+                          )
                       )}
                   </Menu>
                 </Paper>
