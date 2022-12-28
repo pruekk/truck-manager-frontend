@@ -42,9 +42,11 @@ function DPSchedulePage() {
 
   const prepareDataForTable = (data) => {
     let tempArr = []
+    const code = data[2][0].split(' ')[1];
+    const rowCode = `${code.slice(0, 1)}${code.substr(2)}`
     const date = data[1][0].split(':')[1];
     data.slice(8).map((row, index) => {
-      if (row.length === 11) {
+      if (row[0]?.includes(rowCode)) {
         tempArr.push({
           "id": row[0],
           "วันที่": date,
