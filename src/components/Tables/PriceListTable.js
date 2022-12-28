@@ -63,7 +63,7 @@ export default function PriceListTable(props) {
                         style={{
                           border: "1px solid black",
                           borderCollapse: "collapse",
-                          textAlign: "center",
+                          textAlign: "right",
                           height: "30px",
                           minWidth: "70px",
                         }}

@@ -141,6 +141,7 @@ export default function AddTransportPriceDialog(props) {
   const [dateFrom, setDateFrom] = React.useState(moment().format());
   const [dateTo, setDateTo] = React.useState(moment().format());
   const [isEmptyFactory, setIsEmptyFactory] = React.useState(false);
+  const [isSumCorrect, setIsSumCorrect] = React.useState(false);
 
   useEffect(() => {
     preparePriceList();
@@ -162,7 +163,6 @@ export default function AddTransportPriceDialog(props) {
   };
 
   const handleChangeDateFrom = (date) => {
-    console.log(date);
     setDateFrom(moment(date).format());
   };
 
@@ -280,12 +280,13 @@ export default function AddTransportPriceDialog(props) {
               selectedRow={props.selectedRow}
               isEdit={props.isEdit}
               setPriceListArr={setPriceListArr}
+              setIsSumCorrect={setIsSumCorrect}
             />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClickSaveNewPrice}>Save</Button>
+        <Button disabled={!isSumCorrect} onClick={onClickSaveNewPrice}>Save</Button>
       </DialogActions>
     </Dialog>
   );
