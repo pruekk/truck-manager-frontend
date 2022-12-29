@@ -7,6 +7,9 @@ import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
+import Box from '@mui/material/Box';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 
 //Icons
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
@@ -66,6 +69,7 @@ const DPSchedulePage = () => {
     const factoryCode = data[2][0].split(' ')[1];
     const rowCode = `${factoryCode.slice(0, 1)}${factoryCode.substr(2)}`
     const date = data[1][0].split(':')[1].trim();
+    const price = 0;
     
     // Start from row 8 in Excel
     data.slice(8).map((row) => {
@@ -77,8 +81,8 @@ const DPSchedulePage = () => {
           "destination": row[3],
           "distance": 0,
           "code": row[7],
-          "amount": row[9],
-          "price": 0,
+          "amount": row[9].toFixed(2),
+          "price": price.toFixed(2),
           "oil": "-",
           "car": row[4],
           "driver": "จิรายุ พรมสูงวงศ์",
@@ -91,6 +95,11 @@ const DPSchedulePage = () => {
     // return dbList to handleUploadExcel
     return dbList;
   }
+
+  const [tabIndex, setTabIndex] = React.useState(0);
+  const handleChangeTabs = (event, newTabIndex) => {
+    setTabIndex(newTabIndex);
+  };
 
   return (
     <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
@@ -139,6 +148,18 @@ const DPSchedulePage = () => {
               </Button>
             </Grid>
           </Grid>
+        </Grid>
+
+        <Grid item xs={12}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+          <Tabs value={tabIndex} onChange={handleChangeTabs}>
+            <Tab label="หนองใหญ่" />
+            <Tab label="บ้านบึง" />
+            <Tab label="ปลวกแดง" />
+            <Tab label="หนองไผ่แก้ว" />
+            <Tab label="วังจันทร์" />
+          </Tabs>
+        </Box>
         </Grid>
 
         <Grid item xs={12}>
