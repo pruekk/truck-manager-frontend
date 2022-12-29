@@ -98,6 +98,16 @@ export const menus = [
         url: "/",
         isAvailable: false
       },
+      {
+        name: "ภาษีซื้อ",
+        url: "/",
+        isAvailable: false
+      },
+      {
+        name: "ภาษีขาย",
+        url: "/",
+        isAvailable: false
+      },
     ],
     icon: <PercentRoundedIcon />,
   },
