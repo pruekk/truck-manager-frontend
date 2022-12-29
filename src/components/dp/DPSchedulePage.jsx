@@ -72,17 +72,17 @@ const DPSchedulePage = () => {
       if (row[0]?.includes(rowCode)) {
         dbList.push({
           "id": row[0],
-          "วันที่": date,
-          "เวลา": "-",
-          "หน่วยงาน": row[3],
-          "ระยะทาง": 0,
-          "รหัส": row[7],
-          "คิว": row[9],
-          "ราคา": 0,
-          "น้ำมัน": "-",
-          "เบอร์รถ": row[4],
-          "คนขับรถ": "จิรายุ พรมสูงวงศ์",
-          "สถานะ": dpStatus(row[10].trim()),
+          "date": date,
+          "time": "-",
+          "destination": row[3],
+          "distance": 0,
+          "code": row[7],
+          "amount": row[9],
+          "price": 0,
+          "oil": "-",
+          "car": row[4],
+          "driver": "จิรายุ พรมสูงวงศ์",
+          "status": dpStatus(row[10].trim()),
         });
       }
       return dbList;
