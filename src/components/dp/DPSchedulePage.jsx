@@ -33,26 +33,36 @@ const DPSchedulePage = () => {
   const handleUploadExcel = (e) => {
     e.preventDefault();
 
-    var files = e.target.files, f = files[0];
-    var reader = new FileReader();
+    // Upload file by file to prevent human error
+    const files = e.target.files, f = files[0];
+    const reader = new FileReader();
+
+    reader.onprogress = function(e) {
+      const progress = (e.loaded / e.total) * 100;
+      console.log(`Upload progress: ${progress}%`);
+    };
+
     reader.onload = function (e) {
-      var data = e.target.result;
-      let readedData = XLSX.read(data, { type: 'binary' });
-      const wsname = readedData.SheetNames[0];
-      const ws = readedData.Sheets[wsname];
+      const data = e.target.result;
+      const readedData = XLSX.read(data, { type: 'binary' });
+      const allSheetData = [];
+      
+      for (const sheetName of readedData.SheetNames) {
+        const ws = readedData.Sheets[sheetName];
+        const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
 
-      /* Convert array to json*/
-      const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
-      prepareDataForTable(dataParse);
-      return dataParse.slice(8);
+        if (dataParse.length !== 0) {
+          allSheetData.push(...prepareDataForTable(dataParse));
+        }
+      }
+      setDataRows([...dataRows, ...allSheetData]);
     };
 
     reader.readAsBinaryString(f)
   }
 
   const prepareDataForTable = (data) => {
-    let dbList = []
+    const dbList = []
     const factoryCode = data[2][0].split(' ')[1];
     const rowCode = `${factoryCode.slice(0, 1)}${factoryCode.substr(2)}`
     const date = data[1][0].split(':')[1].trim();
@@ -78,7 +88,8 @@ const DPSchedulePage = () => {
       return dbList;
     });
 
-    setDataRows([...dataRows, ...dbList]);
+    // return dbList to handleUploadExcel
+    return dbList;
   }
 
   return (
