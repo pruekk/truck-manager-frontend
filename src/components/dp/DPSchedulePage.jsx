@@ -16,9 +16,20 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 //Constatns
 import * as NavigationBarConstants from "../../constants/NavigationBarConstants";
 
-function DPSchedulePage() {
+const DPSchedulePage = () => {
   const [dataRows, setDataRows] = React.useState([]);
-
+  const dpStatus = (status) => {
+    switch (status) {
+      case "A":
+        return "Accepted";
+      case "C":
+        return "Canceled";
+      case "S":
+        return "Spoiled";
+      default:
+        return "Error";
+    }
+  }
   const handleUploadExcel = (e) => {
     e.preventDefault();
 
@@ -41,13 +52,15 @@ function DPSchedulePage() {
   }
 
   const prepareDataForTable = (data) => {
-    let tempArr = []
-    const code = data[2][0].split(' ')[1];
-    const rowCode = `${code.slice(0, 1)}${code.substr(2)}`
-    const date = data[1][0].split(':')[1];
-    data.slice(8).map((row, index) => {
+    let dbList = []
+    const factoryCode = data[2][0].split(' ')[1];
+    const rowCode = `${factoryCode.slice(0, 1)}${factoryCode.substr(2)}`
+    const date = data[1][0].split(':')[1].trim();
+    
+    // Start from row 8 in Excel
+    data.slice(8).map((row) => {
       if (row[0]?.includes(rowCode)) {
-        tempArr.push({
+        dbList.push({
           "id": row[0],
           "วันที่": date,
           "เวลา": "-",
@@ -59,14 +72,13 @@ function DPSchedulePage() {
           "น้ำมัน": "-",
           "เบอร์รถ": row[4],
           "คนขับรถ": "จิรายุ พรมสูงวงศ์",
-          "สถานะ": row[10] === "A" ? "Accept" : (row[10] === "C" ? "Cancel" : "Spolied"),
+          "สถานะ": dpStatus(row[10].trim()),
         });
       }
-
-      return tempArr;
+      return dbList;
     });
 
-    setDataRows(tempArr);
+    setDataRows([...dataRows, ...dbList]);
   }
 
   return (
