@@ -11,18 +11,18 @@ const columnsSize = {
 };
 
 const columns = [
-    { field: 'id', headerName: 'เลขดีพี', width: columnsSize.medium },
-    { field: 'date', headerName: 'วันที่', width: columnsSize.medium },
-    { field: 'time', headerName: 'เวลา', width: columnsSize.small },
-    { field: 'destination', headerName: 'หน่วยงาน', width: columnsSize.large },
-    { field: 'distance', headerName: 'ระยะทาง', width: columnsSize.small },
-    { field: 'code', headerName: 'รหัส', width: columnsSize.small },
-    { field: 'amount', headerName: 'คิว', width: columnsSize.small },
-    { field: 'price', headerName: 'ราคา', width: columnsSize.small },
-    { field: 'oil', headerName: 'น้ำมัน', width: columnsSize.small },
-    { field: 'car', headerName: 'เบอร์รถ', width: columnsSize.small },
-    { field: 'driver', headerName: 'คนขับรถ', width: columnsSize.large },
-    { field: 'status', headerName: 'สถานะ', width: columnsSize.small },
+    { field: 'id', headerName: 'เลขดีพี', minWidth: columnsSize.medium },
+    { field: 'date', headerName: 'วันที่', minWidth: columnsSize.medium },
+    { field: 'time', headerName: 'เวลา', minWidth: columnsSize.small },
+    { field: 'destination', headerName: 'หน่วยงาน', minWidth: columnsSize.large },
+    { field: 'distance', headerName: 'ระยะทาง', minWidth: columnsSize.small },
+    { field: 'code', headerName: 'รหัส', minWidth: columnsSize.small },
+    { field: 'amount', headerName: 'คิว', minWidth: columnsSize.small },
+    { field: 'price', headerName: 'ราคา', minWidth: columnsSize.small },
+    { field: 'oil', headerName: 'น้ำมัน', minWidth: columnsSize.small },
+    { field: 'car', headerName: 'เบอร์รถ', minWidth: columnsSize.small },
+    { field: 'driver', headerName: 'คนขับรถ', minWidth: columnsSize.large },
+    { field: 'status', headerName: 'สถานะ', minWidth: columnsSize.small },
 ];
 
 function DPScheduleTable(props) {
