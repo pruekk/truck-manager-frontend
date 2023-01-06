@@ -11,6 +11,9 @@ import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
+//Dialogs
+import ImportDPDialog from '../dialog/ImportDPDialog';
+
 //Icons
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
@@ -21,6 +24,7 @@ import * as NavigationBarConstants from "../../constants/NavigationBarConstants"
 
 const DPSchedulePage = () => {
   const [dataRows, setDataRows] = React.useState([]);
+
   const dpStatus = (status) => {
     switch (status) {
       case "A":
@@ -58,6 +62,8 @@ const DPSchedulePage = () => {
           allSheetData.push(...prepareDataForTable(dataParse));
         }
       }
+
+      handleOpenDialog();
       setDataRows([...dataRows, ...allSheetData]);
     };
 
@@ -96,6 +102,22 @@ const DPSchedulePage = () => {
     return dbList;
   }
 
+  const [isOpenDialog, setIsOpenDialog] = React.useState(false);
+  const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+  const handleOpenDialog = () => {
+    setIsOpenDialog(true);
+  };
+
+  const handleCloseDialog = () => {
+    setIsOpenDialog(false);
+  };
+
+  const handleConfirmImportedData = (dataRows) => {
+    setConfirmedDataRows(dataRows);
+    handleCloseDialog();
+  };
+
+
   const [tabIndex, setTabIndex] = React.useState(0);
   const handleChangeTabs = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
@@ -103,6 +125,7 @@ const DPSchedulePage = () => {
 
   return (
     <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
+      <ImportDPDialog openDialog={isOpenDialog} dataRows={dataRows} handleCloseDialog={handleCloseDialog} handleConfirmImportedData={handleConfirmImportedData} />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography
@@ -163,7 +186,7 @@ const DPSchedulePage = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <DPScheduleTable dataRows={dataRows} />
+          <DPScheduleTable dataRows={confirmedDataRows} />
         </Grid>
       </Grid>
     </Container>
