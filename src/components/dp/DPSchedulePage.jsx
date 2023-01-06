@@ -18,6 +18,7 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
 //Constatns
 import * as NavigationBarConstants from "../../constants/NavigationBarConstants";
+import * as FactoryConstants from "../../constants/FactoryConstants";
 
 const DPSchedulePage = () => {
   const [dataRows, setDataRows] = React.useState([]);
@@ -64,28 +65,36 @@ const DPSchedulePage = () => {
     reader.readAsBinaryString(f)
   }
 
+  const convertToTimeFormat = (num) => {
+    var hours = Math.floor(num * 24);
+    var minutes = Math.floor((num * 24 - hours) * 60);
+    var seconds = Math.round((((num * 24 - hours) * 60) - minutes) * 60);
+    return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+  }
+
   const prepareDataForTable = (data) => {
     const dbList = []
     const factoryCode = data[2][0].split(' ')[1];
     const rowCode = `${factoryCode.slice(0, 1)}${factoryCode.substr(2)}`
-    const date = data[1][0].split(':')[1].trim();
+    const date = data[1][0].split(':')[1].trim().replace(/-/g, '/');
     const price = 0;
     
     // Start from row 8 in Excel
-    data.slice(8).map((row) => {
+    data.slice(7).map((row) => {
       if (row[0]?.includes(rowCode)) {
+        console.log(row)
         dbList.push({
           "id": row[0],
           "date": date,
-          "time": "-",
+          "time": convertToTimeFormat(row[5]),
           "destination": row[3],
           "distance": 0,
           "code": row[7],
           "amount": row[9].toFixed(2),
           "price": price.toFixed(2),
-          "oil": "-",
+          "oil": 0,
           "car": row[4],
-          "driver": "จิรายุ พรมสูงวงศ์",
+          "driver": "",
           "status": dpStatus(row[10].trim()),
         });
       }
@@ -153,11 +162,9 @@ const DPSchedulePage = () => {
         <Grid item xs={12}>
         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tabs value={tabIndex} onChange={handleChangeTabs}>
-            <Tab label="หนองใหญ่" />
-            <Tab label="บ้านบึง" />
-            <Tab label="ปลวกแดง" />
-            <Tab label="หนองไผ่แก้ว" />
-            <Tab label="วังจันทร์" />
+            {FactoryConstants.factories.map((factory) => 
+                <Tab key={factory.name} label={factory.name} />
+            )}
           </Tabs>
         </Box>
         </Grid>
