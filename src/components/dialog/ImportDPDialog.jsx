@@ -11,9 +11,16 @@ import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 
 //Icons
-import DPScheduleTable from "../dp/DPScheduleTable";
+import DPScheduleTableDialog from "../dp/DPScheduleTableDialog";
 
 export default function ImportDPDialog(props) {
+    const [selectedRows, setSelectedRows] = React.useState([]);
+
+    const onClickDeleteSelectedRows = () => {
+        const filtered = props.dataRows.filter((row) => !selectedRows.includes(row.id))
+        props.setDataRows(filtered);
+    };
+
     return (
         <Dialog
             fullWidth={true}
@@ -38,7 +45,7 @@ export default function ImportDPDialog(props) {
             <DialogContent dividers>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <DPScheduleTable dataRows={props.dataRows} />
+                        <DPScheduleTableDialog dataRows={props.dataRows} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} />
                     </Grid>
                 </Grid>
             </DialogContent>

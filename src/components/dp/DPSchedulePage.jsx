@@ -25,6 +25,21 @@ import * as FactoryConstants from "../../constants/FactoryConstants";
 
 const DPSchedulePage = () => {
   const [dataRows, setDataRows] = React.useState([]);
+  const [confirmedDataRows, setConfirmedDataRows] = React.useState([{
+    "id": "F071141088",
+    "date": "01/12/2022",
+    "time": "00:41:00",
+    "destination": "FCโรงพยาบาลกรุงเทพปล",
+    "distance": 0,
+    "code": 1,
+    "amount": "6.00",
+    "price": "0.00",
+    "oil": 0,
+    "car": "C56B",
+    "driver": "",
+    "status": "Accepted",
+    "duplicated": false
+  }]);
 
   const dpStatus = (status) => {
     switch (status) {
@@ -45,7 +60,7 @@ const DPSchedulePage = () => {
     const files = e.target.files, f = files[0];
     const reader = new FileReader();
 
-    reader.onprogress = function(e) {
+    reader.onprogress = function (e) {
       const progress = (e.loaded / e.total) * 100;
       console.log(`Upload progress: ${progress}%`);
     };
@@ -54,7 +69,7 @@ const DPSchedulePage = () => {
       const data = e.target.result;
       const readedData = XLSX.read(data, { type: 'binary' });
       const allSheetData = [];
-      
+
       for (const sheetName of readedData.SheetNames) {
         const ws = readedData.Sheets[sheetName];
         const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
@@ -84,11 +99,10 @@ const DPSchedulePage = () => {
     const rowCode = `${factoryCode.slice(0, 1)}${factoryCode.substr(2)}`
     const date = data[1][0].split(':')[1].trim().replace(/-/g, '/');
     const price = 0;
-    
+
     // Start from row 8 in Excel
     data.slice(7).map((row) => {
       if (row[0]?.includes(rowCode)) {
-        console.log(row)
         dbList.push({
           "id": row[0],
           "date": date,
@@ -102,6 +116,7 @@ const DPSchedulePage = () => {
           "car": row[4],
           "driver": "",
           "status": dpStatus(row[10].trim()),
+          "duplicated": confirmedDataRows.some(list => list.id === row[0])
         });
       }
       return dbList;
@@ -112,7 +127,6 @@ const DPSchedulePage = () => {
   }
 
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
-  const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
   const handleOpenDialog = () => {
     setIsOpenDialog(true);
   };
@@ -122,7 +136,8 @@ const DPSchedulePage = () => {
   };
 
   const handleConfirmImportedData = (dataRows) => {
-    setConfirmedDataRows(dataRows);
+    const allRows = confirmedDataRows.concat(dataRows);
+    setConfirmedDataRows(allRows);
     handleCloseDialog();
   };
 
@@ -134,7 +149,13 @@ const DPSchedulePage = () => {
 
   return (
     <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
-      <ImportDPDialog openDialog={isOpenDialog} dataRows={dataRows} handleCloseDialog={handleCloseDialog} handleConfirmImportedData={handleConfirmImportedData} />
+      <ImportDPDialog
+        openDialog={isOpenDialog}
+        dataRows={dataRows}
+        setDataRows={setDataRows}
+        handleCloseDialog={handleCloseDialog}
+        handleConfirmImportedData={handleConfirmImportedData}
+      />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Typography
@@ -183,13 +204,13 @@ const DPSchedulePage = () => {
         </Grid>
 
         <Grid item xs={12}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-          <Tabs value={tabIndex} onChange={handleChangeTabs}>
-            {FactoryConstants.factories.map((factory) => 
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={tabIndex} onChange={handleChangeTabs}>
+              {FactoryConstants.factories.map((factory) =>
                 <Tab key={factory.name} label={factory.name} />
-            )}
-          </Tabs>
-        </Box>
+              )}
+            </Tabs>
+          </Box>
         </Grid>
 
         <Grid item xs={12}>
