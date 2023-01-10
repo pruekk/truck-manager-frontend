@@ -2,7 +2,8 @@ import React from "react";
 
 //Material UI
 import Box from '@mui/material/Box';
-import { DataGrid } from '@mui/x-data-grid';
+import { DataGrid, GridFooterContainer, GridFooter } from '@mui/x-data-grid';
+import Button from '@mui/material/Button';
 import IconButton from "@mui/material/IconButton";
 
 //Icons
@@ -15,7 +16,29 @@ const columnsSize = {
 };
 
 export default function DPScheduleTableDialog(props) {
-    const [pageSize, setPageSize] = React.useState(50);
+    const [pageSize, setPageSize] = React.useState(100);
+    const [rowCount, setRowCount] = React.useState(0);
+    const [deleteButtonDisabled, setDeleteButtonDisabled] = React.useState(true);
+    
+    const CustomFooter = () => {
+        return (
+            <GridFooterContainer>
+                <React.Fragment>
+                    <IconButton
+                        onClick={props.onClickDeleteSelectedRows}
+                        disabled={deleteButtonDisabled}
+                        sx={{ ml: '0.3rem' }}
+                    >
+                        <DeleteIcon />
+                        <Button disabled>{rowCount}</Button>
+                    </IconButton>
+                </React.Fragment>
+                <GridFooter sx={{
+                    borderTop: 'none', // To delete double border.
+                }} />
+            </GridFooterContainer>
+        )
+    }
 
     const columns = [
         { field: 'id', headerName: 'เลขดีพี', minWidth: columnsSize.medium },
@@ -29,22 +52,7 @@ export default function DPScheduleTableDialog(props) {
         { field: 'oil', headerName: 'น้ำมัน', minWidth: columnsSize.small },
         { field: 'car', headerName: 'เบอร์รถ', minWidth: columnsSize.small },
         { field: 'driver', headerName: 'คนขับรถ', minWidth: columnsSize.large },
-        { field: 'status', headerName: 'สถานะ', minWidth: columnsSize.small },
-        {
-            field: "delete",
-            minWidth: columnsSize.small,
-            sortable: false,
-            disableColumnMenu: true,
-            renderHeader: () => {
-                return (
-                    <IconButton
-                        onClick={props.onClickDeleteSelectedRows}
-                    >
-                        <DeleteIcon />
-                    </IconButton>
-                );
-            }
-        }
+        { field: 'status', headerName: 'สถานะ', minWidth: columnsSize.small }
     ];
 
     return (
@@ -70,6 +78,8 @@ export default function DPScheduleTableDialog(props) {
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     onSelectionModelChange={(ids) => {
                         props.setSelectedRows(ids);
+                        setDeleteButtonDisabled(false)
+                        setRowCount(rowCount + 1)
                     }}
                     isRowSelectable={(params) => params.row.duplicated}
                     rowsPerPageOptions={[25, 50, 100]}
@@ -77,6 +87,8 @@ export default function DPScheduleTableDialog(props) {
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
                     getRowClassName={(params) => `row-theme--${params.row.duplicated ? "duplicated" : "normal"}`}
+                    components={{Footer: CustomFooter}}
+                    hideFooterSelectedRowCount
                 />
             </Box>
         </div>
