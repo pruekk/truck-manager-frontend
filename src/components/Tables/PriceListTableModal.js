@@ -13,9 +13,7 @@ import "./PriceListTable.css";
 import { calculateSum } from "../../functions/TableFunctions";
 
 export default function PriceListTableModal(props) {
-  const [sumX, setSumX] = React.useState([]);
   const [sumY, setSumY] = React.useState([]);
-  const [isCheckedX, setIsCheckedX] = React.useState([]);
   const [isCheckedY, setIsCheckedY] = React.useState([]);
 
   useEffect(() => {
@@ -60,25 +58,7 @@ export default function PriceListTableModal(props) {
   };
 
   const checkSum = () => {
-    calculateSumX();
     calculateSumY();
-  }
-
-  const checkSumX = (event, index) => {
-    isCheckedX[index] = Number(event.target.value);
-    setIsCheckedX([...isCheckedX]);
-
-    checkSumAll();
-  }
-
-  const calculateSumX = () => {
-    props.priceListArr.map((obj, index) => {
-      sumX[index] = calculateSum(obj.value);
-
-      return sumX;
-    })
-
-    setSumX([...sumX])
   }
 
   const checkSumY = (event, index) => {
@@ -107,7 +87,7 @@ export default function PriceListTableModal(props) {
   }
 
   const checkSumAll = () => {
-    props.setIsSumCorrect((calculateSum(sumY) === calculateSum(isCheckedY)) && (calculateSum(sumX) === calculateSum(isCheckedX)));
+    props.setIsSumCorrect(calculateSum(sumY) === calculateSum(isCheckedY));
   }
 
   return (
@@ -151,11 +131,6 @@ export default function PriceListTableModal(props) {
                 <AddBoxRoundedIcon />
               </IconButton>
             </th>
-            <th
-              style={{ border: "1px solid black", borderCollapse: "collapse", width: "60px", }}
-            >
-              Total
-          </th>
           </tr>
 
           {/*Modal input*/}
@@ -229,28 +204,6 @@ export default function PriceListTableModal(props) {
                     minWidth: "60px",
                   }}
                 />
-                <td
-                  style={{
-                    border: "1px solid black",
-                    borderCollapse: "collapse",
-                    textAlign: "center",
-                    minWidth: "60px",
-                  }}
-                >
-                  <input
-                    type="string"
-                    onBlur={(event) => {
-                      checkSumX(event, index);
-                    }}
-                    style={{
-                      width: "60px",
-                      textAlign: "end",
-                      borderColor: "transparent",
-                      backgroundColor: isCheckedX[index] ? (isCheckedX[index] === sumX[index] ? "white" : "red") : "",
-                      color: isCheckedX[index] ? (isCheckedX[index] === sumX[index] ? "" : "white") : ""
-                    }}
-                  />
-                </td>
               </tr>
             );
           })}
