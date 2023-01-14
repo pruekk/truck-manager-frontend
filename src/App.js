@@ -3,6 +3,8 @@ import { BrowserRouter as Router, useRoutes } from "react-router-dom";
 
 //Material UI
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import Box from "@mui/material/Box";
+import Toolbar from "@mui/material/Toolbar";
 
 //Components
 import NavigationBar from "./components/navigationbar/NavigationBar";
@@ -12,6 +14,7 @@ import TransportPricePage from "./components/transportPricePage/TransportPricePa
 import DPSchedulePage from "./components/dp/DPSchedulePage";
 
 //Others
+export const drawerWidth = 250;
 
 const NotFound = () => {
   return <h1>Not Found</h1>;
@@ -40,8 +43,16 @@ const AppWrapper = () => {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <NavigationBar />
-        <App />
+        <Box sx={{ display: 'flex' }}>
+          <NavigationBar />
+          <Box
+            component="main"
+            sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+          >
+            <Toolbar />
+            <App />
+          </Box>
+        </Box>
         <Footer />
       </Router>
     </ThemeProvider>

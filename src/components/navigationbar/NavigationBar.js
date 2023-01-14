@@ -31,11 +31,14 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
-const drawerWidth = 250;
+
+import { drawerWidth } from '../../App.js';
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 function NavigationBar() {
+  const [title, setTitle] = React.useState("Welcome");
+
   const [anchorElNav, setAnchorElNav] = React.useState(null);
   const [clickedMain, setClickedMain] = React.useState("");
   const [anchorElUser, setAnchorElUser] = React.useState(null);
@@ -254,53 +257,78 @@ function NavigationBar() {
     //   </Container>
     // </AppBar>
     <>
-    <AppBar
-      position="fixed"
-      sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
-    >
-      <Toolbar>
-        <Typography variant="h6" noWrap component="div">
-          DP
-        </Typography>
-      </Toolbar>
-    </AppBar>
-    <Drawer
-    sx={{
-      width: drawerWidth,
-      flexShrink: 0,
-      '& .MuiDrawer-paper': {
-        width: drawerWidth,
-        boxSizing: 'border-box',
-      },
-    }}
-    variant="permanent"
-    anchor="left"
-  >
-    <Toolbar />
-    <Divider />
-    <List>
-      {MenusConstants.menus.map((text, index) => (
-        <>
-          <ListItem key={text.main} disablePadding>
-            <ListItemButton>
-              
-              <ListItemText primary={text.main} />
-            </ListItemButton>
-          </ListItem>
-          {text.sub.map((sub_menus, index) => (
-            <ListItem key={sub_menus.name} sx={{ padding: 0 }}>
-              <ListItemButton sx={{ paddingTop: 0, paddingBottom: 0 }}>
-                <ListItemIcon>
-                  {text.icon}
-                </ListItemIcon>
-                <ListItemText primary={sub_menus.name} />
-              </ListItemButton>
-            </ListItem>
+      <AppBar
+        position="fixed"
+        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+      >
+        <Toolbar>
+          <Typography variant="h6" noWrap component="div">
+            {title}
+          </Typography>
+        </Toolbar>
+      </AppBar>
+      <Drawer
+        sx={{
+          width: drawerWidth,
+          flexShrink: 0,
+          '& .MuiDrawer-paper': {
+            width: drawerWidth,
+            boxSizing: 'border-box',
+          },
+        }}
+        variant="permanent"
+        anchor="left"
+      >
+        <Toolbar disableGutters>
+          <Avatar src="logo.png" sx={{ ml: 1, mr: 3 }}/>
+          <Typography
+            variant="h5"
+            noWrap
+            component="a"
+            href="/"
+            sx={{
+              fontWeight: 700,
+              letterSpacing: ".3rem",
+              color: "inherit",
+              textDecoration: "none",
+            }}
+          >
+            TNCP
+          </Typography>
+        </Toolbar>
+        <Divider />
+        <List>
+          {MenusConstants.menus.map((menu) => (
+            <React.Fragment key={menu.main}>
+              <ListItem key={menu.main} disablePadding>
+                <ListItemButton>
+                  <ListItemText primary={menu.main} />
+                </ListItemButton>
+              </ListItem>
+              {menu.sub.map((sub_menu) => (
+                <ListItem key={sub_menu.name} sx={{ padding: 0 }}>
+                  <Link
+                      key={`${sub_menu.name}`}
+                      to={sub_menu.url}
+                      style={{ textDecoration: "none", color: "black" }}
+                      onClick={() => setTitle(`${sub_menu.name}`)}
+                  >
+                    <ListItemButton 
+                      sx={{ paddingTop: 0, paddingBottom: 0 }}
+                      disabled={!sub_menu.isAvailable}
+                    >
+                      <ListItemIcon>
+                        {menu.icon}
+                      </ListItemIcon>
+                      <ListItemText primary={sub_menu.name} />
+                    </ListItemButton>
+                  </Link>
+                </ListItem>
+              ))}
+            </React.Fragment>
           ))}
-        </>
-      ))}
-    </List>
-  </Drawer>
+        </List>
+    </Drawer>
   </>
   );
 }
