@@ -159,7 +159,7 @@ const factorySummary = () => {
 const CustomFooter = () => {
   return (
     <GridFooterContainer>
-      <TableCell width={70}>{rows.reduce((acc, currentValue) => acc + 1, 0).toLocaleString()}</TableCell>
+      {/* <TableCell width={70}>{rows.reduce((acc, currentValue) => acc + 1, 0).toLocaleString()}</TableCell>
       <TableCell width={130}>&nbsp;</TableCell>
       <TableCell width={130}>{rows.reduce((acc, currentValue) => acc + currentValue.income, 0).toLocaleString()}</TableCell>
       <TableCell width={130}>{rows.reduce((acc, currentValue) => acc + currentValue.expense, 0).toLocaleString()}</TableCell>
@@ -170,7 +170,7 @@ const CustomFooter = () => {
       <TableCell width={100}>{rows.reduce((acc, currentValue) => acc + currentValue.kiloPerLit, 0).toLocaleString()}</TableCell>
       <TableCell width={100}>{rows.reduce((acc, currentValue) => acc + currentValue.litPerRound, 0).toLocaleString()}</TableCell>
       <TableCell width={100}>{rows.reduce((acc, currentValue) => acc + currentValue.litPerAmount, 0).toLocaleString()}</TableCell>
-      <TableCell width={100}>{rows.reduce((acc, currentValue) => acc + currentValue.amountPerRound, 0).toLocaleString()}</TableCell>
+      <TableCell width={100}>{rows.reduce((acc, currentValue) => acc + currentValue.amountPerRound, 0).toLocaleString()}</TableCell> */}
       <GridFooter sx={{
         borderTop: 'none', // To delete double border.
         }} />
