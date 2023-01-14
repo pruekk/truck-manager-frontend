@@ -158,15 +158,6 @@ const DPSchedulePage = () => {
       />
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Typography
-            variant="h5"
-            gutterBottom
-            sx={{ fontWeight: 700, color: "#828080" }}
-          >
-            {NavigationBarConstants.menus[0].sub[1].name}
-          </Typography>
-        </Grid>
-        <Grid item xs={12}>
           <Grid container spacing={1}>
             {/*<Grid item>
               <Button
