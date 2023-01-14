@@ -5,7 +5,6 @@ import TableWithSelect from "../Tables/TableWithSelect";
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 
 //Icons
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
@@ -19,7 +18,6 @@ import { createData } from "../../functions/TableFunctions";
 
 //Constatns
 import * as TableConstants from "../../constants/TableConstants";
-import * as NavigationBarConstants from "../../constants/NavigationBarConstants";
 
 function TransportPricePage() {
   const [openDialog, setOpenDialog] = React.useState(false);

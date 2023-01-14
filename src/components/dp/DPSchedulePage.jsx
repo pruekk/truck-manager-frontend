@@ -6,7 +6,6 @@ import * as XLSX from 'xlsx';
 import Button from "@mui/material/Button";
 import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
-import Typography from "@mui/material/Typography";
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -20,7 +19,6 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 //Functions
 
 //Constatns
-import * as NavigationBarConstants from "../../constants/NavigationBarConstants";
 import * as FactoryConstants from "../../constants/FactoryConstants";
 
 const DPSchedulePage = () => {
