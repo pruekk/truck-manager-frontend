@@ -47,7 +47,7 @@ const AppWrapper = () => {
           <NavigationBar />
           <Box
             component="main"
-            sx={{ flexGrow: 1, p: 3, width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+            sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` } }}
           >
             <Toolbar />
             <App />

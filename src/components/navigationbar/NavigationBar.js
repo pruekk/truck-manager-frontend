@@ -259,7 +259,10 @@ function NavigationBar() {
     <>
       <AppBar
         position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+        sx={{ 
+          width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`, 
+          backgroundColor: "#30c464" 
+        }}
       >
         <Toolbar>
           <Typography variant="h6" noWrap component="div">
@@ -280,7 +283,7 @@ function NavigationBar() {
         anchor="left"
       >
         <Toolbar disableGutters>
-          <Avatar src="logo.png" sx={{ ml: 1, mr: 3 }}/>
+          <Avatar src="logo_2.png" sx={{ ml: 1, mr: 3 }}/>
           <Typography
             variant="h5"
             noWrap
@@ -318,7 +321,7 @@ function NavigationBar() {
                       disabled={!sub_menu.isAvailable}
                     >
                       <ListItemIcon>
-                        {menu.icon}
+                        {sub_menu.icon}
                       </ListItemIcon>
                       <ListItemText primary={sub_menu.name} />
                     </ListItemButton>
