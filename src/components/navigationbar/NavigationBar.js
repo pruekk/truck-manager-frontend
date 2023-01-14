@@ -312,13 +312,13 @@ function NavigationBar() {
                 <ListItem key={sub_menu.name} sx={{ padding: 0 }}>
                   <Link
                       key={`${sub_menu.name}`}
-                      to={sub_menu.url}
+                      to={!sub_menu.isAvailable ? '#' : sub_menu.url}
                       style={{ textDecoration: "none", color: "black" }}
-                      onClick={() => setTitle(`${sub_menu.name}`)}
                   >
                     <ListItemButton 
                       sx={{ paddingTop: 0, paddingBottom: 0 }}
                       disabled={!sub_menu.isAvailable}
+                      onClick={() => setTitle(`${sub_menu.name}`)}
                     >
                       <ListItemIcon>
                         {sub_menu.icon}

@@ -36,15 +36,13 @@ const columns = [
   { field: 'litPerAmount', headerName: 'ลิตร/คิว', type: 'number', width: 100 },
   { field: 'amountPerRound', headerName: 'คิว/เที่ยว', type: 'number', width: 100 },
 ];
-
 const tableCompareCarData = [
   { id: 'A201', factoryId: 'หนองใหญ่', income: 30000, expense: 12300, roundTrip: 35, amount: 180, distance: 200, oil: 230 },
   { id: 'A202', factoryId: 'ปลวกแดง', income: 20000, expense: 8000, roundTrip: 40, amount: 200, distance: 100, oil: 290 },
   { id: 'A203', factoryId: 'บ้านบึง', income: 13000, expense: 1300, roundTrip: 20, amount: 100, distance: 150, oil: 200 },
   { id: 'A204', factoryId: 'หนองใหญ่', income: 15000, expense: 1230, roundTrip: 30, amount: 160, distance: 120, oil: 220 },
   { id: 'A205', factoryId: 'หนองไผ่แก้ว', income: 25000, expense: 2300, roundTrip: 15, amount: 100, distance: 170, oil: 190 },
-]
-
+];
 const rows = tableCompareCarData.map(car => {
   return {
     id: car.id,
@@ -115,23 +113,23 @@ const dashboards = [
     name: "ค่าน้ำมัน",
     mockValue: 135548
   },
-]
+];
 
 const myCard = () => FactoryConstants.factories.map((factory, index) => 
-  <Grid item xs={2} key={index}>
-    <Card sx={{ maxWidth: 275 }}>
+  <Grid item xs={4} key={index}>
+    <Card sx={{ width: "100%" }}>
       <CardContent>
         <Typography variant="h6" component="div">
           {factory.name}
         </Typography>
       </CardContent>
-      {dashboards.map((summary) => {
-        return <React.Fragment key={summary.name}>
+      {dashboards.map((summary) => 
+        <React.Fragment key={summary.name}>
           <Divider/>
           <ListItem
             secondaryAction={
               <IconButton edge="end" disabled style={{ color: "black" }}>
-                <Typography>{summary.mockValue.toLocaleString()}</Typography>
+                <Typography>{summary.mockValue.toLocaleString(undefined, {minimumFractionDigits: 2})}</Typography>
               </IconButton>
             }
           >
@@ -140,7 +138,7 @@ const myCard = () => FactoryConstants.factories.map((factory, index) =>
             />
           </ListItem>
         </React.Fragment>
-      })}
+      )}
     </Card>
   </Grid>
 )
@@ -181,13 +179,13 @@ const CustomFooter = () => {
 const HomePage = () => {
   return (
     <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
-      <Grid container spacing={2}>
+      {/* <Grid container spacing={2}>
         <Grid item align="center" xs={12}>
           <Typography variant="h1" gutterBottom sx={{ fontWeight: 700 }}>
             Welcome
           </Typography>
         </Grid>
-      </Grid>
+      </Grid> */}
       <Grid container spacing={2} sx={{ paddingLeft: "1rem" }}>
         {factorySummary()}
       </Grid>
@@ -214,7 +212,7 @@ const HomePage = () => {
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name"/>
               <YAxis />
-              <Bar dataKey="currentValue" fill="#419b44">
+              <Bar dataKey="currentValue" fill="#30c464">
                 <LabelList dataKey="currentValue" position="top" />
               </Bar>
             </BarChart>
