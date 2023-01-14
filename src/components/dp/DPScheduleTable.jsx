@@ -10,9 +10,9 @@ const columnsSize = {
     large: 200
 };
 
-const columns = [
+export const columns = [
     { field: 'id', headerName: 'เลขดีพี', minWidth: columnsSize.medium },
-    { field: 'date', headerName: 'วันที่', minWidth: columnsSize.medium },
+    { field: 'date', headerName: 'วันที่', type: 'date', minWidth: columnsSize.medium },
     { field: 'time', headerName: 'เวลา', minWidth: columnsSize.small },
     { field: 'destination', headerName: 'หน่วยงาน', minWidth: columnsSize.large },
     { field: 'distance', headerName: 'ระยะทาง', minWidth: columnsSize.small },
@@ -22,7 +22,7 @@ const columns = [
     { field: 'oil', headerName: 'น้ำมัน', minWidth: columnsSize.small },
     { field: 'car', headerName: 'เบอร์รถ', minWidth: columnsSize.small },
     { field: 'driver', headerName: 'คนขับรถ', minWidth: columnsSize.large },
-    { field: 'status', headerName: 'สถานะ', minWidth: columnsSize.small },
+    { field: 'status', headerName: 'สถานะ', type: 'singleSelect', valueOptions: ['Accepted', 'Canceled', 'Spoiled'], minWidth: columnsSize.small },
 ];
 
 function DPScheduleTable(props) {
