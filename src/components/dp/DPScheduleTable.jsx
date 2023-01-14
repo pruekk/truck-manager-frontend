@@ -10,7 +10,7 @@ const columnsSize = {
     large: 200
 };
 
-const columns = [
+export const columns = [
     { field: 'id', headerName: 'เลขดีพี', minWidth: columnsSize.medium },
     { field: 'date', headerName: 'วันที่', type: 'date', minWidth: columnsSize.medium },
     { field: 'time', headerName: 'เวลา', minWidth: columnsSize.small },
