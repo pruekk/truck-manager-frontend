@@ -60,34 +60,6 @@ const rows = tableCompareCarData.map(car => {
   }
 });
 
-const chartData = [
-  {
-    name: 'หนองใหญ่',
-    currentValue: 420000,
-    previousValue: 2400,
-  },
-  {
-    name: 'บ้านบึง',
-    currentValue: 300000,
-    previousValue: 1398,
-  },
-  {
-    name: 'ปลวกแดง',
-    currentValue: 200000,
-    previousValue: 9800,
-  },
-  {
-    name: 'หนองไผ่แก้ว',
-    currentValue: 278000,
-    previousValue: 3908,
-  },
-  {
-    name: 'วังจันทร์',
-    currentValue: 278000,
-    previousValue: 3908,
-  },
-];
-
 const dashboards = [
   {
     name: "รายได้ (บาท)",
@@ -176,6 +148,59 @@ const CustomFooter = () => {
   );
 }
 
+const chartWidth = 500;
+const chartHeight = 300;
+const ExampleBarChart = () => {
+  const chartData = [
+    {
+      name: 'หนองใหญ่',
+      currentValue: 420000,
+      previousValue: 2400,
+    },
+    {
+      name: 'บ้านบึง',
+      currentValue: 300000,
+      previousValue: 1398,
+    },
+    {
+      name: 'ปลวกแดง',
+      currentValue: 200000,
+      previousValue: 9800,
+    },
+    {
+      name: 'หนองไผ่แก้ว',
+      currentValue: 278000,
+      previousValue: 3908,
+    },
+    {
+      name: 'วังจันทร์',
+      currentValue: 278000,
+      previousValue: 3908,
+    },
+  ];  
+  return <BarChart
+    width={chartWidth}
+    height={chartHeight}
+    data={chartData}
+    margin={{
+      top: 20,
+      right: 30,
+      left: 20,
+      bottom: 5,
+    }}
+  >
+    <text x={chartWidth / 2} y={10} fill="black" textAnchor="middle" dominantBaseline="central">
+        <tspan fontSize="14">รายได้ (บาท)</tspan>
+    </text>
+    <CartesianGrid strokeDasharray="3 3" />
+    <XAxis dataKey="name"/>
+    <YAxis hide />
+    <Bar dataKey="currentValue" fill="#30c464">
+      <LabelList dataKey="currentValue" position="top"/>
+    </Bar>
+  </BarChart>
+}
+
 const HomePage = () => {
   return (
     <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
@@ -194,29 +219,8 @@ const HomePage = () => {
           กราฟ
         </Typography>
         <Grid container spacing={{ xs: 2, md: 3 }} columns={{ xs: 4, sm: 8, md: 12 }} sx={{ paddingBottom: "2rem" }}>
-          <Grid item xs={4}>
-            <BarChart
-              width={550}
-              height={300}
-              data={chartData}
-              margin={{
-                top: 20,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <text x={600 / 2} y={10} fill="black" textAnchor="middle" dominantBaseline="central">
-                  <tspan fontSize="14">รายได้ (บาท)</tspan>
-              </text>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="name"/>
-              <YAxis />
-              <Bar dataKey="currentValue" fill="#30c464">
-                <LabelList dataKey="currentValue" position="top" />
-              </Bar>
-            </BarChart>
-          </Grid>
+          <ExampleBarChart />
+          <ExampleBarChart />
         </Grid>
       </Grid>
       <Grid container spacing={2} sx={{ paddingLeft: "1rem" }}>
