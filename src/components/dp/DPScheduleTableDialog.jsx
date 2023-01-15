@@ -19,7 +19,7 @@ export default function DPScheduleTableDialog(props) {
             <GridFooterContainer>
                 <IconButton
                     onClick={() => (
-                        props.onClickDeleteSelectedRows
+                        props.onClickDeleteSelectedRows()
                     )}
                     disabled={deleteButtonDisabled}
                     sx={{ ml: '0.3rem' }}
@@ -59,7 +59,6 @@ export default function DPScheduleTableDialog(props) {
                         setDeleteButtonDisabled(!deleteButtonDisabled)
                     }}
                     isRowSelectable={(params) => (
-                        console.log(params) &&
                         params.row.duplicated
                     )}
                     rowsPerPageOptions={[25, 50, 100]}
