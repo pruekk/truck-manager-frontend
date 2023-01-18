@@ -39,8 +39,8 @@ export const menus = [
       },
       {
         name: "หน่วยงาน",
-        url: "/",
-        isAvailable: false,
+        url: "/agency",
+        isAvailable: true,
         icon: <PinDropRoundedIcon />
       },
       {
