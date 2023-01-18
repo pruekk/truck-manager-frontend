@@ -12,6 +12,7 @@ import HomePage from "./components/homepage/HomePage";
 import Footer from "./components/footer/Footer";
 import TransportPricePage from "./components/transportPricePage/TransportPricePage";
 import DPSchedulePage from "./components/dp/DPSchedulePage";
+import OilTransactionPage from "./components/oilTransactionPage/OilTransactionPage";
 
 //Others
 export const drawerWidth = 250;
@@ -25,6 +26,7 @@ const App = () => {
     { path: "/", element: <HomePage /> },
     { path: "/transport-price", element: <TransportPricePage /> },
     { path: "/dp-schedule", element: <DPSchedulePage /> },
+    { path: "/oil-transaction", element: <OilTransactionPage /> },
     { path: "*", element: <NotFound /> }
   ]);
   return routes;
