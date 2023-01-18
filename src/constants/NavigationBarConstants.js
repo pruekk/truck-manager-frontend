@@ -45,8 +45,8 @@ export const menus = [
       },
       {
         name: "รายการเปลี่ยนรถ",
-        url: "/",
-        isAvailable: false,
+        url: "/car-replacement",
+        isAvailable: true,
         icon: <CarCrashRoundedIcon />
       },
       {
