@@ -51,9 +51,14 @@ const DPSchedulePage = () => {
         return "Error";
     }
   }
+
+  const clearFileCache = (event) => {
+    event.target.value = null;
+    setDataRows([]);
+  }
+  
   const handleUploadExcel = (e) => {
     e.preventDefault();
-
     // Upload file by file to prevent human error
     const files = e.target.files, f = files[0];
     const reader = new FileReader();
@@ -186,7 +191,14 @@ const DPSchedulePage = () => {
                 }}
               >
                 Import
-                <input hidden accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel" multiple type="file" onChange={handleUploadExcel} />
+                <input
+                  hidden
+                  multiple
+                  accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+                  type="file"
+                  onChange={handleUploadExcel}
+                  onClick={clearFileCache} //Clear cache
+                />
               </Button>
             </Grid>
           </Grid>

@@ -28,14 +28,14 @@ export default function ImportDPDialog(props) {
     const handleNext = () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
-    
+
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
     const handleReset = () => {
         setActiveStep(1);
-      };
+    };
 
     const onClickDeleteSelectedRows = () => {
         const filtered = props.dataRows.filter((row) => !selectedRows.includes(row.id))
@@ -89,16 +89,16 @@ export default function ImportDPDialog(props) {
                         Back
                     </Button>
                     <Box sx={{ flex: '1 1 auto' }} />
-                    {activeStep === steps.length - 1 ? 
+                    {activeStep === steps.length - 1 ?
                         <Button
-                            onClick={() => { 
+                            onClick={() => {
                                 props.handleConfirmImportedData(props.dataRows);
                                 handleReset()
                             }}
                             endIcon={<SendIcon />}
                         >
                             Confirm
-                        </Button> : <Button onClick={handleNext}>
+                        </Button> : <Button disabled={props.dataRows.some((row) => row.duplicated)} onClick={handleNext}>
                             Next
                         </Button>
                     }
