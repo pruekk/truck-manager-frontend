@@ -49,10 +49,10 @@ export default function DPScheduleTableDialog(props) {
                     },
                 },
                 '& .MuiDataGrid-row.Mui-selected': {
-                    bgcolor: 'rgb(204,0,0)!important'
+                    bgcolor: 'rgb(0,0,0)!important'
                 },
                 '& .MuiCheckbox-root.Mui-checked': {
-                    color: 'rgb(139, 0, 0)'
+                    color: 'rgb(214,50,50)'
                 }
             }}>
                 <DataGrid
