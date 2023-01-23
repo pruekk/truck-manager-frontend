@@ -13,8 +13,8 @@ const columnsSize = {
 export const columns = [
     { field: 'id', headerName: 'เบอร์รถ', minWidth: columnsSize.medium },
     { field: 'driver', headerName: 'คนขับ', minWidth: columnsSize.large },
-    { field: 'maintenanceCost', headerName: 'ค่าซ่อม', minWidth: columnsSize.small, valueGetter: (params) => params.row.maintenanceCost ? params.row.maintenanceCost.toLocaleString() : "-" },
-    { field: 'driverSalary', headerName: 'รายได้คนขับรถโม่', minWidth: columnsSize.large, valueGetter: (params) => params.row.driverSalary ? params.row.driverSalary.toLocaleString() : "-" },
+    { field: 'maintenanceCost', headerName: 'ค่าซ่อม', type: 'number', minWidth: columnsSize.small },
+    { field: 'driverSalary', headerName: 'รายได้คนขับรถโม่', type: 'number', minWidth: columnsSize.large },
 ];
 
 export default function CarInformationTable(props) {
@@ -47,7 +47,7 @@ export default function CarInformationTable(props) {
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     rowsPerPageOptions={[25, 50, 100]}
                     //checkboxSelection
-                    //disableSelectionOnClick
+                    disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
                     getRowClassName={(params) => `row-theme--${params.row.status}`}
                 />
