@@ -13,7 +13,7 @@ import { columns } from './DPScheduleTable';
 export default function DPScheduleTableDialog(props) {
     const [pageSize, setPageSize] = React.useState(100);
     const [deleteButtonDisabled, setDeleteButtonDisabled] = React.useState(true);
-    
+
     const CustomFooter = () => {
         return (
             <GridFooterContainer>
@@ -28,7 +28,7 @@ export default function DPScheduleTableDialog(props) {
                 </IconButton>
                 <GridFooter sx={{
                     borderTop: 'none', // To delete double border.
-                }}/>
+                }} />
             </GridFooterContainer>
         )
     }
@@ -47,6 +47,12 @@ export default function DPScheduleTableDialog(props) {
                     '&:hover': {
                         bgcolor: 'rgb(204,0,0)!important',
                     },
+                },
+                '& .MuiDataGrid-row.Mui-selected': {
+                    bgcolor: 'rgb(0,0,0)!important'
+                },
+                '& .MuiCheckbox-root.Mui-checked': {
+                    color: 'rgb(214,50,50)'
                 }
             }}>
                 <DataGrid
@@ -66,8 +72,8 @@ export default function DPScheduleTableDialog(props) {
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
                     getRowClassName={(params) => `row-theme--${params.row.duplicated ? "duplicated" : "normal"}`}
-                    components={{Footer: CustomFooter}}
-                    // hideFooterSelectedRowCount
+                    components={{ Footer: CustomFooter }}
+                // hideFooterSelectedRowCount
                 />
             </Box>
         </div>
