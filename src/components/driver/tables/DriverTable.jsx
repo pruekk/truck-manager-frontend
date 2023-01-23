@@ -11,13 +11,13 @@ const columnsSize = {
 };
 
 export const columns = [
-    { field: 'id', headerName: 'รหัสบัตรประชาชน', minWidth: columnsSize.large },
+    { field: 'id', headerName: 'ลำดับ', minWidth: columnsSize.small },
     { field: 'title', headerName: 'คำนำหน้า', minWidth: columnsSize.medium },
     { field: 'firstName', headerName: 'ชื่อ', minWidth: columnsSize.medium },
     { field: 'lastName', headerName: 'นามสกุล', minWidth: columnsSize.medium },
-    { field: 'fullName', headerName: 'ชื่อ-สกุล', minWidth: columnsSize.large },
+    { field: 'fullName', headerName: 'ชื่อ-สกุล', minWidth: columnsSize.large, valueGetter: (params) => `${params.row.firstName || ''} ${params.row.lastName || ''}` },
     { field: 'startDate', headerName: 'วันที่เริ่มทำงาน', minWidth: columnsSize.medium },
-    { field: 'salary', headerName: 'เงินเดือน', minWidth: columnsSize.medium },
+    { field: 'salary', headerName: 'เงินเดือน', type: 'number', minWidth: columnsSize.medium },
 ];
 
 export default function DriverTable(props) {
@@ -49,7 +49,7 @@ export default function DriverTable(props) {
                     pageSize={pageSize}
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     rowsPerPageOptions={[25, 50, 100]}
-                    checkboxSelection
+                    //checkboxSelection
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
                     getRowClassName={(params) => `row-theme--${params.row.status}`}
