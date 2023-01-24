@@ -11,11 +11,11 @@ const columnsSize = {
 };
 
 export const columns = [
-    { field: 'id', headerName: 'รหัสรถ', minWidth: columnsSize.medium },
     { field: 'date', headerName: 'วันที่', type: 'date', minWidth: columnsSize.medium },
     { field: 'time', headerName: 'เวลา', minWidth: columnsSize.small },
+    { field: 'id', headerName: 'รหัสรถ', minWidth: columnsSize.medium },
     { field: 'destination', headerName: 'คนขับรถโม่', minWidth: columnsSize.large },
-    { field: 'distance', headerName: 'น้ำมัน', minWidth: columnsSize.small },];
+];
 
 export default function CarReplacementTable(props) {
     const [pageSize, setPageSize] = React.useState(50);
