@@ -94,8 +94,8 @@ export const menus = [
     sub: [
       {
         name: "คนขับรถโม่",
-        url: "/",
-        isAvailable: false,
+        url: "/driver",
+        isAvailable: true,
         icon: <AirlineSeatReclineNormalRoundedIcon />
       },
       {
