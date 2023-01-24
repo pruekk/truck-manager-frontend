@@ -19,6 +19,7 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
 //Constatns
 import * as FactoryConstants from "../../constants/FactoryConstants";
+import * as AgencyConstants from "../../constants/AgencyConstants";
 
 const AgencyPage = () => {
   const [dataRows, setDataRows] = React.useState([]);
@@ -207,7 +208,7 @@ const AgencyPage = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <AgencyTable dataRows={confirmedDataRows} />
+          <AgencyTable dataRows={AgencyConstants.agency} />
         </Grid>
       </Grid>
     </Container>
