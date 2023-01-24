@@ -13,6 +13,7 @@ import Footer from "./components/footer/Footer";
 import TransportPricePage from "./components/transportPricePage/TransportPricePage";
 import DPSchedulePage from "./components/dp/DPSchedulePage";
 import CarInformationPage from "./components/carInformation/CarInformationPage";
+import DriverPage from "./components/driver/DriverPage";
 
 //Others
 export const drawerWidth = 250;
@@ -27,6 +28,7 @@ const App = () => {
     { path: "/transport-price", element: <TransportPricePage /> },
     { path: "/dp-schedule", element: <DPSchedulePage /> },
     { path: "/car-information", element: <CarInformationPage /> },
+    { path: "/driver", element: <DriverPage /> },
     { path: "*", element: <NotFound /> }
   ]);
   return routes;
