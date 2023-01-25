@@ -58,12 +58,12 @@ function NavigationBar() {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
-          },
+          }
         }}
         variant="permanent"
         anchor="left"
       >
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ backgroundColor: '#f5f5f5' }}>
           <Avatar src="logo_2.png" sx={{ ml: 1, mr: 3 }} />
           <Typography
             variant="h5"
@@ -81,7 +81,7 @@ function NavigationBar() {
           </Typography>
         </Toolbar>
         <Divider />
-        <List>
+        <List sx={{ backgroundColor: '#f5f5f5' }}>
           {MenusConstants.menus.map((menu) => (
             <React.Fragment key={menu.main}>
               <ListItem key={menu.main} sx={{ padding: "16px", paddingTop: "8px", paddingBottom: "8px" }}>
@@ -106,7 +106,7 @@ function NavigationBar() {
             </React.Fragment>
           ))}
         </List>
-        <Toolbar disableGutters>
+        <Toolbar disableGutters sx={{ backgroundColor: '#f5f5f5' }}>
           <ListItem disablePadding>
             <ListItemButton onClick={handleOpenUserMenu}>
               <ListItemIcon>
