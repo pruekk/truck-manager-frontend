@@ -201,7 +201,7 @@ export default function AddTransportPriceDialog(props) {
       open={props.openDialog}
       onClose={props.handleCloseDialog}
     >
-      <DialogTitle>
+      <DialogTitle sx={{ backgroundColor: "#f5f5f5" }}>
         เพิ่ม{NavigationBarConstants.menus[0].sub[0].name}
         <IconButton
           aria-label="close"
@@ -216,7 +216,7 @@ export default function AddTransportPriceDialog(props) {
           <CloseIcon />
         </IconButton>
       </DialogTitle>
-      <DialogContent dividers>
+      <DialogContent dividers sx={{ backgroundColor: "#f5f5f5" }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <Grid container spacing={1}>
@@ -285,7 +285,7 @@ export default function AddTransportPriceDialog(props) {
           </Grid>
         </Grid>
       </DialogContent>
-      <DialogActions>
+      <DialogActions sx={{ backgroundColor: "#f5f5f5" }}>
         <Button disabled={!isSumCorrect} onClick={onClickSaveNewPrice}>Save</Button>
       </DialogActions>
     </Dialog>
