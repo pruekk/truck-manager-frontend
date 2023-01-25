@@ -35,10 +35,11 @@ const App = () => {
 };
 
 const theme = createTheme({
+  backgroundColor: "#f5f5f5",
   typography: {
     allVariants: {
       //fontFamily: 'TTNormsPro Regular,Sukhumvit Tadmai Regular,sans-serif'
-      fontFamily: 'Kanit'
+      fontFamily: 'Kanit',
     },
   },
 });
@@ -47,7 +48,7 @@ const AppWrapper = () => {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', backgroundColor: '#f5f5f5', height: '100vh' }}>
           <NavigationBar />
           <Box
             component="main"

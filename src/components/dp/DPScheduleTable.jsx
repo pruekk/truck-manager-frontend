@@ -33,7 +33,7 @@ function DPScheduleTable(props) {
                 height: '30rem', 
                 width: '100%',
                 '& .row-theme--Accepted': {
-                    bgcolor: 'white',
+                    bgcolor: 'rgb(245, 245, 245))',
                 },
                 '& .row-theme--Canceled': {
                     bgcolor: 'rgb(61,178,202)',
