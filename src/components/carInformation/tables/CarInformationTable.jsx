@@ -36,7 +36,6 @@ export default function CarInformationTable(props) {
                     checkboxSelection
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
-                    getRowClassName={(params) => `row-theme--${params.row.status}`}
                 />
             </Box>
         </div>
