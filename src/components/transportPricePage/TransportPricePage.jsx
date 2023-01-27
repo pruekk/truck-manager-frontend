@@ -84,7 +84,7 @@ function TransportPricePage() {
   }
 
   return (
-    <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
+    <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
       {openDialog && <AddTransportPriceDialog
         openDialog={openDialog}
         selectedRow={selectedRow}

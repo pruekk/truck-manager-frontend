@@ -48,7 +48,7 @@ export default function ImportDPDialog(props) {
             maxWidth="xl"
             open={props.openDialog}
         >
-            <DialogTitle sx={{ backgroundColor: "#f5f5f5" }}>
+            <DialogTitle sx={{ backgroundColor: "#FBFBFB" }}>
                 <Stepper activeStep={activeStep} alternativeLabel>
                     {steps.map((label) => {
                         const stepProps = {};
@@ -73,14 +73,14 @@ export default function ImportDPDialog(props) {
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>
-            <DialogContent dividers sx={{ backgroundColor: "#f5f5f5" }}>
+            <DialogContent dividers sx={{ backgroundColor: "#FBFBFB" }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <DPScheduleTableDialog dataRows={props.dataRows} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} />
                     </Grid>
                 </Grid>
             </DialogContent>
-            <DialogActions sx={{ backgroundColor: "#f5f5f5" }}>
+            <DialogActions sx={{ backgroundColor: "#FBFBFB" }}>
                 <React.Fragment>
                     <Button
                         disabled={activeStep === 1}

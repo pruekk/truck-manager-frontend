@@ -119,7 +119,7 @@ function TableWithSelect(props) {
 
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">
-          <TableHead sx={{ backgroundColor: "#f5f5f5" }}>
+          <TableHead sx={{ backgroundColor: "#FBFBFB" }}>
             <TableRow >
               <TableCell />
               <TableCell />
@@ -132,7 +132,7 @@ function TableWithSelect(props) {
             </TableCell>
             </TableRow>
           </TableHead>
-          <TableBody sx={{ backgroundColor: "#f5f5f5" }}>
+          <TableBody sx={{ backgroundColor: "#FBFBFB" }}>
             {props.rows?.map((row, index) => (
               <Row key={`${row.factory}${row.from}-${row.to}`} row={row} index={index} setSelectedRowProps={props.setSelectedRow} selectedRow={props.selectedRow} />
             ))}

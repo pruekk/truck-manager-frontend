@@ -97,13 +97,13 @@ export default function PriceListTableModal(props) {
           width: "100%",
           border: "1px solid black",
           borderCollapse: "collapse",
-          backgroundColor: "#f5f5f5"
+          backgroundColor: "#FBFBFB"
         }}
       >
         <tbody>
           <tr style={{ border: "1px solid black", borderCollapse: "collapse" }}>
             <th
-              style={{ border: "1px solid black", borderCollapse: "collapse", backgroundColor: "#f5f5f5" }}
+              style={{ border: "1px solid black", borderCollapse: "collapse", backgroundColor: "#FBFBFB" }}
             />
 
             {/*Modal table header*/}
@@ -114,7 +114,7 @@ export default function PriceListTableModal(props) {
                   style={{
                     border: "1px solid black",
                     borderCollapse: "collapse",
-                    backgroundColor: "#f5f5f5"
+                    backgroundColor: "#FBFBFB"
                   }}
                 >
                   {(0.25 * (index + 1)).toFixed(2)}
@@ -122,7 +122,7 @@ export default function PriceListTableModal(props) {
               );
             })}
             <th
-              style={{ border: "1px solid black", borderCollapse: "collapse", backgroundColor: "#f5f5f5" }}
+              style={{ border: "1px solid black", borderCollapse: "collapse", backgroundColor: "#FBFBFB" }}
             >
               <IconButton
                 aria-label="add-button"
@@ -153,7 +153,7 @@ export default function PriceListTableModal(props) {
                     borderCollapse: "collapse",
                     textAlign: "center",
                     fontWeight: "bold",
-                    backgroundColor: "#f5f5f5"
+                    backgroundColor: "#FBFBFB"
                   }}
                 >
                   <input
@@ -168,7 +168,7 @@ export default function PriceListTableModal(props) {
                       textAlign: "center",
                       borderColor: "transparent",
                       fontWeight: "bold",
-                      backgroundColor: "#f5f5f5"
+                      backgroundColor: "#FBFBFB"
                     }}
                   />
                 </td>
@@ -181,7 +181,7 @@ export default function PriceListTableModal(props) {
                       style={{
                         border: "1px solid black",
                         borderCollapse: "collapse",
-                        backgroundColor: "#f5f5f5"
+                        backgroundColor: "#FBFBFB"
                       }}
                     >
                       <input
@@ -195,7 +195,7 @@ export default function PriceListTableModal(props) {
                           width: "60px",
                           textAlign: "end",
                           borderColor: "transparent",
-                          backgroundColor: "#f5f5f5"
+                          backgroundColor: "#FBFBFB"
                         }}
                       />
                     </td>
@@ -208,7 +208,7 @@ export default function PriceListTableModal(props) {
                     textAlign: "center",
                     fontWeight: "bold",
                     minWidth: "60px",
-                    backgroundColor: "#f5f5f5"
+                    backgroundColor: "#FBFBFB"
                   }}
                 />
               </tr>
@@ -228,7 +228,7 @@ export default function PriceListTableModal(props) {
                 borderCollapse: "collapse",
                 textAlign: "center",
                 fontWeight: "bold",
-                backgroundColor: "#f5f5f5"
+                backgroundColor: "#FBFBFB"
               }}
             >
               <IconButton aria-label="add-button" onClick={handleAddRow}>
@@ -261,7 +261,7 @@ export default function PriceListTableModal(props) {
                   textAlign: "center",
                   borderColor: "transparent",
                   fontWeight: "bold",
-                  backgroundColor: "#f5f5f5"
+                  backgroundColor: "#FBFBFB"
                 }}
               />
             </td>
@@ -276,7 +276,7 @@ export default function PriceListTableModal(props) {
                     borderCollapse: "collapse",
                     textAlign: "right",
                     width: "60px",
-                    backgroundColor: "#f5f5f5"
+                    backgroundColor: "#FBFBFB"
                   }}
                 >
                   <input
@@ -288,7 +288,7 @@ export default function PriceListTableModal(props) {
                       width: "60px",
                       textAlign: "end",
                       borderColor: "transparent",
-                      backgroundColor: isCheckedY[rYIndex] ? (isCheckedY[rYIndex] === sumY[rYIndex] ? "#f5f5f5" : "red") : "#f5f5f5",
+                      backgroundColor: isCheckedY[rYIndex] ? (isCheckedY[rYIndex] === sumY[rYIndex] ? "#FBFBFB" : "red") : "#FBFBFB",
                       color: isCheckedY[rYIndex] ? (isCheckedY[rYIndex] === sumY[rYIndex] ? "" : "white") : ""
                     }}
                   />

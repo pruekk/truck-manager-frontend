@@ -14,9 +14,9 @@ export default function PriceListTable(props) {
         }}
       >
         <tbody>
-          <tr style={{ border: "1px solid black", borderCollapse: "collapse", backgroundColor: "#f5f5f5" }}>
+          <tr style={{ border: "1px solid black", borderCollapse: "collapse", backgroundColor: "#FBFBFB" }}>
             <th
-              style={{ border: "1px solid black", borderCollapse: "collapse", backgroundColor: "#f5f5f5" }}
+              style={{ border: "1px solid black", borderCollapse: "collapse", backgroundColor: "#FBFBFB" }}
             />
             {props.priceListArr[0].value.map((value, index) => {
               return (
@@ -40,7 +40,7 @@ export default function PriceListTable(props) {
                 style={{
                   border: "1px solid black",
                   borderCollapse: "collapse",
-                  backgroundColor: "#f5f5f5"
+                  backgroundColor: "#FBFBFB"
                 }}
                 key={`${yValue.name}-${index}`}
               >

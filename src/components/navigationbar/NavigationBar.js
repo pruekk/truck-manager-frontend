@@ -42,11 +42,11 @@ function NavigationBar() {
         position="fixed"
         sx={{
           width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`,
-          backgroundColor: "#30c464"
+          backgroundColor: "#30C464"
         }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={{ marginLeft: "1rem" }}>
             {title}
           </Typography>
         </Toolbar>
@@ -58,12 +58,21 @@ function NavigationBar() {
           '& .MuiDrawer-paper': {
             width: drawerWidth,
             boxSizing: 'border-box',
+          },
+          '*::-webkit-scrollbar': {
+            width: '0.75rem'
+          },
+          '*::-webkit-scrollbar-track': {
+            background: "#FFFFFF"
+          },
+          '*::-webkit-scrollbar-thumb': {
+            backgroundColor: "#F5F5F5",
           }
         }}
         variant="permanent"
         anchor="left"
       >
-        <Toolbar disableGutters sx={{ backgroundColor: '#f5f5f5' }}>
+        <Toolbar disableGutters>
           <Avatar src="logo_2.png" sx={{ ml: 1, mr: 3 }} />
           <Typography
             variant="h5"
@@ -81,7 +90,7 @@ function NavigationBar() {
           </Typography>
         </Toolbar>
         <Divider />
-        <List sx={{ backgroundColor: '#f5f5f5' }}>
+        <List>
           {MenusConstants.menus.map((menu) => (
             <React.Fragment key={menu.main}>
               <ListItem key={menu.main} sx={{ padding: "16px", paddingTop: "8px", paddingBottom: "8px" }}>
@@ -106,7 +115,7 @@ function NavigationBar() {
             </React.Fragment>
           ))}
         </List>
-        <Toolbar disableGutters sx={{ backgroundColor: '#f5f5f5' }}>
+        <Toolbar disableGutters>
           <ListItem disablePadding>
             <ListItemButton onClick={handleOpenUserMenu}>
               <ListItemIcon>
