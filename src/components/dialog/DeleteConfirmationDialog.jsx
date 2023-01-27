@@ -26,7 +26,7 @@ export default function DeleteConfirmationDialog(props) {
             open={props.openDialog}
         //onClose={props.handleCloseDeleteDialog}
         >
-            <DialogTitle sx={{ backgroundColor: "#f5f5f5" }}>
+            <DialogTitle sx={{ backgroundColor: "#FBFBFB" }}>
                 Are you sure?
                 <IconButton
                     aria-label="close"
@@ -41,7 +41,7 @@ export default function DeleteConfirmationDialog(props) {
                     <CloseIcon />
                 </IconButton>
             </DialogTitle>
-            <DialogContent dividers sx={{ backgroundColor: "#f5f5f5" }}>
+            <DialogContent dividers sx={{ backgroundColor: "#FBFBFB" }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
                         <Typography variant="body1">
@@ -65,7 +65,7 @@ export default function DeleteConfirmationDialog(props) {
                     </Grid>
                 </Grid>
             </DialogContent>
-            <DialogActions sx={{ backgroundColor: "#f5f5f5" }}>
+            <DialogActions sx={{ backgroundColor: "#FBFBFB" }}>
                 <Button
                     disableElevation
                     variant="contained"
