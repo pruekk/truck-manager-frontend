@@ -225,8 +225,8 @@ export const menus = [
     sub: [
       {
         name: "ข้อมูลรถโม่",
-        url: "/",
-        isAvailable: false,
+        url: "/car-information",
+        isAvailable: true,
         icon: <LocalShippingRoundedIcon />
       },
       {
