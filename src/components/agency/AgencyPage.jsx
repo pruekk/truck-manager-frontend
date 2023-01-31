@@ -11,52 +11,22 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 
 //Dialogs
+import AgencyDialog from './dialogs/AgencyDialog';
 
 //Icons
+import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
-
-//Functions
-
-//Constatns
-import * as FactoryConstants from "../../constants/FactoryConstants";
-import * as AgencyConstants from "../../constants/AgencyConstants";
 
 const AgencyPage = () => {
   const [dataRows, setDataRows] = React.useState([]);
-  const [confirmedDataRows, setConfirmedDataRows] = React.useState([{
-    "id": "F071141088",
-    "date": "01/12/2022",
-    "time": "00:41:00",
-    "destination": "FCโรงพยาบาลกรุงเทพปล",
-    "distance": 0,
-    "code": 1,
-    "amount": "6.00",
-    "price": "0.00",
-    "oil": 0,
-    "car": "C56B",
-    "driver": "",
-    "status": "Accepted",
-    "duplicated": false
-  }]);
-
-  const dpStatus = (status) => {
-    switch (status) {
-      case "A":
-        return "Accepted";
-      case "C":
-        return "Canceled";
-      case "S":
-        return "Spoiled";
-      default:
-        return "Error";
-    }
-  }
+  const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+  const [selectedRowIds, setSelectedRowIds] = React.useState([]);
 
   const clearFileCache = (event) => {
     event.target.value = null;
     setDataRows([]);
   }
-  
+
   const handleUploadExcel = (e) => {
     e.preventDefault();
     // Upload file by file to prevent human error
@@ -82,44 +52,38 @@ const AgencyPage = () => {
         }
       }
 
+      //Remove duplicated row
+      const filteredSheetData = allSheetData.filter((value, index, self) =>
+        index === self.findIndex((t) => (
+          t.id === value.id
+        ))
+      );
+
       handleOpenDialog();
-      setDataRows([...dataRows, ...allSheetData]);
+      setDataRows([...dataRows, ...filteredSheetData]);
     };
 
     reader.readAsBinaryString(f)
   }
 
-  const convertToTimeFormat = (num) => {
-    var hours = Math.floor(num * 24);
-    var minutes = Math.floor((num * 24 - hours) * 60);
-    var seconds = Math.round((((num * 24 - hours) * 60) - minutes) * 60);
-    return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
-  }
-
   const prepareDataForTable = (data) => {
-    const dbList = []
+    const dbList = [];
     const factoryCode = data[2][0].split(' ')[1];
     const rowCode = `${factoryCode.slice(0, 1)}${factoryCode.substr(2)}`
     const date = data[1][0].split(':')[1].trim().replace(/-/g, '/');
-    const price = 0;
 
     // Start from row 8 in Excel
     data.slice(7).map((row) => {
       if (row[0]?.includes(rowCode)) {
         dbList.push({
-          "id": row[0],
-          "date": date,
-          "time": convertToTimeFormat(row[5]),
-          "destination": row[3],
-          "distance": 0,
-          "code": row[7],
-          "amount": row[9].toFixed(2),
-          "price": price.toFixed(2),
-          "oil": 0,
-          "car": row[4],
-          "driver": "",
-          "status": dpStatus(row[10].trim()),
-          "duplicated": confirmedDataRows.some(list => list.id === row[0])
+          id: row[2],
+          dateStart: date,
+          dateEnd: date,
+          agent: row[3],
+          oldId: "3",
+          newId: "4",
+          distance: 0,
+          gas: "7"
         });
       }
       return dbList;
@@ -127,6 +91,10 @@ const AgencyPage = () => {
 
     // return dbList to handleUploadExcel
     return dbList;
+  }
+
+  const handleSelectRow = (id) => {
+    setSelectedRowIds(id);
   }
 
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -144,7 +112,6 @@ const AgencyPage = () => {
     handleCloseDialog();
   };
 
-
   const [tabIndex, setTabIndex] = React.useState(0);
   const handleChangeTabs = (event, newTabIndex) => {
     setTabIndex(newTabIndex);
@@ -152,24 +119,17 @@ const AgencyPage = () => {
 
   return (
     <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
+      <AgencyDialog
+        openDialog={isOpenDialog}
+        dataRows={dataRows}
+        setDataRows={setDataRows}
+        handleCloseDialog={handleCloseDialog}
+        handleConfirmImportedData={handleConfirmImportedData}
+      />
+
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={1}>
-            {/*<Grid item>
-              <Button
-                disableElevation
-                variant="contained"
-                startIcon={<AddCircleRoundedIcon />}
-                sx={{
-                  backgroundColor: "#419b45",
-                  "&:hover": {
-                    backgroundColor: "#94da98",
-                  },
-                }}
-              >
-                Add
-              </Button>
-              </Grid>*/}
             <Grid item>
               <Button
                 disableElevation
@@ -194,21 +154,41 @@ const AgencyPage = () => {
                 />
               </Button>
             </Grid>
+            {selectedRowIds.length === 1 &&
+              <Grid item>
+                <Button
+                  disableElevation
+                  variant="contained"
+                  component="label"
+                  startIcon={<EditRoundedIcon />}
+                  sx={{
+                    backgroundColor: "#7b7a7a",
+                    "&:hover": {
+                      backgroundColor: "#c8cccc",
+                    },
+                  }}
+                >
+                  Edit
+              </Button>
+              </Grid>
+            }
           </Grid>
         </Grid>
 
-        <Grid item xs={12}>
-          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-            <Tabs value={tabIndex} onChange={handleChangeTabs}>
-              {FactoryConstants.factories.map((factory) =>
-                <Tab key={factory.name} label={factory.name} />
-              )}
-            </Tabs>
-          </Box>
-        </Grid>
+        {confirmedDataRows.length > 0 &&
+          <Grid item xs={12}>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+              <Tabs value={tabIndex} onChange={handleChangeTabs}>
+                {confirmedDataRows.map((agency) =>
+                  <Tab key={agency.agent} label={agency.agent} />
+                )}
+              </Tabs>
+            </Box>
+          </Grid>
+        }
 
         <Grid item xs={12}>
-          <AgencyTable dataRows={AgencyConstants.agency} />
+          <AgencyTable dataRows={confirmedDataRows} handleSelectRow={handleSelectRow} />
         </Grid>
       </Grid>
     </Container>

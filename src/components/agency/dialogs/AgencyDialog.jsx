@@ -8,34 +8,22 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 
-import IconButton from "@mui/material/IconButton";
+//Tables
+import AgencyTableDialog from "../tables/AgencyTableDialog";
 
 //Icons
-import DPScheduleTableDialog from "../dp/DPScheduleTableDialog";
-
-import Box from '@mui/material/Box';
-import Stepper from '@mui/material/Stepper';
-import Step from '@mui/material/Step';
-import StepLabel from '@mui/material/StepLabel';
+import IconButton from "@mui/material/IconButton";
 import SendIcon from '@mui/icons-material/Send';
-
-const steps = ['นำเข้าข้อมูล', 'ลบข้อมูลซ้ำ', 'ดึงข้อมูลจากหน่วยงาน', 'ดึงข้อมูลจากใบราคาค่าขนส่ง', 'ดึงข้อมูลจากรายการเปลี่ยนรถ', 'ตรวจสอบข้อมูลทั้งหมด'];
 
 export default function AgencyDialog(props) {
     const [selectedRows, setSelectedRows] = React.useState([]);
-    const [activeStep, setActiveStep] = React.useState(1);
 
-    const handleNext = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    };
+    const onUpdateRow = (updateObj) => {
+        const objIndex = props.dataRows.findIndex((obj => obj.id === updateObj.id));
+        props.dataRows[objIndex].distance = Number(updateObj.distance);
 
-    const handleBack = () => {
-        setActiveStep((prevActiveStep) => prevActiveStep - 1);
-    };
-
-    const handleReset = () => {
-        setActiveStep(1);
-    };
+        props.setDataRows(props.dataRows);
+    }
 
     const onClickDeleteSelectedRows = () => {
         const filtered = props.dataRows.filter((row) => !selectedRows.includes(row.id))
@@ -49,17 +37,7 @@ export default function AgencyDialog(props) {
             open={props.openDialog}
         >
             <DialogTitle>
-                <Stepper activeStep={activeStep} alternativeLabel>
-                    {steps.map((label) => {
-                        const stepProps = {};
-                        const labelProps = {};
-                        return (
-                            <Step key={label} {...stepProps}>
-                                <StepLabel {...labelProps}>{label}</StepLabel>
-                            </Step>
-                        );
-                    })}
-                </Stepper>
+                เพิ่มหน่วยงาน
                 <IconButton
                     aria-label="close"
                     onClick={props.handleCloseDialog}
@@ -76,32 +54,26 @@ export default function AgencyDialog(props) {
             <DialogContent dividers>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <DPScheduleTableDialog dataRows={props.dataRows} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} />
+                        <AgencyTableDialog
+                            dataRows={props.dataRows}
+                            selectedRows={selectedRows}
+                            setSelectedRows={setSelectedRows}
+                            onClickDeleteSelectedRows={onClickDeleteSelectedRows}
+                            onUpdateRow={onUpdateRow}
+                        />
                     </Grid>
                 </Grid>
             </DialogContent>
             <DialogActions>
                 <React.Fragment>
                     <Button
-                        disabled={activeStep === 1}
-                        onClick={handleBack}
+                        onClick={() => {
+                            props.handleConfirmImportedData(props.dataRows);
+                        }}
+                        endIcon={<SendIcon />}
                     >
-                        Back
-                    </Button>
-                    <Box sx={{ flex: '1 1 auto' }} />
-                    {activeStep === steps.length - 1 ?
-                        <Button
-                            onClick={() => {
-                                props.handleConfirmImportedData(props.dataRows);
-                                handleReset()
-                            }}
-                            endIcon={<SendIcon />}
-                        >
-                            Confirm
-                        </Button> : <Button disabled={props.dataRows.some((row) => row.duplicated)} onClick={handleNext}>
-                            Next
+                        Confirm
                         </Button>
-                    }
                 </React.Fragment>
             </DialogActions>
         </Dialog>

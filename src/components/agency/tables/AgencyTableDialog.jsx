@@ -17,16 +17,23 @@ export const columns = [
     { field: 'agent', headerName: 'ชื่อหน่วยงาน', minWidth: columnsSize.large },
     { field: 'oldId', headerName: 'รหัสเดิม', minWidth: columnsSize.small },
     { field: 'newId', headerName: 'รหัสใหม่', minWidth: columnsSize.small },
-    { field: 'distance', headerName: 'ระยะทาง', minWidth: columnsSize.small },
+    { field: 'distance', headerName: 'ระยะทาง', type: "number", minWidth: columnsSize.small, editable: true },
     { field: 'gas', headerName: 'น้ำมัน', minWidth: columnsSize.small },
 ];
 
-function AgencyTable(props) {
+export default function AgencyTableDialog(props) {
     const [pageSize, setPageSize] = React.useState(50);
+
+    const processRowUpdate = (newRow) => {
+        props.onUpdateRow(newRow);
+
+        return newRow;
+    }
+
     return (
         <div>
-            <Box sx={{ 
-                height: '30rem', 
+            <Box sx={{
+                height: '30rem',
                 width: '100%',
                 '& .row-theme--Accepted': {
                     bgcolor: 'white',
@@ -49,9 +56,7 @@ function AgencyTable(props) {
                     columns={columns}
                     pageSize={pageSize}
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                    onSelectionModelChange={(ids) => {
-                        props.handleSelectRow(ids);
-                    }}
+                    processRowUpdate={processRowUpdate}
                     rowsPerPageOptions={[25, 50, 100]}
                     checkboxSelection
                     disableSelectionOnClick
@@ -62,5 +67,3 @@ function AgencyTable(props) {
         </div>
     );
 }
-
-export default AgencyTable;
