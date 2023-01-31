@@ -27,22 +27,7 @@ function AgencyTable(props) {
         <div>
             <Box sx={{ 
                 height: '30rem', 
-                width: '100%',
-                '& .row-theme--Accepted': {
-                    bgcolor: 'white',
-                },
-                '& .row-theme--Canceled': {
-                    bgcolor: 'rgb(61,178,202)',
-                    '&:hover': {
-                        bgcolor: 'rgb(41,158,182)!important',
-                    },
-                },
-                '& .row-theme--Spoiled': {
-                    bgcolor: 'rgb(247,146,86)',
-                    '&:hover': {
-                        bgcolor: 'rgb(227,126,66)!important',
-                    },
-                },
+                width: '100%'
             }}>
                 <DataGrid
                     rows={props.dataRows}
@@ -56,7 +41,6 @@ function AgencyTable(props) {
                     checkboxSelection
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
-                    getRowClassName={(params) => `row-theme--${params.row.status}`}
                 />
             </Box>
         </div>
