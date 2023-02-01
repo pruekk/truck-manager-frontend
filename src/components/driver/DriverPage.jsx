@@ -10,7 +10,7 @@ import * as DriverConstants from "../../constants/DriverConstants";
 
 export default function DriverPage() {
   return (
-    <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
+    <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <DriverTable dataRows={DriverConstants.drivers} />

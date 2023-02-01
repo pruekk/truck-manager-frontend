@@ -8,11 +8,12 @@ import Toolbar from "@mui/material/Toolbar";
 
 //Components
 import NavigationBar from "./components/navigationbar/NavigationBar";
+import AgencyPage from "./components/agency/AgencyPage";
 import HomePage from "./components/homepage/HomePage";
 import Footer from "./components/footer/Footer";
 import TransportPricePage from "./components/transportPricePage/TransportPricePage";
 import DPSchedulePage from "./components/dp/DPSchedulePage";
-import CarReplacementPage from "./components/carReplacement/CarReplacementPage";
+import CarInformationPage from "./components/carInformation/CarInformationPage";
 import DriverPage from "./components/driver/DriverPage";
 
 //Others
@@ -25,9 +26,10 @@ const NotFound = () => {
 const App = () => {
   let routes = useRoutes([
     { path: "/", element: <HomePage /> },
+    { path: "/agency", element: <AgencyPage /> },
     { path: "/transport-price", element: <TransportPricePage /> },
     { path: "/dp-schedule", element: <DPSchedulePage /> },
-    { path: "/car-replacement", element: <CarReplacementPage /> },
+    { path: "/car-information", element: <CarInformationPage /> },
     { path: "/driver", element: <DriverPage /> },
     { path: "*", element: <NotFound /> }
   ]);
@@ -35,10 +37,11 @@ const App = () => {
 };
 
 const theme = createTheme({
+  backgroundColor: "#FBFBFB",
   typography: {
     allVariants: {
       //fontFamily: 'TTNormsPro Regular,Sukhumvit Tadmai Regular,sans-serif'
-      fontFamily: 'Kanit'
+      fontFamily: 'Kanit',
     },
   },
 });
@@ -47,7 +50,7 @@ const AppWrapper = () => {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Box sx={{ display: 'flex' }}>
+        <Box sx={{ display: 'flex', backgroundColor: '#FBFBFB', height: '100vh' }}>
           <NavigationBar />
           <Box
             component="main"
