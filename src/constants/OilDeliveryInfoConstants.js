@@ -326,6 +326,7 @@ export const dummyData = [
         },
         {
           name: "C",
+          value: 0,
         },
         {
           name: "D",
