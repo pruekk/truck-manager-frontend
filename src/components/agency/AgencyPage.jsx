@@ -17,6 +17,9 @@ import AgencyDialog from './dialogs/AgencyDialog';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
+//Constatns
+import * as FactoryConstants from "../../constants/FactoryConstants";
+
 const AgencyPage = () => {
   const [dataRows, setDataRows] = React.useState([]);
   const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
@@ -174,17 +177,15 @@ const AgencyPage = () => {
           </Grid>
         </Grid>
 
-        {confirmedDataRows.length > 0 &&
-          <Grid item xs={12}>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-              <Tabs value={tabIndex} onChange={handleChangeTabs}>
-                {confirmedDataRows.map((agency) =>
-                  <Tab key={agency.agent} label={agency.agent} />
-                )}
-              </Tabs>
-            </Box>
-          </Grid>
-        }
+        <Grid item xs={12}>
+          <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+            <Tabs value={tabIndex} onChange={handleChangeTabs}>
+              {FactoryConstants.factories.map((factory) =>
+                <Tab key={factory.name} label={factory.name} />
+              )}
+            </Tabs>
+          </Box>
+        </Grid>
 
         <Grid item xs={12}>
           <AgencyTable dataRows={confirmedDataRows} handleSelectRow={handleSelectRow} />
