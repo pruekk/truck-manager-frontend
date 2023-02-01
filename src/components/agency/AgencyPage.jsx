@@ -76,14 +76,14 @@ const AgencyPage = () => {
     data.slice(7).map((row) => {
       if (row[0]?.includes(rowCode)) {
         dbList.push({
-          id: row[2],
-          dateStart: date,
-          dateEnd: date,
-          agent: row[3],
-          oldId: "3",
-          newId: "4",
-          distance: 0,
-          gas: "7"
+          "id": row[2],
+          "dateStart": date,
+          "dateEnd": date,
+          "agent": row[3],
+          "oldId": row[7],
+          "newId": row[7],
+          "distance": 0,
+          "oil": 0,
         });
       }
       return dbList;
@@ -126,7 +126,6 @@ const AgencyPage = () => {
         handleCloseDialog={handleCloseDialog}
         handleConfirmImportedData={handleConfirmImportedData}
       />
-
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={1}>

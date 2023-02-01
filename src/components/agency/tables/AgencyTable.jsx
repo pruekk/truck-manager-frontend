@@ -18,7 +18,7 @@ export const columns = [
     { field: 'oldId', headerName: 'รหัสเดิม', minWidth: columnsSize.small },
     { field: 'newId', headerName: 'รหัสใหม่', minWidth: columnsSize.small },
     { field: 'distance', headerName: 'ระยะทาง', minWidth: columnsSize.small },
-    { field: 'gas', headerName: 'น้ำมัน', minWidth: columnsSize.small },
+    { field: 'oil', headerName: 'น้ำมัน', minWidth: columnsSize.small },
 ];
 
 function AgencyTable(props) {
