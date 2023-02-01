@@ -1,5 +1,5 @@
 import React from "react";
-import OilTransactionTable from "./tables/OilTransactionTable";
+import OilDeliveryInfoDataTable from "./tables/OilDeliveryInfoDataTable";
 
 //Material UI
 import Button from "@mui/material/Button";
@@ -11,19 +11,19 @@ import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
 import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 
-import OilTransactionDialog from "./dialogs/OilTransactionDialog";
+import OilDeliveryInfoDialog from "./dialogs/OilDeliveryInfoDialog";
 
 //Functions
 import { createData } from "../../functions/TableFunctions";
 
 //Constatns
-import * as TableConstants from "../../constants/TableConstants";
+import * as OilDeliveryInfoConstants from "../../constants/OilDeliveryInfoConstants";
 
-function OilTransactionPage() {
+function OilDeliveryInfoPage() {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
-  const [dataRow, setDataRow] = React.useState(TableConstants.dummyData);
+  const [dataRow, setDataRow] = React.useState(OilDeliveryInfoConstants.dummyData);
   const [selectedRow, setSelectedRow] = React.useState([]);
 
   const handleClickOpenDialog = () => {
@@ -48,19 +48,20 @@ function OilTransactionPage() {
     setOpenDeleteDialog(false);
   }
 
-  const addNewPrice = (priceListArr, factory, dateFrom, dateTo) => {
-    dataRow.push(createData(factory, dateFrom, dateTo, priceListArr));
+  const addNewPrice = (oilInfoArr, factory, dateFrom, dateTo) => {
+    dataRow.push(createData(factory, dateFrom, dateTo, oilInfoArr));
     setDataRow([...dataRow]);
     setOpenDialog(false);
   };
 
-  const editPrice = (priceListArr, factory, dateFrom, dateTo) => {
+  const editPrice = (oilInfoArr, factory, dateFrom, dateTo) => {
+    console.log(oilInfoArr);
     dataRow.some((obj) => {
       if (obj.factory === selectedRow[0].factory && obj.from === selectedRow[0].from && obj.to === selectedRow[0].to) {
         obj.factory = factory;
         obj.from = dateFrom;
         obj.to = dateTo;
-        obj.arr = priceListArr;
+        obj.arr = oilInfoArr;
         return true;
       }
       return false;
@@ -85,7 +86,7 @@ function OilTransactionPage() {
 
   return (
     <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
-      {openDialog && <OilTransactionDialog
+      {openDialog && <OilDeliveryInfoDialog
         openDialog={openDialog}
         selectedRow={selectedRow}
         isEdit={isEdit}
@@ -149,38 +150,10 @@ function OilTransactionPage() {
                 </Button>
               </Grid>
             }
-            {/* 
-            <Grid item>
-              <Button
-                disableElevation
-                variant="contained"
-                startIcon={<FileCopyRoundedIcon />}
-                sx={{
-                  backgroundColor: "#7b7a7a",
-                  "&:hover": {
-                    backgroundColor: "#c8cccc",
-                  },
-                }}
-              >
-                Copy
-              </Button>
-            </Grid>
-            <Grid item xs={3}>
-              <Button
-                disableElevation
-                fullWidth
-                variant="contained"
-                startIcon={<SearchRoundedIcon />}
-                sx={{ backgroundColor: "#e0f1ee" }}
-              >
-                Search
-              </Button>
-            </Grid>
-            */}
           </Grid>
         </Grid>
         <Grid item xs={12}>
-          <OilTransactionTable
+          <OilDeliveryInfoDataTable
             rows={dataRow}
             selectedRow={selectedRow}
             openDeleteDialog={openDeleteDialog}
@@ -194,4 +167,4 @@ function OilTransactionPage() {
   );
 }
 
-export default OilTransactionPage;
+export default OilDeliveryInfoPage;

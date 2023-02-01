@@ -23,7 +23,7 @@ import moment from "moment";
 import TextField from "@mui/material/TextField";
 
 //Table
-import OilTransactionTableModal from "../tables/OilTransactionTableModal";
+import OilDeliveryInfoTableModal from "../tables/OilDeliveryInfoTableModal";
 
 //Constants
 import * as NavigationBarConstants from "../../../constants/NavigationBarConstants";
@@ -31,130 +31,32 @@ import * as CalendarConstants from "../../../constants/CalendarConstants";
 
 const temp = ["หนองใหญ่", "บ้านบึง", "ปลวกแดง", "หนองไผ่แก้ว", "วังจันทร์"];
 
-export default function OilTransactionDialog(props) {
-  const [priceListArr, setPriceListArr] = React.useState([
-    {
-      name: "L",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "Y",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "Z",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "1",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "2",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "3",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "4",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "5",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "6",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "7",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "8",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "A",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "B",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "C",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "D",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-  ]);
+export default function OilDeliveryInfoDialog(props) {
+  const [oilInfoArr, setOilInfoArr] = React.useState([]);
   const [factory, setFactory] = React.useState("");
   const [dateFrom, setDateFrom] = React.useState(moment().format());
   const [dateTo, setDateTo] = React.useState(moment().format());
   const [isEmptyFactory, setIsEmptyFactory] = React.useState(false);
-  const [isSumCorrect, setIsSumCorrect] = React.useState(false);
 
   useEffect(() => {
-    preparePriceList();
+    prepareOilInfo();
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
-  const preparePriceList = () => {
+  const prepareOilInfo = () => {
+    console.log(props.selectedRow, props.isEdit);
     if (props.selectedRow.length === 1 && props.isEdit) {
+      setOilInfoArr(props.selectedRow[0].arr);
       setFactory(props.selectedRow[0].factory);
       setDateFrom(moment(props.selectedRow[0].from, "DD-MM-YYYY").format());
       setDateTo(moment(props.selectedRow[0].to, "DD-MM-YYYY").format());
+    } if (props.selectedRow.length === 0 && !props.isEdit) {
+      setOilInfoArr([{
+        name: "",
+        value: ""
+      }]);
     }
+
+    console.log(oilInfoArr);
   }
 
   const handleChangeFactory = (event) => {
@@ -176,14 +78,14 @@ export default function OilTransactionDialog(props) {
     if (factory !== "") {
       if (props.isEdit) {
         props.editPrice(
-          priceListArr,
+          oilInfoArr,
           factory,
           moment(dateFrom).format(CalendarConstants.dateFormat),
           moment(dateTo).format(CalendarConstants.dateFormat)
         )
       } if (!props.isEdit) {
         props.addNewPrice(
-          priceListArr,
+          oilInfoArr,
           factory,
           moment(dateFrom).format(CalendarConstants.dateFormat),
           moment(dateTo).format(CalendarConstants.dateFormat)
@@ -204,7 +106,7 @@ export default function OilTransactionDialog(props) {
       onClose={props.handleCloseDialog}
     >
       <DialogTitle>
-        เพิ่ม{NavigationBarConstants.menus[0].sub[0].name}
+        เพิ่ม{NavigationBarConstants.menus[6].sub[1].name}
         <IconButton
           aria-label="close"
           onClick={props.handleCloseDialog}
@@ -275,20 +177,19 @@ export default function OilTransactionDialog(props) {
               </Grid>
             </Grid>
           </Grid>
-          <Grid item xs={12}>
-            <OilTransactionTableModal
+          <Grid item xs={12} sx={{ marginLeft: "20px" }}>
+            <OilDeliveryInfoTableModal
               isEditable={true}
-              priceListArr={priceListArr}
+              oilInfoArr={oilInfoArr}
               selectedRow={props.selectedRow}
               isEdit={props.isEdit}
-              setPriceListArr={setPriceListArr}
-              setIsSumCorrect={setIsSumCorrect}
+              setOilInfoArr={setOilInfoArr}
             />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button disabled={!isSumCorrect} onClick={onClickSaveNewPrice}>Save</Button>
+        <Button onClick={onClickSaveNewPrice}>Save</Button>
       </DialogActions>
     </Dialog>
   );

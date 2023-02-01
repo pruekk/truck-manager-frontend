@@ -16,10 +16,10 @@ import KeyboardArrowRightIcon from "@mui/icons-material/KeyboardArrowRight";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 //Functions
-import OilTransactionTableModal from "./OilTransactionTableModal";
+import OilDeliveryInfoTable from "./OilDeliveryInfoTable";
 
 //Dialogs
-import DeleteOilTransactionDialog from "../dialogs/DeleteOilTransactionDialog";
+import DeleteOilDeliveryInfoPageDialog from "../dialogs/DeleteOilDeliveryInfoPageDialog";
 
 function Row(props) {
   const { row, index } = props;
@@ -99,9 +99,10 @@ function Row(props) {
             <Grid
               container
               sx={{ margin: "1rem auto", maxWidth: "90rem", overflowX: "auto" }}
+              alignItems="flex-start"
             >
-              <Grid item align="center" xs={12}>
-                <OilTransactionTableModal isEditable={false} priceListArr={row.arr} />
+              <Grid item xs={12}>
+                <OilDeliveryInfoTable priceListArr={row.arr} />
               </Grid>
             </Grid>
           </Collapse>
@@ -112,10 +113,10 @@ function Row(props) {
 }
 
 
-export default function OilTransactionTable(props) {
+export default function OilDeliveryInfoDataTable(props) {
   return (
     <div>
-      <DeleteOilTransactionDialog openDialog={props.openDeleteDialog} onClickCloseDeleteDialog={props.handleCloseDeleteDialog} removePrice={props.removePrice} selectedRow={props.selectedRow} />
+      <DeleteOilDeliveryInfoPageDialog openDialog={props.openDeleteDialog} onClickCloseDeleteDialog={props.handleCloseDeleteDialog} removePrice={props.removePrice} selectedRow={props.selectedRow} />
 
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">

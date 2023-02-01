@@ -18,7 +18,7 @@ import IconButton from "@mui/material/IconButton";
 //Icons
 import CircleIcon from '@mui/icons-material/Circle';
 
-export default function DeleteOilTransactionDialog(props) {
+export default function DeleteOilDeliveryInfoPageDialog(props) {
     return (
         <Dialog
             fullWidth={true}

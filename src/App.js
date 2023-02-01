@@ -11,8 +11,8 @@ import NavigationBar from "./components/navigationbar/NavigationBar";
 import HomePage from "./components/homepage/HomePage";
 import Footer from "./components/footer/Footer";
 import TransportPricePage from "./components/transportPricePage/TransportPricePage";
+import OilDeliveryInfoPage from "./components/oilDeliveryInfoPage/OilDeliveryInfoPage";
 import DPSchedulePage from "./components/dp/DPSchedulePage";
-import OilTransactionPage from "./components/oilTransactionPage/OilTransactionPage";
 import DriverPage from "./components/driver/DriverPage";
 
 //Others
@@ -27,7 +27,7 @@ const App = () => {
     { path: "/", element: <HomePage /> },
     { path: "/transport-price", element: <TransportPricePage /> },
     { path: "/dp-schedule", element: <DPSchedulePage /> },
-    { path: "/oil-transaction", element: <OilTransactionPage /> },
+    { path: "/oil-transaction", element: <OilDeliveryInfoPage /> },
     { path: "/driver", element: <DriverPage /> },
     { path: "*", element: <NotFound /> }
   ]);
