@@ -8,6 +8,7 @@ import Toolbar from "@mui/material/Toolbar";
 
 //Components
 import NavigationBar from "./components/navigationbar/NavigationBar";
+import AgencyPage from "./components/agency/AgencyPage";
 import HomePage from "./components/homepage/HomePage";
 import Footer from "./components/footer/Footer";
 import TransportPricePage from "./components/transportPricePage/TransportPricePage";
@@ -25,6 +26,7 @@ const NotFound = () => {
 const App = () => {
   let routes = useRoutes([
     { path: "/", element: <HomePage /> },
+    { path: "/agency", element: <AgencyPage /> },
     { path: "/transport-price", element: <TransportPricePage /> },
     { path: "/dp-schedule", element: <DPSchedulePage /> },
     { path: "/car-information", element: <CarInformationPage /> },
