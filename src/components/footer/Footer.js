@@ -11,17 +11,21 @@ import Typography from "@mui/material/Typography";
 export default function Footer() {
   const currentYear = new Date().getFullYear();
   return (
-    <Grid container style={{ marginTop: "100px", bottom: 0 }}>
+    <Grid container style={{
+      bottom: 0,
+      position: "fixed",
+      backgroundColor: "#FFFFFF"
+    }}>
       <Grid item xs={12}>
         <Divider />
       </Grid>
-      <Grid item xs={12} style={{ backgroundColor: "#white" }}>
+      <Grid item xs={12}>
         <Container>
           <Grid
             container
             alignItems="end"
             spacing={1}
-            style={{ padding: "10px" }}
+            style={{ height: "4rem", alignItems: "center" }}
           >
             <Grid item align="center" xs={12}>
               <Typography variant="body1" style={{ color: "#bbb8bb" }}>

@@ -178,7 +178,7 @@ const CustomFooter = () => {
 
 const HomePage = () => {
   return (
-    <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
+    <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
       {/* <Grid container spacing={2}>
         <Grid item align="center" xs={12}>
           <Typography variant="h1" gutterBottom sx={{ fontWeight: 700 }}>

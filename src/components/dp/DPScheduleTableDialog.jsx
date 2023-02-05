@@ -39,7 +39,7 @@ export default function DPScheduleTableDialog(props) {
                 height: '30rem',
                 width: '100%',
                 '& .row-theme--normal': {
-                    bgcolor: 'white',
+                    bgcolor: 'rgb(245, 245, 245)',
                 },
                 '& .row-theme--duplicated': {
                     bgcolor: 'rgb(214,50,50)',

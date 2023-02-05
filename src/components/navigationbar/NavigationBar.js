@@ -42,11 +42,11 @@ function NavigationBar() {
         position="fixed"
         sx={{
           width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px`,
-          backgroundColor: "#30c464"
+          backgroundColor: "#30C464"
         }}
       >
         <Toolbar>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={{ marginLeft: "1rem" }}>
             {title}
           </Typography>
         </Toolbar>
@@ -59,6 +59,15 @@ function NavigationBar() {
             width: drawerWidth,
             boxSizing: 'border-box',
           },
+          '*::-webkit-scrollbar': {
+            width: '0.75rem'
+          },
+          '*::-webkit-scrollbar-track': {
+            background: "#FFFFFF"
+          },
+          '*::-webkit-scrollbar-thumb': {
+            backgroundColor: "#F5F5F5",
+          }
         }}
         variant="permanent"
         anchor="left"

@@ -40,8 +40,8 @@ export const menus = [
       },
       {
         name: "หน่วยงาน",
-        url: "/",
-        isAvailable: false,
+        url: "/agency",
+        isAvailable: true,
         icon: <PinDropRoundedIcon />
       },
       {
@@ -226,8 +226,8 @@ export const menus = [
     sub: [
       {
         name: "ข้อมูลรถโม่",
-        url: "/",
-        isAvailable: false,
+        url: "/car-information",
+        isAvailable: true,
         icon: <LocalShippingRoundedIcon />
       },
       {
