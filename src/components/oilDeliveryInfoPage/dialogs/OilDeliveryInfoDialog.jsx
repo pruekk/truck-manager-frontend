@@ -155,7 +155,7 @@ export default function OilDeliveryInfoDialog(props) {
                     label="ตั้งแต่"
                     inputFormat={CalendarConstants.dateFormat}
                     value={dateFrom}
-                    onChange={handleChangeDateTo}
+                    onChange={handleChangeDateFrom}
                     renderInput={(params) => (
                       <TextField size="small" sx={{ m: 1 }} {...params} />
                     )}
@@ -168,7 +168,7 @@ export default function OilDeliveryInfoDialog(props) {
                     label="จนถึง"
                     inputFormat={CalendarConstants.dateFormat}
                     value={dateTo}
-                    onChange={handleChangeDateFrom}
+                    onChange={handleChangeDateTo}
                     renderInput={(params) => (
                       <TextField size="small" sx={{ m: 1 }} {...params} />
                     )}
