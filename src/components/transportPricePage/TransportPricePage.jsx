@@ -1,5 +1,5 @@
 import React from "react";
-import TableWithSelect from "../Tables/TableWithSelect";
+import TableWithSelect from "../tables/TableWithSelect";
 
 //Material UI
 import Button from "@mui/material/Button";

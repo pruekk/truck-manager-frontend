@@ -96,7 +96,7 @@ const AgencyPage = () => {
     return dbList;
   }
 
-  const handleSelectRow = (id) => {
+  const onSelectionModelChange = (id) => {
     setSelectedRowIds(id);
   }
 
@@ -188,7 +188,7 @@ const AgencyPage = () => {
         </Grid>
 
         <Grid item xs={12}>
-          <AgencyTable dataRows={confirmedDataRows} handleSelectRow={handleSelectRow} />
+          <AgencyTable dataRows={confirmedDataRows} onSelectionModelChange={onSelectionModelChange} />
         </Grid>
       </Grid>
     </Container>
