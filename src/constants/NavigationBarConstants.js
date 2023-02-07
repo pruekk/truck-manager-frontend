@@ -10,6 +10,7 @@ import CarCrashRoundedIcon from '@mui/icons-material/CarCrashRounded';
 import LocalGasStationRoundedIcon from '@mui/icons-material/LocalGasStationRounded';
 import MoveDownRoundedIcon from '@mui/icons-material/MoveDownRounded';
 import BuildRoundedIcon from '@mui/icons-material/BuildRounded';
+import OilBarrelIcon from '@mui/icons-material/OilBarrel';
 
 import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
 import PaidRoundedIcon from '@mui/icons-material/PaidRounded';
@@ -228,6 +229,12 @@ export const menus = [
         url: "/car-information",
         isAvailable: true,
         icon: <LocalShippingRoundedIcon />
+      },
+      {
+        name: "ข้อมูลการให้น้ำมัน",
+        url: "/oil-transaction",
+        isAvailable: true,
+        icon: <OilBarrelIcon />
       },
       {
         name: "ข้อมูลโรงงาน",
