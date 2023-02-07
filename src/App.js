@@ -16,6 +16,7 @@ import OilDeliveryInfoPage from "./components/oilDeliveryInfoPage/OilDeliveryInf
 import DPSchedulePage from "./components/dp/DPSchedulePage";
 import CarInformationPage from "./components/carInformation/CarInformationPage";
 import DriverPage from "./components/driver/DriverPage";
+import CarReplacementPage from "./components/carReplacement/CarReplacementPage";
 
 //Others
 export const drawerWidth = 250;
@@ -28,6 +29,7 @@ const App = () => {
   let routes = useRoutes([
     { path: "/", element: <HomePage /> },
     { path: "/agency", element: <AgencyPage /> },
+    { path: "/car-replacement", element: <CarReplacementPage /> },
     { path: "/transport-price", element: <TransportPricePage /> },
     { path: "/dp-schedule", element: <DPSchedulePage /> },
     { path: "/oil-transaction", element: <OilDeliveryInfoPage /> },
