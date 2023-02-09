@@ -30,7 +30,6 @@ export default function CarReplacementPage() {
   };
 
   const handleAddNewCarReplacement = (obj) => {
-    console.log(obj);
     console.log(confirmedDataRows);
     setConfirmedDataRows([...confirmedDataRows, obj])
     handleCloseDialog();

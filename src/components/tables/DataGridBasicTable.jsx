@@ -9,7 +9,7 @@ export default function DataGridBasicTable(props) {
 
     return (
         <div>
-            <Box sx={{
+            <Box sx={props.customStyle ? props.customStyle : {
                 height: '30rem',
                 width: '100%'
             }}>
@@ -20,9 +20,12 @@ export default function DataGridBasicTable(props) {
                     onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
                     rowsPerPageOptions={[25, 50, 100]}
                     checkboxSelection={props.checkboxSelection ? true : false}
-                    processRowUpdate={props.processRowUpdate ? props.processRowUpdate : false}
-                    onSelectionModelChange={props.onSelectionModelChange ? props.onSelectionModelChange : false}
-                    getRowId={props.customRowId ? props.customRowId : false}
+                    processRowUpdate={props.processRowUpdate ? props.processRowUpdate : () => { return; }}
+                    onSelectionModelChange={props.onSelectionModelChange ? props.onSelectionModelChange : () => { return; }}
+                    getRowId={props.customRowId ? props.customRowId : (row) => { return row.id }}
+                    getRowClassName={props.getRowClassName ? props.getRowClassName : () => { return; }}
+                    isRowSelectable={props.isRowSelectable ? props.isRowSelectable : () => { return true }}
+                    components={props.customComponent ? props.customComponent : {}}
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
                 />

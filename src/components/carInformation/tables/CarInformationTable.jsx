@@ -18,22 +18,5 @@ export const columns = [
 export default function CarInformationTable(props) {
     return (
         <DataGridBasicTable dataRows={props.dataRows} columns={columns} checkboxSelection={true} />
-        /*<div>
-            <Box sx={{
-                height: '30rem',
-                width: '100%',
-            }}>
-                <DataGrid
-                    rows={props.dataRows}
-                    columns={columns}
-                    pageSize={pageSize}
-                    onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-                    rowsPerPageOptions={[25, 50, 100]}
-                    checkboxSelection
-                    disableSelectionOnClick
-                    experimentalFeatures={{ newEditingApi: true }}
-                />
-            </Box>
-        </div>*/
     );
 }
