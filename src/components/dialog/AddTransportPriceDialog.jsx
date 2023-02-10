@@ -21,7 +21,7 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import moment from "moment";
 import TextField from "@mui/material/TextField";
-import PriceListTableModal from "../Tables/PriceListTableModal";
+import PriceListTableModal from "../tables/PriceListTableModal";
 
 //Constants
 import * as NavigationBarConstants from "../../constants/NavigationBarConstants";

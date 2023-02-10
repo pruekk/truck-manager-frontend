@@ -1,31 +1,27 @@
 import React from "react";
 
-//Material UI
-import Box from '@mui/material/Box';
-import { DataGrid } from '@mui/x-data-grid';
+//Tables
+import DataGridBasicTable from '../../tables/DataGridBasicTable';
 
-const columnsSize = {
-    small: 90,
-    medium: 100,
-    large: 200
-};
+//Constants
+import * as TableConstants from '../../../constants/TableConstants';
 
 export const columns = [
-    { field: 'id', headerName: 'ลำดับ', minWidth: columnsSize.small },
-    { field: 'idCard', headerName: 'เลขประจำตัวบัตรประชาชน', minWidth: columnsSize.large },
-    { field: 'title', headerName: 'คำนำหน้า', minWidth: columnsSize.medium },
-    { field: 'firstName', headerName: 'ชื่อ', minWidth: columnsSize.medium },
-    { field: 'lastName', headerName: 'นามสกุล', minWidth: columnsSize.medium },
-    { field: 'fullName', headerName: 'ชื่อ-สกุล', minWidth: columnsSize.large, valueGetter: (params) => `${params.row.firstName || ''} ${params.row.lastName || ''}` },
-    { field: 'startDate', headerName: 'วันที่เริ่มทำงาน', minWidth: columnsSize.medium },
-    { field: 'salary', headerName: 'ฐานเงินเดือน', type: 'number', minWidth: columnsSize.medium },
-    { field: 'editor', headerName: 'แก้ไขโดย', minWidth: columnsSize.large }
+    { field: 'id', headerName: 'ลำดับ', minWidth: TableConstants.columnsSize.small },
+    { field: 'idCard', headerName: 'เลขประจำตัวบัตรประชาชน', minWidth: TableConstants.columnsSize.large },
+    { field: 'title', headerName: 'คำนำหน้า', minWidth: TableConstants.columnsSize.medium },
+    { field: 'firstName', headerName: 'ชื่อ', minWidth: TableConstants.columnsSize.medium },
+    { field: 'lastName', headerName: 'นามสกุล', minWidth: TableConstants.columnsSize.medium },
+    { field: 'fullName', headerName: 'ชื่อ-สกุล', minWidth: TableConstants.columnsSize.large, valueGetter: (params) => `${params.row.firstName || ''} ${params.row.lastName || ''}` },
+    { field: 'startDate', headerName: 'วันที่เริ่มทำงาน', minWidth: TableConstants.columnsSize.medium },
+    { field: 'salary', headerName: 'ฐานเงินเดือน', type: 'number', minWidth: TableConstants.columnsSize.medium },
+    { field: 'editor', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.large }
 ];
 
 export default function DriverTable(props) {
-    const [pageSize, setPageSize] = React.useState(50);
     return (
-        <div>
+        <DataGridBasicTable dataRows={props.dataRows} columns={columns} />
+        /*<div>
             <Box sx={{
                 height: '30rem',
                 width: '100%',
@@ -57,6 +53,6 @@ export default function DriverTable(props) {
                     getRowClassName={(params) => `row-theme--${params.row.status}`}
                 />
             </Box>
-        </div>
+        </div>*/
     );
 }
