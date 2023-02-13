@@ -7,16 +7,18 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 
 //Components
-import NavigationBar from "./components/navigationbar/NavigationBar";
-import AgencyPage from "./components/agency/AgencyPage";
-import HomePage from "./components/homepage/HomePage";
-import Footer from "./components/footer/Footer";
-import TransportPricePage from "./components/transportPricePage/TransportPricePage";
-import OilDeliveryInfoPage from "./components/oilDeliveryInfoPage/OilDeliveryInfoPage";
-import DPSchedulePage from "./components/dp/DPSchedulePage";
-import CarInformationPage from "./components/carInformation/CarInformationPage";
-import DriverPage from "./components/driver/DriverPage";
-import CarReplacementPage from "./components/carReplacement/CarReplacementPage";
+import NavigationBar from "./components/NavigationBar";
+import Footer from "./components/Footer";
+
+//Scenes
+import Agency from './scenes/Agency';
+import Car from './scenes/Car';
+import CarReplacement from './scenes/CarReplacement';
+import DP from './scenes/DP';
+import Driver from './scenes/Driver';
+import Home from './scenes/Home';
+import OilDelivery from './scenes/OilDelivery';
+import Transport from './scenes/Transport';
 
 //Others
 export const drawerWidth = 250;
@@ -27,14 +29,14 @@ const NotFound = () => {
 
 const App = () => {
   let routes = useRoutes([
-    { path: "/", element: <HomePage /> },
-    { path: "/agency", element: <AgencyPage /> },
-    { path: "/car-replacement", element: <CarReplacementPage /> },
-    { path: "/transport-price", element: <TransportPricePage /> },
-    { path: "/dp-schedule", element: <DPSchedulePage /> },
-    { path: "/oil-transaction", element: <OilDeliveryInfoPage /> },
-    { path: "/car-information", element: <CarInformationPage /> },
-    { path: "/driver", element: <DriverPage /> },
+    { path: "/", element: <Home /> },
+    { path: "/agency", element: <Agency /> },
+    { path: "/car-replacement", element: <CarReplacement /> },
+    { path: "/transport-price", element: <Transport /> },
+    { path: "/dp-schedule", element: <DP /> },
+    { path: "/oil-transaction", element: <OilDelivery /> },
+    { path: "/car-information", element: <Car /> },
+    { path: "/driver", element: <Driver /> },
     { path: "*", element: <NotFound /> }
   ]);
   return routes;
@@ -50,7 +52,7 @@ const theme = createTheme({
   },
 });
 
-const AppWrapper = () => {
+export default function AppWrapper() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
@@ -69,5 +71,3 @@ const AppWrapper = () => {
     </ThemeProvider>
   );
 };
-
-export default AppWrapper;
