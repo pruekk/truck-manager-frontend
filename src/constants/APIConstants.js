@@ -1,0 +1,1 @@
+export const TRUCK_MANAGER_SYSTEM_API_BASE_URL = "https://languid-flaxen-organization.glitch.me/truck-manager-system/v1/api";
