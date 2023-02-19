@@ -35,7 +35,7 @@ export default function Agency() {
     }, []);
 
     const getAgency = async () => {
-        const response = await GetAgency();
+        const response = await GetAgency(localStorage.getItem('userToken'));
 
         if (response.success) {
             setConfirmedDataRows(response.data);
