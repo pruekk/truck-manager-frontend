@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, useRoutes } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { BrowserRouter as Router, useRoutes, Navigate } from "react-router-dom";
 
 //Material UI
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -17,6 +17,7 @@ import CarReplacement from './scenes/CarReplacement';
 import DP from './scenes/DP';
 import Driver from './scenes/Driver';
 import Home from './scenes/Home';
+import Login from './scenes/Login';
 import OilDelivery from './scenes/OilDelivery';
 import Transport from './scenes/Transport';
 
@@ -28,17 +29,33 @@ const NotFound = () => {
 };
 
 const App = () => {
+  const [isLoggedIn, setIsLoggedIn] = useState(
+    () => /*localStorage.getItem('isLoggedIn') !== null*/ false
+  );
+
+  useEffect(() => {
+    localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+  }, [isLoggedIn]);
+
+  const logIn = () => setIsLoggedIn(true);
+
+  // pass this callback to components you want to allow logging out
+  // it will update the local state and then get persisted
+  // const logOut = () => setIsLoggedIn(false);
+
   let routes = useRoutes([
-    { path: "/", element: <Home /> },
-    { path: "/agency", element: <Agency /> },
-    { path: "/car-replacement", element: <CarReplacement /> },
-    { path: "/transport-price", element: <Transport /> },
-    { path: "/dp-schedule", element: <DP /> },
-    { path: "/oil-transaction", element: <OilDelivery /> },
-    { path: "/car-information", element: <Car /> },
-    { path: "/driver", element: <Driver /> },
+    { path: "/", element: isLoggedIn ? <Home /> : <Navigate to='/login' />},
+    { path: "/agency", element: isLoggedIn ? <Agency /> : <Navigate to='/login' /> },
+    { path: "/car-replacement", element: isLoggedIn ? <CarReplacement /> : <Navigate to='/login' /> },
+    { path: "/transport-price", element: isLoggedIn ? <Transport /> : <Navigate to='/login' /> },
+    { path: "/dp-schedule", element: isLoggedIn ? <DP /> : <Navigate to='/login' /> },
+    { path: "/oil-transaction", element: isLoggedIn ? <OilDelivery /> : <Navigate to='/login' /> },
+    { path: "/car-information", element: isLoggedIn ? <Car /> : <Navigate to='/login' /> },
+    { path: "/driver", element: isLoggedIn ? <Driver />: <Navigate to='/login' /> },
+    { path: "/login", element: <Login onLogIn={logIn} /> },
     { path: "*", element: <NotFound /> }
   ]);
+
   return routes;
 };
 
