@@ -15,10 +15,10 @@ export const columns = [
 
 export default function Table(props) {
     const customRowId = (row) => {
-        return `${row.carId}-${row.driver}`
+        return row._id
     }
 
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} checkboxSelection={true} customRowId={customRowId}  />
+        <DataGridTable dataRows={props.dataRows} columns={columns} onSelectionModelChange={props.onSelectionModelChange} checkboxSelection={true} customRowId={customRowId}  />
     );
 }

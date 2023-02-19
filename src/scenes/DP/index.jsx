@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as XLSX from 'xlsx';
 
 //Material UI
@@ -21,23 +21,21 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 //Constatns
 import * as FactoryConstants from "../../constants/FactoryConstants";
 
+//Services
+import { GetDP } from "./services/DPServices";
+
 export default function DP() {
     const [dataRows, setDataRows] = React.useState([]);
-    const [confirmedDataRows, setConfirmedDataRows] = React.useState([{
-        "id": "F071141088",
-        "date": "01/12/2022",
-        "time": "00:41:00",
-        "destination": "FCโรงพยาบาลกรุงเทพปล",
-        "distance": 0,
-        "code": 1,
-        "amount": "6.00",
-        "price": "0.00",
-        "oil": 0,
-        "car": "C56B",
-        "driver": "",
-        "status": "Accepted",
-        "duplicated": false
-    }]);
+    const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+
+    useEffect(() => {
+        getDP();
+    }, []);
+
+    const getDP = async () => {
+        const response = await GetDP(localStorage.getItem('userToken'));
+        setConfirmedDataRows(response.data);
+    }
 
     const dpStatus = (status) => {
         switch (status) {

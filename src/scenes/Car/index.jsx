@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //Material UI
 import Button from "@mui/material/Button";
@@ -14,10 +14,24 @@ import Table from './components/Table';
 //Dialogs
 import AddNewDialog from './components/AddNewDialog';
 
-//Constatns
-import * as Constants from "./constants/Constants";
+//Services
+import { GetCars } from "./services/CarServices";
 
 export default function Car() {
+  const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+
+  useEffect(() => {
+    getCars();
+  }, []);
+
+  const getCars = async () => {
+    const response = await GetCars(localStorage.getItem('userToken'));
+
+    if (response.success) {
+      setConfirmedDataRows(response.data);
+    }
+  }
+
   const [openDialog, setOpenDialog] = React.useState(false);
 
   const handleClickOpenDialog = () => {
@@ -49,7 +63,7 @@ export default function Car() {
           <AddNewDialog openDialog={openDialog} handleCloseDialog={handleCloseDialog} />
         </Grid>
         <Grid item xs={12}>
-          <Table dataRows={Constants.cars} />
+          <Table dataRows={confirmedDataRows} />
         </Grid>
       </Grid>
     </Container>

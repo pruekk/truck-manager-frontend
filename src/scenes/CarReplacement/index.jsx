@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //Material UI
 import Button from "@mui/material/Button";
@@ -14,13 +14,39 @@ import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 //Dialogs
 import AddNewDialog from './components/AddNewDialog';
 
-//Constatns
-import * as Constants from "./constants/Constants";
+//Services
+import { AddNewCarReplacement, DeleteCarReplacement, GetCarReplacement } from './services/CarReplacementServices';
 
 export default function CarReplacement() {
-  const [confirmedDataRows, setConfirmedDataRows] = React.useState(Constants.carReplacements);
+  const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+
+  useEffect(() => {
+    getCarReplacement();
+  }, []);
+
+  const getCarReplacement = async () => {
+    const response = await GetCarReplacement(localStorage.getItem('userToken'));
+
+    if (response.success) {
+      setConfirmedDataRows(response.data);
+    }
+  }
+
+  const [selectedRowIds, setSelectedRowIds] = React.useState([]);
+  const onSelectionModelChange = (ids) => {
+    setSelectedRowIds(ids);
+  }
+
+  const deleteCarReplacement = async () => {
+    const response = await DeleteCarReplacement(localStorage.getItem('userToken'), selectedRowIds[0]);
+
+    if (response.success) {
+      getCarReplacement();
+    }
+  }
 
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
+
   const handleOpenDialog = () => {
     setIsOpenDialog(true);
   };
@@ -29,9 +55,17 @@ export default function CarReplacement() {
     setIsOpenDialog(false);
   };
 
-  const handleAddNewCarReplacement = (obj) => {
-    setConfirmedDataRows([...confirmedDataRows, obj]);
-    handleCloseDialog();
+  const handleAddNewCarReplacement = async (obj) => {
+    const response = await AddNewCarReplacement(localStorage.getItem('userToken'), obj);
+
+    if (response.success) {
+      getCarReplacement();
+      handleCloseDialog();
+
+      return;
+    }
+
+    alert("Something went wrong! Please try again later.")
   };
 
 
@@ -58,11 +92,30 @@ export default function CarReplacement() {
                 Add
               </Button>
             </Grid>
+            {selectedRowIds.length === 1 &&
+              <Grid item>
+                <Button
+                  disableElevation
+                  variant="contained"
+                  component="label"
+                  onClick={deleteCarReplacement}
+                  startIcon={<AddCircleRoundedIcon />}
+                  sx={{
+                    backgroundColor: "#bd0101",
+                    "&:hover": {
+                      backgroundColor: "#cd6a6a",
+                    },
+                  }}
+                >
+                  Delete
+              </Button>
+              </Grid>
+            }
           </Grid>
         </Grid>
 
         <Grid item xs={12}>
-          <Table dataRows={confirmedDataRows} />
+          <Table dataRows={confirmedDataRows} onSelectionModelChange={onSelectionModelChange} />
         </Grid>
       </Grid>
     </Container>
