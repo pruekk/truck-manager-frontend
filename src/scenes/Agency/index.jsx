@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as XLSX from 'xlsx';
 
 //Material UI
@@ -19,13 +19,28 @@ import ImportDialog from './components/ImportDialog';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
-//Constatns
+//Constants
 import * as Constants from "./constants/Constants";
+
+//Services
+import { GetAgency } from "./services/AgencyServices";
 
 export default function Agency() {
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
     const [selectedRowIds, setSelectedRowIds] = React.useState([]);
+
+    useEffect(() => {
+        getAgency();
+    }, []);
+
+    const getAgency = async () => {
+        const response = await GetAgency();
+
+        if (response.success) {
+            setConfirmedDataRows(response.data);
+        }
+    }
 
     const clearFileCache = (event) => {
         event.target.value = null;
