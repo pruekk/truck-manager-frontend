@@ -23,8 +23,8 @@ export default function Login(props) {
         if (response.success) {
             localStorage.setItem('isLoggedIn', JSON.stringify(true));
             localStorage.setItem('userToken', credentialResponse.credential);
+            localStorage.setItem('userObject', JSON.stringify(response.data));
             props.onLogIn();
-            
             return navigate("/");
         }
 
