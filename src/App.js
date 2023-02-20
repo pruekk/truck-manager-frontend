@@ -39,6 +39,7 @@ const App = (props) => {
     { path: "/car-information", element: props.isLoggedIn ? <Car /> : <Navigate to='/login' /> },
     { path: "/driver", element: props.isLoggedIn ? <Driver /> : <Navigate to='/login' /> },
     { path: "/login", element: <Login onLogIn={props.logIn} /> },
+
     { path: "*", element: <NotFound /> }
   ]);
 
@@ -66,15 +67,12 @@ export default function AppWrapper() {
 
   const logIn = () => setIsLoggedIn(true);
 
-  // pass this callback to components you want to allow logging out
-  // it will update the local state and then get persisted
   const logOut = () => {
     setIsLoggedIn(false);
     localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
     localStorage.setItem('userToken', null);
     localStorage.setItem('userObject', null);
   };
-
   return (
     <ThemeProvider theme={theme}>
       <Router>

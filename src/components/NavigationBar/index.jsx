@@ -34,7 +34,7 @@ export default function NavigationBar(props) {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-
+  
   const handleCloseUserMenu = (setting) => {
     if (setting === "Logout") {
       props.logOut();
