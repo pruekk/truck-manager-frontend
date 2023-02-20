@@ -47,7 +47,7 @@ function Table(props) {
     }
 
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} checkboxSelection={true} customStyle={customStyle} getRowClassName={getRowClassName} />
+        <DataGridTable dataRows={props.dataRows} columns={columns} checkboxSelection={true} customStyle={customStyle} getRowClassName={getRowClassName} onSelectionModelChange={props.onSelectionModelChange} />
     );
 }
 

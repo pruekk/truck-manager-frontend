@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
@@ -17,8 +17,10 @@ import IconButton from "@mui/material/IconButton";
 
 //Constants
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
-import * as DriverConstants from "../../../Driver/constants/Constants";
-import * as CarConstants from "../../../Car/constants/Constants";
+
+//Services
+import { GetCars } from '../../../Car/services/CarServices';
+import { GetDrivers } from '../../../Driver/services/DriverServices';
 
 //Others
 import moment from "moment";
@@ -26,6 +28,11 @@ import moment from "moment";
 export default function AddNewDialog(props) {
     const [carReplacementObj, setCarReplacementObj] = React.useState({});
     const [isError, setIsError] = React.useState(false);
+
+    useEffect(() => {
+        getCars();
+        getDrivers();
+    }, []);
 
     const onChangeInput = (event) => {
         carReplacementObj[`${event.target.name}`] = event.target.value;
@@ -44,6 +51,25 @@ export default function AddNewDialog(props) {
             });
         } else {
             setIsError(true);
+        }
+    }
+
+    const [drivers, setDrivers] = React.useState([]);
+    const [cars, setCars] = React.useState([]);
+
+    const getDrivers = async () => {
+        const response = await GetDrivers(localStorage.getItem('userToken'));
+
+        if (response.success) {
+            setDrivers(response.data);
+        }
+    }
+
+    const getCars = async () => {
+        const response = await GetCars(localStorage.getItem('userToken'));
+
+        if (response.success) {
+            setCars(response.data);
         }
     }
 
@@ -90,7 +116,7 @@ export default function AddNewDialog(props) {
                                 },
                             }}
                         >
-                            {CarConstants.cars.map((car) => {
+                            {cars.map((car) => {
                                 return (
                                     <MenuItem key={car.id} value={car.id}>{car.id}</MenuItem>
                                 )
@@ -117,7 +143,7 @@ export default function AddNewDialog(props) {
                                 },
                             }}
                         >
-                            {DriverConstants.drivers.filter((driver) => driver.firstName !== undefined && driver.lastName !== undefined).map((driver) => {
+                            {drivers.filter((driver) => driver.firstName && driver.lastName).map((driver) => {
                                 return (
                                     <MenuItem key={`${driver.firstName} ${driver.lastName}`} value={`${driver.firstName} ${driver.lastName}`}>{`${driver.firstName} ${driver.lastName}`}</MenuItem>
                                 )

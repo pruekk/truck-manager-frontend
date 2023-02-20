@@ -22,7 +22,7 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import * as FactoryConstants from "../../constants/FactoryConstants";
 
 //Services
-import { GetDP } from "./services/DPServices";
+import { AddNewDP, GetDP, DeleteDP } from "./services/DPServices";
 
 export default function DP() {
     const [dataRows, setDataRows] = React.useState([]);
@@ -127,6 +127,19 @@ export default function DP() {
         return dbList;
     }
 
+    const [selectedRowIds, setSelectedRowIds] = React.useState([]);
+    const onSelectionModelChange = (ids) => {
+        setSelectedRowIds(ids);
+    }
+
+    const deleteDP = async () => {
+        const response = await DeleteDP(localStorage.getItem('userToken'), selectedRowIds[0]);
+
+        if (response.success) {
+            getDP();
+        }
+    }
+
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
     const handleOpenDialog = () => {
         setIsOpenDialog(true);
@@ -136,10 +149,17 @@ export default function DP() {
         setIsOpenDialog(false);
     };
 
-    const handleConfirmImportedData = (dataRows) => {
-        const allRows = confirmedDataRows.concat(dataRows);
-        setConfirmedDataRows(allRows);
-        handleCloseDialog();
+    const handleConfirmImportedData = async (dataRows) => {
+        const response = await AddNewDP(localStorage.getItem('userToken'), dataRows);
+
+        if (response.success) {
+            getDP();
+            handleCloseDialog();
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
     };
 
 
@@ -160,21 +180,6 @@ export default function DP() {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Grid container spacing={1}>
-                        {/*<Grid item>
-              <Button
-                disableElevation
-                variant="contained"
-                startIcon={<AddCircleRoundedIcon />}
-                sx={{
-                  backgroundColor: "#419b45",
-                  "&:hover": {
-                    backgroundColor: "#94da98",
-                  },
-                }}
-              >
-                Add
-              </Button>
-              </Grid>*/}
                         <Grid item>
                             <Button
                                 disableElevation
@@ -189,7 +194,7 @@ export default function DP() {
                                 }}
                             >
                                 Import
-                <input
+                                <input
                                     hidden
                                     multiple
                                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
@@ -199,6 +204,24 @@ export default function DP() {
                                 />
                             </Button>
                         </Grid>
+                        {selectedRowIds.length === 1 &&
+                            <Grid item>
+                                <Button
+                                    disableElevation
+                                    variant="contained"
+                                    component="label"
+                                    onClick={deleteDP}
+                                    sx={{
+                                        backgroundColor: "#bd0101",
+                                        "&:hover": {
+                                            backgroundColor: "#cd6a6a",
+                                        },
+                                    }}
+                                >
+                                    Delete
+                                </Button>
+                            </Grid>
+                        }
                     </Grid>
                 </Grid>
 
@@ -213,7 +236,7 @@ export default function DP() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Table dataRows={confirmedDataRows} />
+                    <Table dataRows={confirmedDataRows} onSelectionModelChange={onSelectionModelChange} />
                 </Grid>
             </Grid>
         </Container>

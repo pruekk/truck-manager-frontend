@@ -23,12 +23,11 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import * as Constants from "./constants/Constants";
 
 //Services
-import { GetAgency } from "./services/AgencyServices";
+import { AddNewAgency, GetAgency, DeleteAgency } from "./services/AgencyServices";
 
 export default function Agency() {
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
-    const [selectedRowIds, setSelectedRowIds] = React.useState([]);
 
     useEffect(() => {
         getAgency();
@@ -113,8 +112,18 @@ export default function Agency() {
         return dbList;
     }
 
+    const [selectedRowIds, setSelectedRowIds] = React.useState([]);
+
     const onSelectionModelChange = (id) => {
         setSelectedRowIds(id);
+    }
+
+    const deleteAgency = async () => {
+        const response = await DeleteAgency(localStorage.getItem('userToken'), selectedRowIds[0]);
+
+        if (response.success) {
+            getAgency();
+        }
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -126,10 +135,17 @@ export default function Agency() {
         setIsOpenDialog(false);
     };
 
-    const handleConfirmImportedData = (dataRows) => {
-        const allRows = confirmedDataRows.concat(dataRows);
-        setConfirmedDataRows(allRows);
-        handleCloseDialog();
+    const handleConfirmImportedData = async (dataRows) => {
+        const response = await AddNewAgency(localStorage.getItem('userToken'), dataRows);
+
+        if (response.success) {
+            getAgency();
+            handleCloseDialog();
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
     };
 
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -173,6 +189,24 @@ export default function Agency() {
                                 />
                             </Button>
                         </Grid>
+                        {selectedRowIds.length === 1 &&
+                            <Grid item>
+                                <Button
+                                    disableElevation
+                                    variant="contained"
+                                    component="label"
+                                    onClick={deleteAgency}
+                                    sx={{
+                                        backgroundColor: "#bd0101",
+                                        "&:hover": {
+                                            backgroundColor: "#cd6a6a",
+                                        },
+                                    }}
+                                >
+                                    Delete
+                                </Button>
+                            </Grid>
+                        }
                         {selectedRowIds.length === 1 &&
                             <Grid item>
                                 <Button

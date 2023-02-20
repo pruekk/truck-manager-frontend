@@ -65,7 +65,7 @@ export default function CarReplacement() {
       return;
     }
 
-    alert("Something went wrong! Please try again later.")
+    alert("Something went wrong! Please try again later.");
   };
 
 
@@ -99,7 +99,6 @@ export default function CarReplacement() {
                   variant="contained"
                   component="label"
                   onClick={deleteCarReplacement}
-                  startIcon={<AddCircleRoundedIcon />}
                   sx={{
                     backgroundColor: "#bd0101",
                     "&:hover": {
@@ -108,7 +107,7 @@ export default function CarReplacement() {
                   }}
                 >
                   Delete
-              </Button>
+                </Button>
               </Grid>
             }
           </Grid>

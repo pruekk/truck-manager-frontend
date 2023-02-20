@@ -17,6 +17,6 @@ export const columns = [
 
 export default function CarInformationTable(props) {
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} checkboxSelection={true} />
+        <DataGridTable dataRows={props.dataRows} columns={columns} checkboxSelection={true} onSelectionModelChange={props.onSelectionModelChange} />
     );
 }

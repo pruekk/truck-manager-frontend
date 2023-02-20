@@ -6,22 +6,46 @@ import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
-import React, { useEffect } from "react";
+import React from "react";
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 
 //Constants
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
 
-export default function AddCarDialog(props) {
+//Others
+import moment from "moment";
 
-  useEffect(() => {
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+export default function AddCarDialog(props) {
+  const [carObj, setCarObj] = React.useState({});
+  const [isError, setIsError] = React.useState(false);
+
+  const onChangeInput = (event) => {
+    carObj[`${event.target.name}`] = event.target.value;
+    setCarObj(carObj);
+  }
+
+  const onClickAdd = () => {
+    if (carObj["id"] && carObj["licensePlate"] && carObj["type"] && carObj["registrationDate"] && carObj["buyDate"] && carObj["price"]) {
+      setIsError(false);
+
+      props.handleAddNewCar({
+        id: carObj["id"],
+        licensePlate: carObj["licensePlate"],
+        type: carObj["type"],
+        registrationDate: moment(carObj["registrationDate"]).format('DD/MM/YYYY'),
+        buyDate: moment(carObj["buyDate"]).format('DD/MM/YYYY'),
+        price: Number(carObj["price"]),
+      });
+    } else {
+      setIsError(true);
+    }
+  }
 
   return (
     <Dialog
       fullWidth={true}
-      maxWidth="xl"
+      maxWidth="md"
       open={props.openDialog}
       onClose={props.handleCloseDialog}
     >
@@ -42,46 +66,46 @@ export default function AddCarDialog(props) {
       </DialogTitle>
       <DialogContent dividers sx={{ backgroundColor: "#FBFBFB" }}>
         <Grid container spacing={2}>
-          <Grid item xs>
+          <Grid item xs={12}>
             <Typography variant="body1" gutterBottom>
               รหัสรถโม่
             </Typography>
-            <TextField id="carId" variant="outlined" fullWidth />
+            <TextField id="id" name="id" variant="outlined" error={isError && !carObj["id"]} onChange={onChangeInput} />
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12}>
             <Typography variant="body1" gutterBottom>
               ทะเบียนรถ
             </Typography>
-            <TextField id="license" variant="outlined" fullWidth />
+            <TextField id="licensePlate" name="licensePlate" variant="outlined" error={isError && !carObj["licensePlate"]} onChange={onChangeInput} />
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12}>
             <Typography variant="body1" gutterBottom>
               ประเภทรถ
             </Typography>
-            <TextField id="carType" variant="outlined" fullWidth />
+            <TextField id="type" name="type" variant="outlined" error={isError && !carObj["type"]} onChange={onChangeInput} />
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12}>
             <Typography variant="body1" gutterBottom>
               วันที่จดทะเบียน
             </Typography>
-            <TextField id="registrationDate" variant="outlined" fullWidth />
+            <TextField id="registrationDate" name="registrationDate" type="date" variant="outlined" error={isError && !carObj["registrationDate"]} onChange={onChangeInput} />
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12}>
             <Typography variant="body1" gutterBottom>
               วันที่ซื้อ
             </Typography>
-            <TextField id="buyDate" variant="outlined" fullWidth />
+            <TextField id="buyDate" name="buyDate" type="date" variant="outlined" error={isError && !carObj["buyDate"]} onChange={onChangeInput} />
           </Grid>
-          <Grid item xs>
+          <Grid item xs={12}>
             <Typography variant="body1" gutterBottom>
               ราคา
             </Typography>
-            <TextField id="price" variant="outlined" fullWidth />
+            <TextField id="price" name="price" variant="outlined" error={isError && !carObj["price"]} onChange={onChangeInput} />
           </Grid>
         </Grid>
       </DialogContent>
       <DialogActions sx={{ backgroundColor: "#FBFBFB" }}>
-        <Button>Add</Button>
+        <Button onClick={onClickAdd}>Add</Button>
       </DialogActions>
     </Dialog>
   );
