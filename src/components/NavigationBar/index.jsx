@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import AppBar from "@mui/material/AppBar";
 import Avatar from "@mui/material/Avatar";
@@ -24,7 +24,9 @@ import * as MenusConstants from "../../constants/NavigationBarConstants";
 
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
-export default function NavigationBar() {
+export default function NavigationBar(props) {
+  const navigate = useNavigate();
+
   const [title, setTitle] = React.useState("Welcome");
   const [anchorElUser, setAnchorElUser] = React.useState(null);
   const open = Boolean(anchorElUser);
@@ -32,8 +34,14 @@ export default function NavigationBar() {
   const handleOpenUserMenu = (event) => {
     setAnchorElUser(event.currentTarget);
   };
-  const handleCloseUserMenu = () => {
+  
+  const handleCloseUserMenu = (setting) => {
+    if (setting === "Logout") {
+      props.logOut();
+    }
+
     setAnchorElUser(null);
+    return navigate("/login");
   };
 
   return (
@@ -74,20 +82,21 @@ export default function NavigationBar() {
       >
         <Toolbar disableGutters>
           <Avatar src="logo_2.png" sx={{ ml: 1, mr: 3 }} />
-          <Typography
-            variant="h5"
-            noWrap
-            component="a"
-            href="/"
-            sx={{
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            TNCP
+          <Link to="/" style={{ textDecoration: 'none', color: 'black' }}>
+            <Typography
+              variant="h5"
+              noWrap
+              component="a"
+              sx={{
+                fontWeight: 700,
+                letterSpacing: ".3rem",
+                color: "inherit",
+                textDecoration: "none",
+              }}
+            >
+              TNCP
           </Typography>
+          </Link>
         </Toolbar>
         <Divider />
         <List>
@@ -128,7 +137,7 @@ export default function NavigationBar() {
                   textDecoration: "none",
                 }}
               >
-                example@gmail.com
+                {JSON.parse(localStorage.getItem('userObject'))?.name ? JSON.parse(localStorage.getItem('userObject'))?.name : "example@gmail.com"}
               </Typography>
             </ListItemButton>
             <Menu
@@ -138,7 +147,7 @@ export default function NavigationBar() {
               onClose={handleCloseUserMenu}
             >
               {settings.map((setting) => (
-                <MenuItem key={setting} onClick={handleCloseUserMenu}>
+                <MenuItem key={setting} onClick={() => { handleCloseUserMenu(setting); }}>
                   <Typography textAlign="center">{setting}</Typography>
                 </MenuItem>
               ))}
