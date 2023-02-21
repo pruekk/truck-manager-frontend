@@ -78,7 +78,8 @@ export default function DP() {
                 const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
 
                 if (dataParse.length !== 0) {
-                    allSheetData.push(...prepareDataForTable(dataParse));
+                    const cleanupData = dataParse.filter((data) => data.length !== 0)
+                    allSheetData.push(...prepareDataForTable(sheetName, cleanupData));
                 }
             }
 
@@ -96,37 +97,41 @@ export default function DP() {
         return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
     }
 
-    const prepareDataForTable = (data) => {
-        const dbList = []
-        const factoryCode = data[2][0].split(' ')[1];
-        const rowCode = `${factoryCode.slice(0, 1)}${factoryCode.substr(2)}`
-        const date = data[1][0].split(':')[1].trim().replace(/-/g, '/');
+    const prepareDataForTable = (date, data) => {
+        const dpList = [];
+        const factoryStruct = [{
+            code: "F256",
+            name: "บ้านบึง2"
+        }]
+        const factoryName = data[2][0]?.split(' ')[2]; // get factoryName from row 3 [FC256 - บ้านบึง2]
+        const factory = factoryStruct.find(fac => fac.name === factoryName)
         const price = 0;
 
-        // Start from row 8 in Excel
-        data.slice(7).map((row) => {
-            if (row[0]?.includes(rowCode)) {
-                dbList.push({
-                    "id": row[0],
+        // Start from row 4 in Excel
+        data.slice(3).map((row) => {
+            if (row[1]?.includes(factory.code)) {
+                console.log(row[1])
+                dpList.push({
+                    "id": row[1],
                     "date": date,
-                    "time": convertToTimeFormat(row[5]),
-                    "destination": row[3],
+                    "time": convertToTimeFormat(row[20]),
+                    "destination": row[7],
                     "distance": 0,
-                    "code": row[7],
-                    "amount": row[9].toFixed(2),
+                    "code": row[10],
+                    "amount": row[16].toFixed(2),
                     "price": price.toFixed(2),
                     "oil": 0,
-                    "car": row[4],
+                    "car": row[13],
                     "driver": "",
-                    "status": dpStatus(row[10].trim()),
-                    "duplicated": confirmedDataRows.some(list => list.id === row[0])
+                    "status": dpStatus(row[2].trim()),
+                    "duplicated": confirmedDataRows.some(list => list.id === row[1])
                 });
             }
-            return dbList;
+            return dpList;
         });
 
-        // return dbList to handleUploadExcel
-        return dbList;
+        // return dpList to handleUploadExcel
+        return dpList;
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -162,21 +167,6 @@ export default function DP() {
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Grid container spacing={1}>
-                        {/*<Grid item>
-              <Button
-                disableElevation
-                variant="contained"
-                startIcon={<AddCircleRoundedIcon />}
-                sx={{
-                  backgroundColor: "#419b45",
-                  "&:hover": {
-                    backgroundColor: "#94da98",
-                  },
-                }}
-              >
-                Add
-              </Button>
-              </Grid>*/}
                         <Grid item>
                             <Button
                                 disableElevation
@@ -191,7 +181,7 @@ export default function DP() {
                                 }}
                             >
                                 Import
-                <input
+                                <input
                                     hidden
                                     multiple
                                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
