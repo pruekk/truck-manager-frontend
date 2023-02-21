@@ -110,7 +110,6 @@ export default function DP() {
         // Start from row 4 in Excel
         data.slice(3).map((row) => {
             if (row[1]?.includes(factory.code)) {
-                console.log(row[1])
                 dpList.push({
                     "id": row[1],
                     "date": date,

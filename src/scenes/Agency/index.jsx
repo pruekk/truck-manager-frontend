@@ -53,7 +53,8 @@ export default function Agency() {
                 const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
 
                 if (dataParse.length !== 0) {
-                    allSheetData.push(...prepareDataForTable(dataParse));
+                    const cleanupData = dataParse.filter((data) => data.length !== 0)
+                    allSheetData.push(...prepareDataForTable(sheetName, cleanupData));
                 }
             }
 
@@ -71,22 +72,25 @@ export default function Agency() {
         reader.readAsBinaryString(f)
     }
 
-    const prepareDataForTable = (data) => {
+    const prepareDataForTable = (date, data) => {
         const dbList = [];
-        const factoryCode = data[2][0].split(' ')[1];
-        const rowCode = `${factoryCode.slice(0, 1)}${factoryCode.substr(2)}`
-        const date = data[1][0].split(':')[1].trim().replace(/-/g, '/');
+        const factoryStruct = [{
+            code: "F256",
+            name: "บ้านบึง2"
+        }]
+        const factoryName = data[2][0]?.split(' ')[2]; // get factoryName from row 3 [FC256 - บ้านบึง2]
+        const factory = factoryStruct.find(fac => fac.name === factoryName)
 
-        // Start from row 8 in Excel
-        data.slice(7).map((row) => {
-            if (row[0]?.includes(rowCode)) {
+        // Start from row 4 in Excel
+        data.slice(3).map((row) => {
+            if (row[1]?.includes(factory.code)) {
                 dbList.push({
-                    "id": row[2],
+                    "id": row[1],
                     "dateStart": date,
                     "dateEnd": date,
-                    "agent": row[3],
-                    "oldId": row[7],
-                    "newId": row[7],
+                    "agent": row[7],
+                    "oldId": row[10],
+                    "newId": row[10],
                     "distance": 0,
                     "oil": 0,
                 });
