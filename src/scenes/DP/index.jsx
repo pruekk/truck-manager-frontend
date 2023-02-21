@@ -96,7 +96,7 @@ export default function DP() {
                                     multiple
                                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                     type="file"
-                                    onChange={(e) => handleUploadExcel(e, confirmedDataRows, handleOpenDialog, dataRows, setDataRows)}
+                                    onChange={(e) => handleUploadExcel(e, "DP", confirmedDataRows, handleOpenDialog, dataRows, setDataRows)}
                                     onClick={clearFileCache} //Clear cache
                                 />
                             </Button>

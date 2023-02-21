@@ -1,5 +1,4 @@
 import React from "react";
-import * as XLSX from 'xlsx';
 
 //Material UI
 import Button from "@mui/material/Button";
@@ -19,6 +18,9 @@ import ImportDialog from './components/ImportDialog';
 import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
+//Functions
+import handleUploadExcel from "../../functions/handleUploadExcel";
+
 //Constatns
 import * as Constants from "./constants/Constants";
 
@@ -30,76 +32,6 @@ export default function Agency() {
     const clearFileCache = (event) => {
         event.target.value = null;
         setDataRows([]);
-    }
-
-    const handleUploadExcel = (e) => {
-        e.preventDefault();
-        // Upload file by file to prevent human error
-        const files = e.target.files, f = files[0];
-        const reader = new FileReader();
-
-        reader.onprogress = function (e) {
-            const progress = (e.loaded / e.total) * 100;
-            console.log(`Upload progress: ${progress}%`);
-        };
-
-        reader.onload = function (e) {
-            const data = e.target.result;
-            const readedData = XLSX.read(data, { type: 'binary' });
-            const allSheetData = [];
-
-            for (const sheetName of readedData.SheetNames) {
-                const ws = readedData.Sheets[sheetName];
-                const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
-                if (dataParse.length !== 0) {
-                    const cleanupData = dataParse.filter((data) => data.length !== 0)
-                    allSheetData.push(...prepareDataForTable(sheetName, cleanupData));
-                }
-            }
-
-            //Remove duplicated row
-            const filteredSheetData = allSheetData.filter((value, index, self) =>
-                index === self.findIndex((t) => (
-                    t.id === value.id
-                ))
-            );
-
-            handleOpenDialog();
-            setDataRows([...dataRows, ...filteredSheetData]);
-        };
-
-        reader.readAsBinaryString(f)
-    }
-
-    const prepareDataForTable = (date, data) => {
-        const dbList = [];
-        const factoryStruct = [{
-            code: "F256",
-            name: "บ้านบึง2"
-        }]
-        const factoryName = data[2][0]?.split(' ')[2]; // get factoryName from row 3 [FC256 - บ้านบึง2]
-        const factory = factoryStruct.find(fac => fac.name === factoryName)
-
-        // Start from row 4 in Excel
-        data.slice(3).map((row) => {
-            if (row[1]?.includes(factory.code)) {
-                dbList.push({
-                    "id": row[1],
-                    "dateStart": date,
-                    "dateEnd": date,
-                    "agent": row[7],
-                    "oldId": row[10],
-                    "newId": row[10],
-                    "distance": 0,
-                    "oil": 0,
-                });
-            }
-            return dbList;
-        });
-
-        // return dbList to handleUploadExcel
-        return dbList;
     }
 
     const onSelectionModelChange = (id) => {
@@ -157,7 +89,7 @@ export default function Agency() {
                                     multiple
                                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                     type="file"
-                                    onChange={handleUploadExcel}
+                                    onChange={(e) => handleUploadExcel(e, "Agency", confirmedDataRows, handleOpenDialog, dataRows, setDataRows)}
                                     onClick={clearFileCache} //Clear cache
                                 />
                             </Button>
