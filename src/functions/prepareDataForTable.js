@@ -13,9 +13,9 @@ const dpStatus = (status) => {
 
 const convertToTimeFormat = (num) => {
     var hours = Math.floor(num * 24);
-    var minutes = Math.floor((num * 24 - hours) * 60);
-    var seconds = Math.round((((num * 24 - hours) * 60) - minutes) * 60);
-    return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+    var minutes = Math.round((num * 24 - hours) * 60);
+    // var seconds = Math.round((((num * 24 - hours) * 60) - minutes) * 60);
+    return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
 }
 
 export default function prepareDataForTable(formatType, date, data, confirmedDataRows) {
