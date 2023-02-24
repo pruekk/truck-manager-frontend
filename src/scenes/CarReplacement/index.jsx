@@ -13,9 +13,10 @@ import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 
 //Dialogs
 import AddNewDialog from './components/AddNewDialog';
+import EditDialog from "./components/EditDialog";
 
 //Services
-import { AddNewCarReplacement, DeleteCarReplacement, GetCarReplacement } from './services/CarReplacementServices';
+import { AddNewCarReplacement, DeleteCarReplacement, GetCarReplacement, EditCarReplacement } from './services/CarReplacementServices';
 
 export default function CarReplacement() {
   const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
@@ -33,8 +34,43 @@ export default function CarReplacement() {
   }
 
   const [selectedRowIds, setSelectedRowIds] = React.useState([]);
+  const [selectedRow, setSelectedRow] = React.useState({});
+  const [isEditing, setIsEditing] = React.useState(false);
   const onSelectionModelChange = (ids) => {
     setSelectedRowIds(ids);
+  }
+
+  const onClickEditRow = () => {
+    const selectedRow = confirmedDataRows.filter((row) => { return row._id === selectedRowIds[0] });
+    setSelectedRow(selectedRow);
+    setIsEditing(true);
+    handleOpenEditDialog();
+  }
+
+  const [isOpenEditDialog, setIsOpenEditDialog] = React.useState(false);
+  const handleOpenEditDialog = () => {
+    setIsOpenEditDialog(true);
+  }
+
+  const handleCloseEditDialog = () => {
+    setIsOpenEditDialog(false);
+    setSelectedRow({});
+    setIsEditing(false);
+  }
+
+  const onClickUpdate = async (row) => {
+    const response = await EditCarReplacement(localStorage.getItem('userToken'), row);
+
+    if (response.success) {
+      getCarReplacement();
+      setSelectedRow({});
+      setIsEditing(false);
+      handleCloseEditDialog();
+
+      return;
+    }
+
+    alert("Something went wrong! Please try again later.");
   }
 
   const deleteCarReplacement = async () => {
@@ -71,7 +107,19 @@ export default function CarReplacement() {
 
   return (
     <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
-      <AddNewDialog openDialog={isOpenDialog} handleCloseDialog={handleCloseDialog} handleAddNewCarReplacement={handleAddNewCarReplacement} />
+      <AddNewDialog
+        openDialog={isOpenDialog}
+        handleCloseDialog={handleCloseDialog}
+        handleAddNewCarReplacement={handleAddNewCarReplacement}
+      />
+      {isEditing &&
+        <EditDialog
+          openDialog={isOpenEditDialog}
+          dataRows={selectedRow[0]}
+          handleCloseDialog={handleCloseEditDialog}
+          onClickUpdate={onClickUpdate}
+        />
+      }
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={1}>
@@ -83,15 +131,33 @@ export default function CarReplacement() {
                 onClick={handleOpenDialog}
                 startIcon={<AddCircleRoundedIcon />}
                 sx={{
-                  backgroundColor: "#7b7a7a",
+                  backgroundColor: "#419b45",
                   "&:hover": {
-                    backgroundColor: "#c8cccc",
+                    backgroundColor: "#94da98",
                   },
                 }}
               >
                 Add
               </Button>
             </Grid>
+            {selectedRowIds.length === 1 &&
+              <Grid item>
+                <Button
+                  disableElevation
+                  variant="contained"
+                  component="label"
+                  onClick={onClickEditRow}
+                  sx={{
+                    backgroundColor: "#7b7a7a",
+                    "&:hover": {
+                      backgroundColor: "#c8cccc",
+                    },
+                  }}
+                >
+                  Edit
+                </Button>
+              </Grid>
+            }
             {selectedRowIds.length === 1 &&
               <Grid item>
                 <Button

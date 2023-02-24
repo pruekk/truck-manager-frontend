@@ -16,7 +16,7 @@ import Table from './components/Table';
 import ImportDialog from './components/ImportDialog';
 
 //Icons
-import EditRoundedIcon from '@mui/icons-material/EditRounded';
+// import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
 //Constants
@@ -119,7 +119,7 @@ export default function Agency() {
     }
 
     const deleteAgency = async () => {
-        const response = await DeleteAgency(localStorage.getItem('userToken'), selectedRowIds[0]);
+        const response = await DeleteAgency(localStorage.getItem('userToken'), selectedRowIds);
 
         if (response.success) {
             getAgency();
@@ -189,7 +189,7 @@ export default function Agency() {
                                 />
                             </Button>
                         </Grid>
-                        {selectedRowIds.length === 1 &&
+                        {selectedRowIds.length > 0 &&
                             <Grid item>
                                 <Button
                                     disableElevation
@@ -207,7 +207,7 @@ export default function Agency() {
                                 </Button>
                             </Grid>
                         }
-                        {selectedRowIds.length === 1 &&
+                        {/*selectedRowIds.length === 1 &&
                             <Grid item>
                                 <Button
                                     disableElevation
@@ -224,7 +224,7 @@ export default function Agency() {
                                     Edit
                                 </Button>
                             </Grid>
-                        }
+                        */}
                     </Grid>
                 </Grid>
 

@@ -11,18 +11,17 @@ import Tab from '@mui/material/Tab';
 
 //Components
 import ImportDialog from './components/ImportDialog';
+import EditDialog from './components/EditDialog';
 import Table from './components/Table';
 
 //Icons
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
-//Functions
-
 //Constatns
 import * as FactoryConstants from "../../constants/FactoryConstants";
 
 //Services
-import { AddNewDP, GetDP, DeleteDP } from "./services/DPServices";
+import { AddNewDP, GetDP, DeleteDP, EditDP } from "./services/DPServices";
 
 export default function DP() {
     const [dataRows, setDataRows] = React.useState([]);
@@ -128,16 +127,49 @@ export default function DP() {
     }
 
     const [selectedRowIds, setSelectedRowIds] = React.useState([]);
+    const [selectedRow, setSelectedRow] = React.useState({});
     const onSelectionModelChange = (ids) => {
         setSelectedRowIds(ids);
     }
 
-    const deleteDP = async () => {
-        const response = await DeleteDP(localStorage.getItem('userToken'), selectedRowIds[0]);
+    const onClickEditRow = () => {
+        const selectedRow = confirmedDataRows.filter((row) => { return row.id === selectedRowIds[0] });
+        setSelectedRow(selectedRow);
+        handleOpenEditDialog();
+    }
+
+    const [isOpenEditDialog, setIsOpenEditDialog] = React.useState(false);
+    const handleOpenEditDialog = () => {
+        setIsOpenEditDialog(true);
+    }
+
+    const handleCloseEditDialog = () => {
+        setIsOpenEditDialog(false);
+    }
+
+    const onClickUpdate = async (row) => {
+        const response = await EditDP(localStorage.getItem('userToken'), row);
 
         if (response.success) {
             getDP();
+            handleCloseEditDialog();
+
+            return;
         }
+
+        alert("Something went wrong! Please try again later.");
+    }
+
+    const deleteDP = async () => {
+        const response = await DeleteDP(localStorage.getItem('userToken'), selectedRowIds);
+
+        if (response.success) {
+            getDP();
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -177,6 +209,12 @@ export default function DP() {
                 handleCloseDialog={handleCloseDialog}
                 handleConfirmImportedData={handleConfirmImportedData}
             />
+            <EditDialog
+                openDialog={isOpenEditDialog}
+                dataRows={selectedRow}
+                handleCloseDialog={handleCloseEditDialog}
+                onClickUpdate={onClickUpdate}
+            />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Grid container spacing={1}>
@@ -205,6 +243,24 @@ export default function DP() {
                             </Button>
                         </Grid>
                         {selectedRowIds.length === 1 &&
+                            <Grid item>
+                                <Button
+                                    disableElevation
+                                    variant="contained"
+                                    component="label"
+                                    onClick={onClickEditRow}
+                                    sx={{
+                                        backgroundColor: "#7b7a7a",
+                                        "&:hover": {
+                                            backgroundColor: "#c8cccc",
+                                        },
+                                    }}
+                                >
+                                    Edit
+                                </Button>
+                            </Grid>
+                        }
+                        {selectedRowIds.length > 0 &&
                             <Grid item>
                                 <Button
                                     disableElevation

@@ -45,6 +45,28 @@ export async function AddNewCarReplacement(token, data) {
     }
 }
 
+export async function EditCarReplacement(token, data) {
+    try {
+        const response = await axios({
+            method: 'put',
+            url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/car-replacement/${data.carId}`,
+            headers: { 'Authorization': `Bearer ${token}` },
+            data: data
+        });
+
+        return {
+            success: true,
+            data: response.data
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            success: false,
+            data: err
+        }
+    }
+}
+
 export async function DeleteCarReplacement(token, id) {
     try {
         const response = await axios({

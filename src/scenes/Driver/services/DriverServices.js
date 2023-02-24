@@ -22,3 +22,68 @@ export async function GetDrivers(token) {
         }
     }
 }
+
+export async function AddNewDriver(token, data) {
+    try {
+        const response = await axios({
+            method: 'post',
+            url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/drivers`,
+            headers: { 'Authorization': `Bearer ${token}` },
+            data: { dataRows: data }
+        });
+
+        return {
+            success: true,
+            data: response.data
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            success: false,
+            data: err
+        }
+    }
+}
+
+export async function EditDriver(token, data) {
+    try {
+        const response = await axios({
+            method: 'put',
+            url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/drivers/${data.id}`,
+            headers: { 'Authorization': `Bearer ${token}` },
+            data: data
+        });
+
+        return {
+            success: true,
+            data: response.data
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            success: false,
+            data: err
+        }
+    }
+}
+
+export async function DeleteDriver(token, id) {
+    try {
+        const response = await axios({
+            method: 'delete',
+            url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/drivers/${id}`,
+            headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        return {
+            success: true,
+            data: response.data
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            success: false,
+            data: err
+        }
+    }
+}

@@ -20,6 +20,6 @@ export const columns = [
 
 export default function DriverTable(props) {
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} />
+        <DataGridTable dataRows={props.dataRows} columns={columns} onSelectionModelChange={props.onSelectionModelChange} checkboxSelection={true} />
     );
 }

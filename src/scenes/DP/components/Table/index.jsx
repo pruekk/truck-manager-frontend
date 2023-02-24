@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //Tables
 import DataGridTable from '../../../../components/DataGridTable';
@@ -6,7 +6,24 @@ import DataGridTable from '../../../../components/DataGridTable';
 //Constants
 import * as TableConstants from '../../../../constants/TableConstants';
 
+//Services
+import { GetCarReplacement } from '../../../CarReplacement/services/CarReplacementServices';
+
+//Functions
+import { matchDriver } from "../../functions/Functions";
+
 function Table(props) {
+    const [carReplacement, setCarReplacement] = React.useState([]);
+
+    useEffect(() => {
+        getCarReplacement();
+    }, []);
+
+    const getCarReplacement = async () => {
+        const response = await GetCarReplacement(localStorage.getItem('userToken'));
+        setCarReplacement(response.data);
+    }
+
     const columns = [
         { field: 'id', headerName: 'เลขดีพี', minWidth: TableConstants.columnsSize.medium },
         { field: 'date', headerName: 'วันที่', type: 'date', minWidth: TableConstants.columnsSize.medium },
@@ -18,7 +35,7 @@ function Table(props) {
         { field: 'price', headerName: 'ราคา', minWidth: TableConstants.columnsSize.small },
         { field: 'oil', headerName: 'น้ำมัน', minWidth: TableConstants.columnsSize.small },
         { field: 'car', headerName: 'เบอร์รถ', minWidth: TableConstants.columnsSize.small },
-        { field: 'driver', headerName: 'คนขับรถ', minWidth: TableConstants.columnsSize.large },
+        { field: 'driver', headerName: 'คนขับรถ', minWidth: TableConstants.columnsSize.large, valueGetter: (params) => matchDriver(params.row.car, params.row.date, params.row.time, carReplacement) },
         { field: 'status', headerName: 'สถานะ', type: 'singleSelect', valueOptions: ['Accepted', 'Canceled', 'Spoiled'], minWidth: TableConstants.columnsSize.small },
     ];
 

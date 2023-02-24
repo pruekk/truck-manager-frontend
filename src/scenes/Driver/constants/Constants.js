@@ -302,3 +302,5 @@ export const drivers = [
         editor: "example@gmail.com"
     }
 ];
+
+export const titles = ["นาย", "นางสาว", "นาง"]

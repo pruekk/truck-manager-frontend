@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //Material UI
 import Button from "@mui/material/Button";
@@ -17,15 +17,29 @@ import { createData } from "./functions/Functions";
 import AddNewDailog from './components/AddNewDialog';
 import DataTable from './components/DataTable';
 
-//Constatns
-import * as Constants from "./constants/Constants";
+//Services
+import { GetOilDelivery, AddOilDelivery, UpdateOilDelivery, DeleteOilDelivery } from "./services/OilDeliveryServices";
 
 export default function OilDelivery() {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
-  const [dataRow, setDataRow] = React.useState(Constants.dummyData);
+  const [dataRow, setDataRow] = React.useState([]);
   const [selectedRow, setSelectedRow] = React.useState([]);
+
+  useEffect(() => {
+    getOilDelivery();
+  }, []);
+
+  const getOilDelivery = async () => {
+    const response = await GetOilDelivery(localStorage.getItem('userToken'));
+
+    console.log(response);
+
+    if (response.success) {
+      setDataRow(response.data);
+    }
+  }
 
   const handleClickOpenDialog = () => {
     setOpenDialog(true);
@@ -49,40 +63,54 @@ export default function OilDelivery() {
     setOpenDeleteDialog(false);
   }
 
-  const addNewPrice = (oilInfoArr, factory, dateFrom, dateTo) => {
-    dataRow.push(createData(factory, dateFrom, dateTo, oilInfoArr));
-    setDataRow([...dataRow]);
-    setOpenDialog(false);
+  const addNewPrice = async (oilInfoArr, factory, dateFrom, dateTo) => {
+    const dataRows = createData(factory, dateFrom, dateTo, oilInfoArr);
+    const response = await AddOilDelivery(localStorage.getItem('userToken'), [dataRows]);
+
+    if (response.success) {
+      getOilDelivery();
+      setOpenDialog(false);
+
+      return;
+    }
+
+    alert("Something went wrong! Please try again later.");
   };
 
-  const editPrice = (oilInfoArr, factory, dateFrom, dateTo) => {
-    console.log(oilInfoArr);
-    dataRow.some((obj) => {
-      if (obj.factory === selectedRow[0].factory && obj.from === selectedRow[0].from && obj.to === selectedRow[0].to) {
-        obj.factory = factory;
-        obj.from = dateFrom;
-        obj.to = dateTo;
-        obj.arr = oilInfoArr;
-        return true;
-      }
-      return false;
-    });
-    
-    setDataRow([...dataRow]);
-    setOpenDialog(false);
-  }
+  const editPrice = async (oilInfoArr, factory, dateFrom, dateTo) => {
+    const response = await UpdateOilDelivery(localStorage.getItem('userToken'), {
+      _id: selectedRow[0]._id,
+      factory: factory,
+      from: dateFrom,
+      to: dateTo,
+      arr: oilInfoArr,
 
-  const removePrice = (selectedRow) => {
-    selectedRow.map((row) => {
-      const dataIndex = dataRow.findIndex((obj) => obj.factory === row.factory && obj.from === row.from && obj.to === row.to);
-      dataRow.splice(dataIndex, 1);
-
-      return dataRow;
     })
 
-    setDataRow([...dataRow]);
-    setSelectedRow([]);
-    handleCloseDeleteDialog();
+    if (response.success) {
+      getOilDelivery();
+      setSelectedRow([]);
+      setOpenDialog(false);
+
+      return;
+    }
+
+    alert("Something went wrong! Please try again later.");
+
+  }
+
+  const removePrice = async (selectedRow) => {
+    const response = await DeleteOilDelivery(localStorage.getItem('userToken'), selectedRow);
+
+    if (response.success) {
+      getOilDelivery();
+      setSelectedRow([]);
+      handleCloseDeleteDialog();
+
+      return;
+    }
+
+    alert("Something went wrong! Please try again later.");
   }
 
   return (

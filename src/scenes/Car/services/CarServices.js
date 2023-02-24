@@ -45,6 +45,28 @@ export async function AddNewCar(token, data) {
     }
 }
 
+export async function EditCar(token, data) {
+    try {
+        const response = await axios({
+            method: 'put',
+            url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/cars/${data.id}`,
+            headers: { 'Authorization': `Bearer ${token}` },
+            data: data
+        });
+
+        return {
+            success: true,
+            data: response.data
+        }
+    } catch (err) {
+        console.log(err);
+        return {
+            success: false,
+            data: err
+        }
+    }
+}
+
 export async function DeleteCar(token, id) {
     try {
         const response = await axios({
