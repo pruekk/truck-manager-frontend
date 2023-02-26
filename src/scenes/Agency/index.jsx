@@ -17,11 +17,13 @@ import ImportDialog from './components/ImportDialog';
 import EditDialog from './components/EditDialog';
 
 //Icons
-// import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
 //Constants
 import * as Constants from "./constants/Constants";
+
+//Functions
+import handleUploadExcel from "../../functions/handleUploadExcel";
 
 //Services
 import { AddNewAgency, GetAgency, DeleteAgency, EditAgency } from "./services/AgencyServices";
@@ -45,72 +47,6 @@ export default function Agency() {
     const clearFileCache = (event) => {
         event.target.value = null;
         setDataRows([]);
-    }
-
-    const handleUploadExcel = (e) => {
-        e.preventDefault();
-        // Upload file by file to prevent human error
-        const files = e.target.files, f = files[0];
-        const reader = new FileReader();
-
-        reader.onprogress = function (e) {
-            const progress = (e.loaded / e.total) * 100;
-            console.log(`Upload progress: ${progress}%`);
-        };
-
-        reader.onload = function (e) {
-            const data = e.target.result;
-            const readedData = XLSX.read(data, { type: 'binary' });
-            const allSheetData = [];
-
-            for (const sheetName of readedData.SheetNames) {
-                const ws = readedData.Sheets[sheetName];
-                const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
-                if (dataParse.length !== 0) {
-                    allSheetData.push(...prepareDataForTable(dataParse));
-                }
-            }
-
-            //Remove duplicated row
-            const filteredSheetData = allSheetData.filter((value, index, self) =>
-                index === self.findIndex((t) => (
-                    t.id === value.id
-                ))
-            );
-
-            handleOpenDialog();
-            setDataRows([...dataRows, ...filteredSheetData]);
-        };
-
-        reader.readAsBinaryString(f)
-    }
-
-    const prepareDataForTable = (data) => {
-        const dbList = [];
-        const factoryCode = data[2][0].split(' ')[1];
-        const rowCode = `${factoryCode.slice(0, 1)}${factoryCode.substr(2)}`
-        const date = data[1][0].split(':')[1].trim().replace(/-/g, '/');
-
-        // Start from row 8 in Excel
-        data.slice(7).map((row) => {
-            if (row[0]?.includes(rowCode)) {
-                dbList.push({
-                    "id": row[2],
-                    "dateStart": date,
-                    "dateEnd": date,
-                    "agent": row[3],
-                    "oldId": row[7],
-                    "newId": row[7],
-                    "distance": 0,
-                    "oil": 0,
-                });
-            }
-            return dbList;
-        });
-
-        // return dbList to handleUploadExcel
-        return dbList;
     }
 
     const [selectedRowIds, setSelectedRowIds] = React.useState([]);
@@ -153,6 +89,8 @@ export default function Agency() {
         if (response.success) {
             getAgency();
         }
+    const onSelectionModelChange = (id) => {
+        setSelectedRowIds(id);
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -219,7 +157,7 @@ export default function Agency() {
                                     multiple
                                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                     type="file"
-                                    onChange={handleUploadExcel}
+                                    onChange={(e) => handleUploadExcel(e, "Agency", confirmedDataRows, handleOpenDialog, dataRows, setDataRows)}
                                     onClick={clearFileCache} //Clear cache
                                 />
                             </Button>
