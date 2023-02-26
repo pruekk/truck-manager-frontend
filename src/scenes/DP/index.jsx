@@ -29,6 +29,7 @@ import handleUploadExcel from "../../functions/handleUploadExcel";
 export default function DP() {
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+    const [carReplacement, setCarReplacement] = React.useState([]);
 
     useEffect(() => {
         getDP();
@@ -37,39 +38,17 @@ export default function DP() {
 
     const getDP = async () => {
         const response = await GetDP(localStorage.getItem('userToken'));
-        console.log(response);
         setConfirmedDataRows(response.data);
     }
 
-    const dpStatus = (status) => {
-        switch (status) {
-            case "A":
-                return "Accepted";
-            case "C":
-                return "Canceled";
-            case "S":
-                return "Spoiled";
-            default:
-                return "Error";
-        }
+    const getCarReplacement = async () => {
+        const response = await GetCarReplacement(localStorage.getItem('userToken'));
+        setCarReplacement(response.data);
     }
 
     const clearFileCache = (event) => {
         event.target.value = null;
         setDataRows([]);
-    }
-
-    const [carReplacement, setCarReplacement] = React.useState([]);
-    const getCarReplacement = async () => {
-        const response = await GetCarReplacement(localStorage.getItem('userToken'));
-
-        if (response.success) {
-            setCarReplacement(response.data);
-
-            return;
-        }
-
-        alert("Something went wrong! Please try again later.");
     }
 
     const [selectedRowIds, setSelectedRowIds] = React.useState([]);
@@ -183,7 +162,7 @@ export default function DP() {
                                     multiple
                                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                     type="file"
-                                    onChange={(e) => handleUploadExcel(e, "DP", confirmedDataRows, handleOpenDialog, dataRows, setDataRows)}
+                                    onChange={(e) => handleUploadExcel(e, "DP", confirmedDataRows, handleOpenDialog, dataRows, setDataRows, carReplacement)}
                                     onClick={clearFileCache} //Clear cache
                                 />
                             </Button>

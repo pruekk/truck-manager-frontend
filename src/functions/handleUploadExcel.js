@@ -1,7 +1,7 @@
 import * as XLSX from 'xlsx';
 import prepareDataForTable from './prepareDataForTable'
 
-export default function handleUploadExcel(e, formatType, confirmedDataRows, handleOpenDialog, dataRows, setDataRows) {
+export default function handleUploadExcel(e, formatType, confirmedDataRows, handleOpenDialog, dataRows, setDataRows, carReplacement) {
     e.preventDefault();
     // Upload file by file to prevent human error
     const files = e.target.files, f = files[0];
@@ -23,7 +23,7 @@ export default function handleUploadExcel(e, formatType, confirmedDataRows, hand
 
             if (dataParse.length !== 0) {
                 const cleanupData = dataParse.filter((data) => data.length !== 0)
-                allSheetData.push(...prepareDataForTable(formatType, sheetName, cleanupData, confirmedDataRows));
+                allSheetData.push(...prepareDataForTable(formatType, sheetName, cleanupData, confirmedDataRows, carReplacement));
             }
         }
 
