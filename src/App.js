@@ -66,15 +66,13 @@ export default function AppWrapper() {
 
   const logIn = () => setIsLoggedIn(true);
 
-  // pass this callback to components you want to allow logging out
-  // it will update the local state and then get persisted
   const logOut = () => {
     setIsLoggedIn(false);
     localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
     localStorage.setItem('userToken', null);
     localStorage.setItem('userObject', null);
   };
-
+  
   return (
     <ThemeProvider theme={theme}>
       <Router>
