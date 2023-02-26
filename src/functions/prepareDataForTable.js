@@ -27,6 +27,7 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
     const factoryName = data[2][0]?.split(' ')[2]; // get factoryName from row 3 [FC256 - บ้านบึง2]
     const factory = factoryStruct.find(fac => fac.name === factoryName)
     const price = 0;
+    const customDate = date.trim().replace(/-/g, '/')
 
     // Start from row 4 in Excel
     if (formatType === "DP") {
@@ -34,7 +35,7 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
             if (row[1]?.includes(factory.code)) {
                 dpList.push({
                     "id": row[1],
-                    "date": date,
+                    "date": customDate,
                     "time": convertToTimeFormat(row[20]),
                     "destination": row[7],
                     "distance": 0,
