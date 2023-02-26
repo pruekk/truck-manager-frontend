@@ -284,30 +284,23 @@ export const drivers = [
         editor: "example@gmail.com"
     },
     {
-        id: 41
-    },
-    {
-        id: 42
-    },
-    {
-        id: 43
-    },
-    {
-        id: 44,
+        id: 41,
         firstName: "เจ้ติ๋ม",
         salary: 5000,
         editor: "example@gmail.com"
     },
     {
-        id: 45,
+        id: 42,
         firstName: "เฮียชุ้น",
         salary: 5000,
         editor: "example@gmail.com"
     },
     {
-        id: 46,
+        id: 43,
         firstName: "เด็กอู่",
         salary: 5000,
         editor: "example@gmail.com"
     }
 ];
+
+export const titles = ["นาย", "นางสาว", "นาง"]

@@ -39,7 +39,6 @@ const App = (props) => {
     { path: "/car-information", element: props.isLoggedIn ? <Car /> : <Navigate to='/login' /> },
     { path: "/driver", element: props.isLoggedIn ? <Driver /> : <Navigate to='/login' /> },
     { path: "/login", element: <Login onLogIn={props.logIn} /> },
-
     { path: "*", element: <NotFound /> }
   ]);
 
@@ -66,18 +65,19 @@ export default function AppWrapper() {
   }, [isLoggedIn]);
 
   const logIn = () => setIsLoggedIn(true);
-
+  
   const logOut = () => {
     setIsLoggedIn(false);
     localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
     localStorage.setItem('userToken', null);
     localStorage.setItem('userObject', null);
   };
+  
   return (
     <ThemeProvider theme={theme}>
       <Router>
         <Box sx={{ display: 'flex', backgroundColor: '#FBFBFB', height: '100vh' }}>
-          <NavigationBar logOut={logOut} />
+          <NavigationBar logOut={logOut} isLoggedIn={isLoggedIn} />
           <Box
             component="main"
             sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` } }}

@@ -1,9 +1,9 @@
 export const dummyData = [
     {
-        factory: "หนองใหญ่",
-        from: "1/10/2022",
-        to: "15/10/2022",
-        arr: [
+        "factory": "หนองใหญ่",
+        "from": "1/10/2022",
+        "to": "15/10/2022",
+        "arr": [
             {
                 name: "L",
                 value: 0,
@@ -63,14 +63,14 @@ export const dummyData = [
             {
                 name: "D",
                 value: 0,
-            },
-        ],
+            }
+        ]
     },
     {
-        factory: "บ้านบึง",
-        from: "1/10/2022",
-        to: "15/10/2022",
-        arr: [
+        "factory": "บ้านบึง",
+        "from": "1/10/2022",
+        "to": "15/10/2022",
+        "arr": [
             {
                 name: "L",
                 value: 0,
@@ -130,14 +130,14 @@ export const dummyData = [
             {
                 name: "D",
                 value: 0,
-            },
-        ],
+            }
+        ]
     },
     {
-        factory: "ปลวกแดง",
-        from: "1/10/2022",
-        to: "15/10/2022",
-        arr: [
+        "factory": "ปลวกแดง",
+        "from": "1/10/2022",
+        "to": "15/10/2022",
+        "arr": [
             {
                 name: "L",
                 value: 0,
@@ -197,14 +197,14 @@ export const dummyData = [
             {
                 name: "D",
                 value: 0,
-            },
-        ],
+            }
+        ]
     },
     {
-        factory: "หนองไผ่แก้ว",
-        from: "1/10/2022",
-        to: "15/10/2022",
-        arr: [
+        "factory": "หนองไผ่แก้ว",
+        "from": "1/10/2022",
+        "to": "15/10/2022",
+        "arr": [
             {
                 name: "L",
                 value: 0,
@@ -264,14 +264,14 @@ export const dummyData = [
             {
                 name: "D",
                 value: 0,
-            },
-        ],
+            }
+        ]
     },
     {
-        factory: "วังจันทร์",
-        from: "1/10/2022",
-        to: "15/10/2022",
-        arr: [
+        "factory": "วังจันทร์",
+        "from": "1/10/2022",
+        "to": "15/10/2022",
+        "arr": [
             {
                 name: "L",
                 value: 0,
@@ -331,7 +331,7 @@ export const dummyData = [
             {
                 name: "D",
                 value: 0,
-            },
-        ],
+            }
+        ]
     },
 ];

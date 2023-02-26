@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //Material UI
 import { GridFooterContainer, GridFooter } from '@mui/x-data-grid';
@@ -13,21 +13,47 @@ import DataGridTable from '../../../../../../components/DataGridTable';
 //Constants
 import * as TableConstants from '../../../../../../constants/TableConstants';
 
+//Services
+import { GetCarReplacement } from '../../../../../CarReplacement/services/CarReplacementServices';
+
+//Functions
+import { matchDriver } from "../../../../functions/Functions";
+
 export default function Table(props) {
     const [deleteButtonDisabled, setDeleteButtonDisabled] = React.useState(true);
+    const [carReplacement, setCarReplacement] = React.useState([]);
+
+    useEffect(() => {
+        getCarReplacement();
+    }, []);
+
+    const getCarReplacement = async () => {
+        const response = await GetCarReplacement(localStorage.getItem('userToken'));
+        setCarReplacement(response.data);
+    }
+
+    const [driver, setDriver] = React.useState("");
+    const handleMatchDriver = (event) => {
+        const driver = matchDriver(event.car, event.date, event.time, carReplacement);
+        setDriver(driver);
+        event.driver = driver;
+        props.setUpdatedRows(event);
+
+        return;
+    }
 
     const columns = [
         { field: 'id', headerName: 'เลขดีพี', minWidth: TableConstants.columnsSize.medium },
-        { field: 'date', headerName: 'วันที่', type: 'date', minWidth: TableConstants.columnsSize.medium },
-        { field: 'time', headerName: 'เวลา', minWidth: TableConstants.columnsSize.small },
-        { field: 'destination', headerName: 'หน่วยงาน', minWidth: TableConstants.columnsSize.large },
-        { field: 'distance', headerName: 'ระยะทาง', minWidth: TableConstants.columnsSize.small },
-        { field: 'code', headerName: 'รหัส', minWidth: TableConstants.columnsSize.small },
-        { field: 'amount', headerName: 'คิว', minWidth: TableConstants.columnsSize.small },
-        { field: 'price', headerName: 'ราคา', minWidth: TableConstants.columnsSize.small },
-        { field: 'oil', headerName: 'น้ำมัน', minWidth: TableConstants.columnsSize.small },
-        { field: 'car', headerName: 'เบอร์รถ', minWidth: TableConstants.columnsSize.small },
-        { field: 'driver', headerName: 'คนขับรถ', minWidth: TableConstants.columnsSize.large },
+        { field: 'date', headerName: 'วันที่', type: 'date', editable: true, minWidth: TableConstants.columnsSize.medium },
+        { field: 'time', headerName: 'เวลา', type: 'time', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'destination', headerName: 'หน่วยงาน', editable: true, minWidth: TableConstants.columnsSize.large },
+        { field: 'distance', headerName: 'ระยะทาง', type: 'number', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'code', headerName: 'รหัส', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'amount', headerName: 'คิว', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'price', headerName: 'ราคา', type: 'number', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'oil', headerName: 'น้ำมัน', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'car', headerName: 'เบอร์รถ', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'driver', headerName: 'คนขับรถ', minWidth: TableConstants.columnsSize.large, valueGetter: () => driver },
         { field: 'status', headerName: 'สถานะ', type: 'singleSelect', valueOptions: ['Accepted', 'Canceled', 'Spoiled'], minWidth: TableConstants.columnsSize.small },
     ];
 
@@ -76,22 +102,23 @@ export default function Table(props) {
         setDeleteButtonDisabled(!deleteButtonDisabled)
     }
 
-    const isRowSelectable = (params) => {
-        return params.row.duplicated;
-    }
-
     const getRowClassName = (params) => {
         return `row-theme--${params.row.duplicated ? "duplicated" : "normal"}`
+    }
+
+    const processRowUpdate = (event) => {
+        props.setUpdatedRows(event);
+        handleMatchDriver(event);
     }
 
     return (
         <DataGridTable
             dataRows={props.dataRows}
             columns={columns}
-            checkboxSelection={true}
+            checkboxSelection={false}
             customStyle={customStyle}
             getRowClassName={getRowClassName}
-            isRowSelectable={isRowSelectable}
+            processRowUpdate={processRowUpdate}
             onSelectionModelChange={onSelectionModelChange}
             customComponent={{ Footer: CustomFooter }}
         />

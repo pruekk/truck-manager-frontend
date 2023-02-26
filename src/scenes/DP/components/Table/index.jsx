@@ -20,6 +20,7 @@ function Table(props) {
         { field: 'car', headerName: 'เบอร์รถ', minWidth: TableConstants.columnsSize.small },
         { field: 'driver', headerName: 'คนขับรถ', minWidth: TableConstants.columnsSize.large },
         { field: 'status', headerName: 'สถานะ', type: 'singleSelect', valueOptions: ['Accepted', 'Canceled', 'Spoiled'], minWidth: TableConstants.columnsSize.small },
+        { field: 'editBy', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.xlarge },
     ];
 
     const customStyle = {
@@ -47,7 +48,7 @@ function Table(props) {
     }
 
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} checkboxSelection={true} customStyle={customStyle} getRowClassName={getRowClassName} />
+        <DataGridTable dataRows={props.dataRows} columns={columns} checkboxSelection={true} customStyle={customStyle} getRowClassName={getRowClassName} onSelectionModelChange={props.onSelectionModelChange} />
     );
 }
 

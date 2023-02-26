@@ -25,13 +25,15 @@ import { GetDrivers } from '../../../Driver/services/DriverServices';
 //Others
 import moment from "moment";
 
-export default function AddNewDialog(props) {
+export default function EditDialog(props) {
     const [carReplacementObj, setCarReplacementObj] = React.useState({});
     const [isError, setIsError] = React.useState(false);
 
     useEffect(() => {
+        setCarReplacementObj(props.dataRows);
         getCars();
         getDrivers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onChangeInput = (event) => {
@@ -43,14 +45,14 @@ export default function AddNewDialog(props) {
         }));
     }
 
-    const onClickAdd = () => {
+    const onClickUpdate = () => {
         if (carReplacementObj["carId"] && carReplacementObj["driver"] && carReplacementObj["date"] && carReplacementObj["time"]) {
             setIsError(false);
 
-            props.handleAddNewCarReplacement({
+            props.onClickUpdate({
                 carId: carReplacementObj["carId"],
                 driver: carReplacementObj["driver"],
-                date: moment(carReplacementObj["date"]).format('DD/MM/YYYY'),
+                date: moment(carReplacementObj["date"], moment.defaultFormat).format('DD/MM/YYYY'),
                 time: carReplacementObj["time"],
             });
         } else {
@@ -151,7 +153,7 @@ export default function AddNewDialog(props) {
                         >
                             {drivers.filter((driver) => driver.firstName && driver.lastName).map((driver) => {
                                 return (
-                                    <MenuItem key={`${driver.firstName} ${driver.lastName}`} value={`${driver.firstName} ${driver.lastName}`}>{`${driver.firstName} ${driver.lastName}`}</MenuItem>
+                                    <MenuItem key={`${driver.firstName} ${driver.lastName ? driver.lastName : ''}`} value={`${driver.firstName} ${driver.lastName ? driver.lastName : ''}`}>{`${driver.firstName} ${driver.lastName ? driver.lastName : ''}`}</MenuItem>
                                 )
                             })}
                         </Select>
@@ -160,22 +162,38 @@ export default function AddNewDialog(props) {
                         <Typography variant="subtitle1" gutterBottom>
                             วันที่
                         </Typography>
-                        <TextField id="date" name="date" type="date" variant="outlined" error={isError && !carReplacementObj["date"]} onChange={onChangeInput} />
+                        <TextField
+                            id="date"
+                            name="date"
+                            type="date"
+                            variant="outlined"
+                            value={carReplacementObj["date"] ? moment(carReplacementObj["date"], moment.defaultFormat).format("YYYY-MM-DD") : ""}
+                            error={isError && !carReplacementObj["date"]}
+                            onChange={onChangeInput}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="subtitle1" gutterBottom>
                             เวลา
                         </Typography>
-                        <TextField id="time" name="time" type="time" variant="outlined" error={isError && !carReplacementObj["time"]} onChange={onChangeInput} />
+                        <TextField
+                            id="time"
+                            name="time"
+                            type="time"
+                            variant="outlined"
+                            value={carReplacementObj["time"] ? carReplacementObj["time"] : ""}
+                            error={isError && !carReplacementObj["time"]}
+                            onChange={onChangeInput}
+                        />
                     </Grid>
                 </Grid>
             </DialogContent>
             <DialogActions>
                 <React.Fragment>
                     <Button
-                        onClick={onClickAdd}
+                        onClick={onClickUpdate}
                     >
-                        Add
+                        Update
                         </Button>
                 </React.Fragment>
             </DialogActions>
