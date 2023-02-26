@@ -11,6 +11,7 @@ export const columns = [
     { field: 'time', headerName: 'เวลา', minWidth: TableConstants.columnsSize.small },
     { field: 'carId', headerName: 'รหัสรถ', minWidth: TableConstants.columnsSize.medium },
     { field: 'driver', headerName: 'คนขับรถโม่', minWidth: TableConstants.columnsSize.large },
+    { field: 'editBy', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.xlarge },
 ];
 
 export default function Table(props) {

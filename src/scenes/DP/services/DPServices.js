@@ -29,7 +29,7 @@ export async function AddNewDP(token, arr) {
             method: 'post',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/dp`,
             headers: { 'Authorization': `Bearer ${token}` },
-            data: { dataRows: arr }
+            data: { dataRows: arr, editBy: JSON.parse(localStorage.getItem('userObject'))?.email }
         });
 
         return {
@@ -47,6 +47,8 @@ export async function AddNewDP(token, arr) {
 
 export async function EditDP(token, obj) {
     try {
+        obj['editBy'] = JSON.parse(localStorage.getItem('userObject'))?.email;
+        
         const response = await axios({
             method: 'put',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/dp/${obj.id}`,

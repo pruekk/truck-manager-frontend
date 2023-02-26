@@ -25,6 +25,8 @@ export async function GetCarReplacement(token) {
 
 export async function AddNewCarReplacement(token, data) {
     try {
+        data['editBy'] = JSON.parse(localStorage.getItem('userObject'))?.email;
+        
         const response = await axios({
             method: 'post',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/car-replacement`,
@@ -47,6 +49,8 @@ export async function AddNewCarReplacement(token, data) {
 
 export async function EditCarReplacement(token, data) {
     try {
+        data['editBy'] = JSON.parse(localStorage.getItem('userObject'))?.email;
+
         const response = await axios({
             method: 'put',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/car-replacement/${data.carId}`,

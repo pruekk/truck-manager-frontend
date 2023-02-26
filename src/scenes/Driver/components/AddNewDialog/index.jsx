@@ -51,7 +51,7 @@ export default function AddNewDialog(props) {
     return (
         <Dialog
             fullWidth={true}
-            maxWidth="xl"
+            maxWidth="md"
             open={props.openDialog}
         >
             <DialogTitle>
@@ -87,12 +87,12 @@ export default function AddNewDialog(props) {
                             name="title"
                             error={isError && !driverObj["title"]}
                             onChange={onChangeInput}
-                            sx={{ width: "300px" }}
+                            sx={{ width: "220px" }}
                             MenuProps={{
                                 PaperProps: {
                                     style: {
-                                        maxHeight: "300px",
-                                        width: "300px",
+                                        maxHeight: "220px",
+                                        width: "220px",
                                     },
                                 },
                             }}

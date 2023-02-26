@@ -32,6 +32,16 @@ export default function Table(props) {
         setCarReplacement(response.data);
     }
 
+    const [driver, setDriver] = React.useState("");
+    const handleMatchDriver = (event) => {
+        const driver = matchDriver(event.car, event.date, event.time, carReplacement);
+        setDriver(driver);
+        event.driver = driver;
+        props.setUpdatedRows(event);
+
+        return;
+    }
+
     const columns = [
         { field: 'id', headerName: 'เลขดีพี', minWidth: TableConstants.columnsSize.medium },
         { field: 'date', headerName: 'วันที่', type: 'date', editable: true, minWidth: TableConstants.columnsSize.medium },
@@ -43,7 +53,7 @@ export default function Table(props) {
         { field: 'price', headerName: 'ราคา', type: 'number', editable: true, minWidth: TableConstants.columnsSize.small },
         { field: 'oil', headerName: 'น้ำมัน', editable: true, minWidth: TableConstants.columnsSize.small },
         { field: 'car', headerName: 'เบอร์รถ', editable: true, minWidth: TableConstants.columnsSize.small },
-        { field: 'driver', headerName: 'คนขับรถ', minWidth: TableConstants.columnsSize.large, valueGetter: (params) => matchDriver(params.row.car, params.row.date, params.row.time, carReplacement) },
+        { field: 'driver', headerName: 'คนขับรถ', minWidth: TableConstants.columnsSize.large, valueGetter: () => driver },
         { field: 'status', headerName: 'สถานะ', type: 'singleSelect', valueOptions: ['Accepted', 'Canceled', 'Spoiled'], minWidth: TableConstants.columnsSize.small },
     ];
 
@@ -98,6 +108,7 @@ export default function Table(props) {
 
     const processRowUpdate = (event) => {
         props.setUpdatedRows(event);
+        handleMatchDriver(event);
     }
 
     return (

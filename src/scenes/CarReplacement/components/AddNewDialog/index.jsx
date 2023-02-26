@@ -35,8 +35,12 @@ export default function AddNewDialog(props) {
     }, []);
 
     const onChangeInput = (event) => {
-        carReplacementObj[`${event.target.name}`] = event.target.value;
-        setCarReplacementObj(carReplacementObj);
+        let updatedValue = {};
+        updatedValue[`${event.target.name}`] = event.target.value;
+        setCarReplacementObj(carReplacementObj => ({
+            ...carReplacementObj,
+            ...updatedValue
+        }));
     }
 
     const onClickAdd = () => {
@@ -76,7 +80,7 @@ export default function AddNewDialog(props) {
     return (
         <Dialog
             fullWidth={true}
-            maxWidth="xl"
+            maxWidth="md"
             open={props.openDialog}
         >
             <DialogTitle>
@@ -104,14 +108,15 @@ export default function AddNewDialog(props) {
                             labelId="carId-label"
                             id="carId"
                             name="carId"
+                            value={carReplacementObj["carId"] || ""}
                             error={isError && !carReplacementObj["carId"]}
                             onChange={onChangeInput}
-                            sx={{ width: "100px" }}
+                            sx={{ width: "300px" }}
                             MenuProps={{
                                 PaperProps: {
                                     style: {
-                                        maxHeight: "100px",
-                                        width: "100px",
+                                        maxHeight: "300px",
+                                        width: "300px",
                                     },
                                 },
                             }}
@@ -131,6 +136,7 @@ export default function AddNewDialog(props) {
                             labelId="driver-label"
                             id="driver"
                             name="driver"
+                            value={carReplacementObj["driver"] || ""}
                             error={isError && !carReplacementObj["driver"]}
                             onChange={onChangeInput}
                             sx={{ width: "300px" }}

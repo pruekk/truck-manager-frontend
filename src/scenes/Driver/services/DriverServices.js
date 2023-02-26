@@ -25,6 +25,8 @@ export async function GetDrivers(token) {
 
 export async function AddNewDriver(token, data) {
     try {
+        data['editBy'] = JSON.parse(localStorage.getItem('userObject'))?.email;
+
         const response = await axios({
             method: 'post',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/drivers`,
@@ -47,6 +49,8 @@ export async function AddNewDriver(token, data) {
 
 export async function EditDriver(token, data) {
     try {
+        data['editBy'] = JSON.parse(localStorage.getItem('userObject'))?.email;
+
         const response = await axios({
             method: 'put',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/drivers/${data.id}`,

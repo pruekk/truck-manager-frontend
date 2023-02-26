@@ -14,6 +14,7 @@ import Table from './components/Table';
 
 //Dialogs
 import ImportDialog from './components/ImportDialog';
+import EditDialog from './components/EditDialog';
 
 //Icons
 // import EditRoundedIcon from '@mui/icons-material/EditRounded';
@@ -23,7 +24,7 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import * as Constants from "./constants/Constants";
 
 //Services
-import { AddNewAgency, GetAgency, DeleteAgency } from "./services/AgencyServices";
+import { AddNewAgency, GetAgency, DeleteAgency, EditAgency } from "./services/AgencyServices";
 
 export default function Agency() {
     const [dataRows, setDataRows] = React.useState([]);
@@ -113,9 +114,37 @@ export default function Agency() {
     }
 
     const [selectedRowIds, setSelectedRowIds] = React.useState([]);
+    const [selectedRow, setSelectedRow] = React.useState({});
+    const onSelectionModelChange = (ids) => {
+        setSelectedRowIds(ids);
+    }
 
-    const onSelectionModelChange = (id) => {
-        setSelectedRowIds(id);
+    const onClickEditRow = () => {
+        const selectedRow = confirmedDataRows.filter((row) => { return row.id === selectedRowIds[0] });
+        setSelectedRow(selectedRow);
+        handleOpenEditDialog();
+    }
+
+    const [isOpenEditDialog, setIsOpenEditDialog] = React.useState(false);
+    const handleOpenEditDialog = () => {
+        setIsOpenEditDialog(true);
+    }
+
+    const handleCloseEditDialog = () => {
+        setIsOpenEditDialog(false);
+    }
+
+    const onClickUpdate = async (row) => {
+        const response = await EditAgency(localStorage.getItem('userToken'), row);
+
+        if (response.success) {
+            getAgency();
+            handleCloseEditDialog();
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
     }
 
     const deleteAgency = async () => {
@@ -154,13 +183,19 @@ export default function Agency() {
     };
 
     return (
-        <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
+        <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
             <ImportDialog
                 openDialog={isOpenDialog}
                 dataRows={dataRows}
                 setDataRows={setDataRows}
                 handleCloseDialog={handleCloseDialog}
                 handleConfirmImportedData={handleConfirmImportedData}
+            />
+            <EditDialog
+                openDialog={isOpenEditDialog}
+                dataRows={selectedRow}
+                handleCloseDialog={handleCloseEditDialog}
+                onClickUpdate={onClickUpdate}
             />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -189,6 +224,24 @@ export default function Agency() {
                                 />
                             </Button>
                         </Grid>
+                        {selectedRowIds.length === 1 &&
+                            <Grid item>
+                                <Button
+                                    disableElevation
+                                    variant="contained"
+                                    component="label"
+                                    onClick={onClickEditRow}
+                                    sx={{
+                                        backgroundColor: "#7b7a7a",
+                                        "&:hover": {
+                                            backgroundColor: "#c8cccc",
+                                        },
+                                    }}
+                                >
+                                    Edit
+                                </Button>
+                            </Grid>
+                        }
                         {selectedRowIds.length > 0 &&
                             <Grid item>
                                 <Button
@@ -207,24 +260,6 @@ export default function Agency() {
                                 </Button>
                             </Grid>
                         }
-                        {/*selectedRowIds.length === 1 &&
-                            <Grid item>
-                                <Button
-                                    disableElevation
-                                    variant="contained"
-                                    component="label"
-                                    startIcon={<EditRoundedIcon />}
-                                    sx={{
-                                        backgroundColor: "#7b7a7a",
-                                        "&:hover": {
-                                            backgroundColor: "#c8cccc",
-                                        },
-                                    }}
-                                >
-                                    Edit
-                                </Button>
-                            </Grid>
-                        */}
                     </Grid>
                 </Grid>
 

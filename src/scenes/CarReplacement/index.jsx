@@ -106,7 +106,7 @@ export default function CarReplacement() {
 
 
   return (
-    <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
+    <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
       <AddNewDialog
         openDialog={isOpenDialog}
         handleCloseDialog={handleCloseDialog}

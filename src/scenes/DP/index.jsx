@@ -21,7 +21,11 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 import * as FactoryConstants from "../../constants/FactoryConstants";
 
 //Services
+import { GetCarReplacement } from "../CarReplacement/services/CarReplacementServices";
 import { AddNewDP, GetDP, DeleteDP, EditDP } from "./services/DPServices";
+
+//Functions
+import { matchDriver } from "./functions/Functions";
 
 export default function DP() {
     const [dataRows, setDataRows] = React.useState([]);
@@ -29,10 +33,12 @@ export default function DP() {
 
     useEffect(() => {
         getDP();
+        getCarReplacement();
     }, []);
 
     const getDP = async () => {
         const response = await GetDP(localStorage.getItem('userToken'));
+        console.log(response);
         setConfirmedDataRows(response.data);
     }
 
@@ -93,6 +99,19 @@ export default function DP() {
         return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
     }
 
+    const [carReplacement, setCarReplacement] = React.useState([]);
+    const getCarReplacement = async () => {
+        const response = await GetCarReplacement(localStorage.getItem('userToken'));
+
+        if (response.success) {
+            setCarReplacement(response.data);
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
+    }
+
     const prepareDataForTable = (data) => {
         const dbList = []
         const factoryCode = data[2][0].split(' ')[1];
@@ -114,7 +133,7 @@ export default function DP() {
                     "price": price.toFixed(2),
                     "oil": 0,
                     "car": row[4],
-                    "driver": "",
+                    "driver": matchDriver(row[4], date, convertToTimeFormat(row[5]), carReplacement),
                     "status": dpStatus(row[10].trim()),
                     "duplicated": confirmedDataRows.some(list => list.id === row[0])
                 });
@@ -201,7 +220,7 @@ export default function DP() {
     };
 
     return (
-        <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
+        <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
             <ImportDialog
                 openDialog={isOpenDialog}
                 dataRows={dataRows}

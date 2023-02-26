@@ -13,6 +13,7 @@ export const columns = [
     { field: 'registrationDate', headerName: 'วันที่จดทะเบียน', type: 'date', minWidth: TableConstants.columnsSize.large },
     { field: 'buyDate', headerName: 'วันที่ซื้อ', type: 'date', minWidth: TableConstants.columnsSize.large },
     { field: 'price', headerName: 'ราคา', type: 'number', minWidth: TableConstants.columnsSize.small },
+    { field: 'editBy', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.xlarge },
 ];
 
 export default function CarInformationTable(props) {

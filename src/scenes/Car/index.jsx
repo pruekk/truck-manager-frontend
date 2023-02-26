@@ -105,7 +105,7 @@ export default function Car() {
   };
 
   return (
-    <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
+    <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
       <AddNewDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
@@ -121,7 +121,7 @@ export default function Car() {
       }
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Grid container spacing={2}>
+          <Grid container spacing={1}>
             <Grid item>
               <Button
                 disableElevation
