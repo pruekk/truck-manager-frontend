@@ -15,11 +15,11 @@ export const columns = [
     { field: 'fullName', headerName: 'ชื่อ-สกุล', minWidth: TableConstants.columnsSize.large, valueGetter: (params) => `${params.row.firstName || ''} ${params.row.lastName || ''}` },
     { field: 'startDate', headerName: 'วันที่เริ่มทำงาน', minWidth: TableConstants.columnsSize.medium },
     { field: 'salary', headerName: 'ฐานเงินเดือน', type: 'number', minWidth: TableConstants.columnsSize.medium },
-    { field: 'editor', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.large }
+    { field: 'editBy', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.xlarge }
 ];
 
 export default function DriverTable(props) {
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} />
+        <DataGridTable dataRows={props.dataRows} columns={columns} onSelectionModelChange={props.onSelectionModelChange} checkboxSelection={true} />
     );
 }

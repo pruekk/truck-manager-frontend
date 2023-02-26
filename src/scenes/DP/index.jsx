@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 //Material UI
 import Button from "@mui/material/Button";
@@ -10,38 +10,112 @@ import Tab from '@mui/material/Tab';
 
 //Components
 import ImportDialog from './components/ImportDialog';
+import EditDialog from './components/EditDialog';
 import Table from './components/Table';
 
 //Icons
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
-//Functions
-import handleUploadExcel from "../../functions/handleUploadExcel";
-
 //Constatns
 import * as FactoryConstants from "../../constants/FactoryConstants";
 
+//Services
+import { GetCarReplacement } from "../CarReplacement/services/CarReplacementServices";
+import { AddNewDP, GetDP, DeleteDP, EditDP } from "./services/DPServices";
+
+//Functions
+import handleUploadExcel from "../../functions/handleUploadExcel";
+
 export default function DP() {
     const [dataRows, setDataRows] = React.useState([]);
-    const [confirmedDataRows, setConfirmedDataRows] = React.useState([{
-        "id": "F071141088",
-        "date": "01/12/2022",
-        "time": "00:41:00",
-        "destination": "FCโรงพยาบาลกรุงเทพปล",
-        "distance": 0,
-        "code": 1,
-        "amount": "6.00",
-        "price": "0.00",
-        "oil": 0,
-        "car": "C56B",
-        "driver": "",
-        "status": "Accepted",
-        "duplicated": false
-    }]);
+    const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+
+    useEffect(() => {
+        getDP();
+        getCarReplacement();
+    }, []);
+
+    const getDP = async () => {
+        const response = await GetDP(localStorage.getItem('userToken'));
+        console.log(response);
+        setConfirmedDataRows(response.data);
+    }
+
+    const dpStatus = (status) => {
+        switch (status) {
+            case "A":
+                return "Accepted";
+            case "C":
+                return "Canceled";
+            case "S":
+                return "Spoiled";
+            default:
+                return "Error";
+        }
+    }
 
     const clearFileCache = (event) => {
         event.target.value = null;
         setDataRows([]);
+    }
+
+    const [carReplacement, setCarReplacement] = React.useState([]);
+    const getCarReplacement = async () => {
+        const response = await GetCarReplacement(localStorage.getItem('userToken'));
+
+        if (response.success) {
+            setCarReplacement(response.data);
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
+    }
+
+    const [selectedRowIds, setSelectedRowIds] = React.useState([]);
+    const [selectedRow, setSelectedRow] = React.useState({});
+    const onSelectionModelChange = (ids) => {
+        setSelectedRowIds(ids);
+    }
+
+    const onClickEditRow = () => {
+        const selectedRow = confirmedDataRows.filter((row) => { return row.id === selectedRowIds[0] });
+        setSelectedRow(selectedRow);
+        handleOpenEditDialog();
+    }
+
+    const [isOpenEditDialog, setIsOpenEditDialog] = React.useState(false);
+    const handleOpenEditDialog = () => {
+        setIsOpenEditDialog(true);
+    }
+
+    const handleCloseEditDialog = () => {
+        setIsOpenEditDialog(false);
+    }
+
+    const onClickUpdate = async (row) => {
+        const response = await EditDP(localStorage.getItem('userToken'), row);
+
+        if (response.success) {
+            getDP();
+            handleCloseEditDialog();
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
+    }
+
+    const deleteDP = async () => {
+        const response = await DeleteDP(localStorage.getItem('userToken'), selectedRowIds);
+
+        if (response.success) {
+            getDP();
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -53,10 +127,17 @@ export default function DP() {
         setIsOpenDialog(false);
     };
 
-    const handleConfirmImportedData = (dataRows) => {
-        const allRows = confirmedDataRows.concat(dataRows);
-        setConfirmedDataRows(allRows);
-        handleCloseDialog();
+    const handleConfirmImportedData = async (dataRows) => {
+        const response = await AddNewDP(localStorage.getItem('userToken'), dataRows);
+
+        if (response.success) {
+            getDP();
+            handleCloseDialog();
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
     };
 
 
@@ -66,13 +147,19 @@ export default function DP() {
     };
 
     return (
-        <Container sx={{ paddingTop: "2rem" }} maxWidth="xl">
+        <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
             <ImportDialog
                 openDialog={isOpenDialog}
                 dataRows={dataRows}
                 setDataRows={setDataRows}
                 handleCloseDialog={handleCloseDialog}
                 handleConfirmImportedData={handleConfirmImportedData}
+            />
+            <EditDialog
+                openDialog={isOpenEditDialog}
+                dataRows={selectedRow}
+                handleCloseDialog={handleCloseEditDialog}
+                onClickUpdate={onClickUpdate}
             />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -101,6 +188,42 @@ export default function DP() {
                                 />
                             </Button>
                         </Grid>
+                        {selectedRowIds.length === 1 &&
+                            <Grid item>
+                                <Button
+                                    disableElevation
+                                    variant="contained"
+                                    component="label"
+                                    onClick={onClickEditRow}
+                                    sx={{
+                                        backgroundColor: "#7b7a7a",
+                                        "&:hover": {
+                                            backgroundColor: "#c8cccc",
+                                        },
+                                    }}
+                                >
+                                    Edit
+                                </Button>
+                            </Grid>
+                        }
+                        {selectedRowIds.length > 0 &&
+                            <Grid item>
+                                <Button
+                                    disableElevation
+                                    variant="contained"
+                                    component="label"
+                                    onClick={deleteDP}
+                                    sx={{
+                                        backgroundColor: "#bd0101",
+                                        "&:hover": {
+                                            backgroundColor: "#cd6a6a",
+                                        },
+                                    }}
+                                >
+                                    Delete
+                                </Button>
+                            </Grid>
+                        }
                     </Grid>
                 </Grid>
 
@@ -115,7 +238,7 @@ export default function DP() {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Table dataRows={confirmedDataRows} />
+                    <Table dataRows={confirmedDataRows} onSelectionModelChange={onSelectionModelChange} />
                 </Grid>
             </Grid>
         </Container>

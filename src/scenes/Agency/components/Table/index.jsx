@@ -15,6 +15,7 @@ export const columns = [
     { field: 'newId', headerName: 'รหัสใหม่', minWidth: TableConstants.columnsSize.small },
     { field: 'distance', headerName: 'ระยะทาง', minWidth: TableConstants.columnsSize.small },
     { field: 'oil', headerName: 'น้ำมัน', minWidth: TableConstants.columnsSize.small },
+    { field: 'editBy', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.xlarge },
 ];
 
 export default function Table(props) {

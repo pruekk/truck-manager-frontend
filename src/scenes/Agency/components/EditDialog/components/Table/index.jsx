@@ -17,18 +17,14 @@ export default function Table(props) {
     const [deleteButtonDisabled, setDeleteButtonDisabled] = React.useState(true);
 
     const columns = [
-        { field: 'id', headerName: 'เลขดีพี', minWidth: TableConstants.columnsSize.medium },
-        { field: 'date', headerName: 'วันที่', type: 'date', minWidth: TableConstants.columnsSize.medium },
-        { field: 'time', headerName: 'เวลา', minWidth: TableConstants.columnsSize.small },
-        { field: 'destination', headerName: 'หน่วยงาน', minWidth: TableConstants.columnsSize.large },
-        { field: 'distance', headerName: 'ระยะทาง', minWidth: TableConstants.columnsSize.small },
-        { field: 'code', headerName: 'รหัส', minWidth: TableConstants.columnsSize.small },
-        { field: 'amount', headerName: 'คิว', minWidth: TableConstants.columnsSize.small },
-        { field: 'price', headerName: 'ราคา', minWidth: TableConstants.columnsSize.small },
-        { field: 'oil', headerName: 'น้ำมัน', minWidth: TableConstants.columnsSize.small },
-        { field: 'car', headerName: 'เบอร์รถ', minWidth: TableConstants.columnsSize.small },
-        { field: 'driver', headerName: 'คนขับรถ', minWidth: TableConstants.columnsSize.large },
-        { field: 'status', headerName: 'สถานะ', type: 'singleSelect', valueOptions: ['Accepted', 'Canceled', 'Spoiled'], minWidth: TableConstants.columnsSize.small },
+        { field: 'id', headerName: 'เลขหน่วยงาน', minWidth: TableConstants.columnsSize.medium },
+        { field: 'dateStart', headerName: 'วันที่เริ่ม', type: 'date', minWidth: TableConstants.columnsSize.medium, editable: true },
+        { field: 'dateEnd', headerName: 'วันที่จบ', type: 'date', minWidth: TableConstants.columnsSize.medium, editable: true },
+        { field: 'agent', headerName: 'ชื่อหน่วยงาน', minWidth: TableConstants.columnsSize.large, editable: true },
+        { field: 'oldId', headerName: 'รหัสเดิม', minWidth: TableConstants.columnsSize.small, editable: true },
+        { field: 'newId', headerName: 'รหัสใหม่', minWidth: TableConstants.columnsSize.small, editable: true },
+        { field: 'distance', headerName: 'ระยะทาง', type: "number", minWidth: TableConstants.columnsSize.small, editable: true },
+        { field: 'gas', headerName: 'น้ำมัน', minWidth: TableConstants.columnsSize.small, editable: true },
     ];
 
     const customStyle = {
@@ -76,22 +72,22 @@ export default function Table(props) {
         setDeleteButtonDisabled(!deleteButtonDisabled)
     }
 
-    const isRowSelectable = (params) => {
-        return params.row.duplicated;
-    }
-
     const getRowClassName = (params) => {
         return `row-theme--${params.row.duplicated ? "duplicated" : "normal"}`
+    }
+
+    const processRowUpdate = (event) => {
+        props.setUpdatedRows(event);
     }
 
     return (
         <DataGridTable
             dataRows={props.dataRows}
             columns={columns}
-            checkboxSelection={true}
+            checkboxSelection={false}
             customStyle={customStyle}
             getRowClassName={getRowClassName}
-            isRowSelectable={isRowSelectable}
+            processRowUpdate={processRowUpdate}
             onSelectionModelChange={onSelectionModelChange}
             customComponent={{ Footer: CustomFooter }}
         />

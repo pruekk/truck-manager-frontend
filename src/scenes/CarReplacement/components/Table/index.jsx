@@ -11,14 +11,15 @@ export const columns = [
     { field: 'time', headerName: 'เวลา', minWidth: TableConstants.columnsSize.small },
     { field: 'carId', headerName: 'รหัสรถ', minWidth: TableConstants.columnsSize.medium },
     { field: 'driver', headerName: 'คนขับรถโม่', minWidth: TableConstants.columnsSize.large },
+    { field: 'editBy', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.xlarge },
 ];
 
 export default function Table(props) {
     const customRowId = (row) => {
-        return `${row.carId}-${row.driver}`
+        return row._id
     }
 
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} checkboxSelection={true} customRowId={customRowId}  />
+        <DataGridTable dataRows={props.dataRows} columns={columns} onSelectionModelChange={props.onSelectionModelChange} checkboxSelection={true} customRowId={customRowId}  />
     );
 }

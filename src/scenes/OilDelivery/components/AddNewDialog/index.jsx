@@ -102,7 +102,7 @@ export default function AddNewDialog(props) {
   return (
     <Dialog
       fullWidth={true}
-      maxWidth="xl"
+      maxWidth="md"
       open={props.openDialog}
       onClose={props.handleCloseDialog}
     >
