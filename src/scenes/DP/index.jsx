@@ -29,7 +29,6 @@ import handleUploadExcel from "../../functions/handleUploadExcel";
 export default function DP() {
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
-    const [carReplacement, setCarReplacement] = React.useState([]);
 
     useEffect(() => {
         getDP();
@@ -41,14 +40,22 @@ export default function DP() {
         setConfirmedDataRows(response.data);
     }
 
-    const getCarReplacement = async () => {
-        const response = await GetCarReplacement(localStorage.getItem('userToken'));
-        setCarReplacement(response.data);
-    }
-
     const clearFileCache = (event) => {
         event.target.value = null;
         setDataRows([]);
+    }
+
+    const [carReplacement, setCarReplacement] = React.useState([]);
+    const getCarReplacement = async () => {
+        const response = await GetCarReplacement(localStorage.getItem('userToken'));
+
+        if (response.success) {
+            setCarReplacement(response.data);
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
     }
 
     const [selectedRowIds, setSelectedRowIds] = React.useState([]);
