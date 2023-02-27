@@ -70,7 +70,7 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
         data.slice(3).map((row) => {
             if (row[1]?.includes(factory.code)) {
                 dpList.push({
-                    "id": row[1],
+                    "id": row[6],
                     "dateStart": date,
                     "dateEnd": date,
                     "agent": row[7],
