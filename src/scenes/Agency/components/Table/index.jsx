@@ -8,8 +8,8 @@ import * as TableConstants from '../../../../constants/TableConstants';
 
 export const columns = [
     { field: 'id', headerName: 'เลขหน่วยงาน', minWidth: TableConstants.columnsSize.medium },
-    { field: 'dateStart', headerName: 'วันที่เริ่ม', type: 'date', minWidth: TableConstants.columnsSize.medium },
-    { field: 'dateEnd', headerName: 'วันที่จบ', type: 'date', minWidth: TableConstants.columnsSize.medium },
+    { field: 'dateStart', headerName: 'วันที่เริ่ม', minWidth: TableConstants.columnsSize.medium },
+    { field: 'dateEnd', headerName: 'วันที่จบ', minWidth: TableConstants.columnsSize.medium },
     { field: 'agent', headerName: 'ชื่อหน่วยงาน', minWidth: TableConstants.columnsSize.large },
     { field: 'oldId', headerName: 'รหัสเดิม', minWidth: TableConstants.columnsSize.small },
     { field: 'newId', headerName: 'รหัสใหม่', minWidth: TableConstants.columnsSize.small },
