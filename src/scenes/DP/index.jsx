@@ -37,21 +37,7 @@ export default function DP() {
 
     const getDP = async () => {
         const response = await GetDP(localStorage.getItem('userToken'));
-        console.log(response);
         setConfirmedDataRows(response.data);
-    }
-
-    const dpStatus = (status) => {
-        switch (status) {
-            case "A":
-                return "Accepted";
-            case "C":
-                return "Canceled";
-            case "S":
-                return "Spoiled";
-            default:
-                return "Error";
-        }
     }
 
     const clearFileCache = (event) => {
@@ -183,7 +169,7 @@ export default function DP() {
                                     multiple
                                     accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
                                     type="file"
-                                    onChange={(e) => handleUploadExcel(e, "DP", confirmedDataRows, handleOpenDialog, dataRows, setDataRows)}
+                                    onChange={(e) => handleUploadExcel(e, "DP", confirmedDataRows, handleOpenDialog, dataRows, setDataRows, carReplacement)}
                                     onClick={clearFileCache} //Clear cache
                                 />
                             </Button>
