@@ -9,8 +9,12 @@ export default function Table(props) {
         props.onUpdateRow(newRow);
         return newRow;
     }
+    
+    const uniqueDataRows = props.dataRows.filter((item, index, self) =>
+        index === self.findIndex((i) => i.id === item.id)
+    );
 
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} processRowUpdate={processRowUpdate} checkboxSelection={true} />
+        <DataGridTable dataRows={uniqueDataRows} columns={columns} processRowUpdate={processRowUpdate} checkboxSelection={true} />
     );
 }
