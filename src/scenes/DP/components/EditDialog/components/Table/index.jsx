@@ -17,7 +17,7 @@ import * as TableConstants from '../../../../../../constants/TableConstants';
 import { GetCarReplacement } from '../../../../../CarReplacement/services/CarReplacementServices';
 
 //Functions
-import { matchDriver } from "../../../../functions/Functions";
+import { matchDriver } from "../../../../../../functions/prepareDataForTable";
 
 export default function Table(props) {
     const [deleteButtonDisabled, setDeleteButtonDisabled] = React.useState(true);

@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import * as XLSX from 'xlsx';
 
 //Material UI
 import Button from "@mui/material/Button";
@@ -89,8 +88,6 @@ export default function Agency() {
         if (response.success) {
             getAgency();
         }
-    const onSelectionModelChange = (id) => {
-        setSelectedRowIds(id);
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);

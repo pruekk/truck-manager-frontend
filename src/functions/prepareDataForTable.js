@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 const dpStatus = (status) => {
     switch (status) {
         case "A":
@@ -18,20 +20,33 @@ const convertToTimeFormat = (num) => {
     return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
 }
 
-export default function prepareDataForTable(formatType, date, data, confirmedDataRows) {
+export function matchDriver(car, date, time, history) {
+    const filterByCar = history.filter((data) => { return data.carId === car });
+
+    if (filterByCar.length > 0) {
+        const filterByDate = history.filter((data) => { return moment(data.date).isSameOrBefore(date); });
+        const sortByDateTime = filterByDate.sort((a, b) => moment(`${a.date}T${a.time}`) - moment(`${b.date}T${b.time}`));
+
+        return filterByDate.length > 0 ? sortByDateTime[0].driver : "";
+    }
+
+    return "";
+}
+
+export default function prepareDataForTable(formatType, date, data, confirmedDataRows, carReplacement) {
     const dpList = [];
     const factoryStruct = [{
         code: "F256",
         name: "บ้านบึง2"
     }]
     const factoryName = data[2][0]?.split(' ')[2]; // get factoryName from row 3 [FC256 - บ้านบึง2]
-    const factory = factoryStruct.find(fac => fac.name === factoryName)
+    const factory = factoryStruct.find(fac => fac.name === factoryName);
     const price = 0;
     const customDate = date.trim().replace(/-/g, '/')
 
     // Start from row 4 in Excel
     if (formatType === "DP") {
-        data.slice(3).map((row) => {
+        data.slice(3).map(async (row) => {
             if (row[1]?.includes(factory.code)) {
                 dpList.push({
                     "id": row[1],
@@ -44,7 +59,7 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
                     "price": price.toFixed(2),
                     "oil": 0,
                     "car": row[13],
-                    "driver": "",
+                    "driver": matchDriver(row[13], date, convertToTimeFormat(row[20]), carReplacement),
                     "status": dpStatus(row[2].trim()),
                     "duplicated": confirmedDataRows?.some(list => list.id === row[1])
                 });
