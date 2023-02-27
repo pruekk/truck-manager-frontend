@@ -71,8 +71,8 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
             if (row[1]?.includes(factory.code)) {
                 dpList.push({
                     "id": row[6],
-                    "dateStart": date,
-                    "dateEnd": date,
+                    "dateStart": customDate,
+                    "dateEnd": customDate,
                     "agent": row[7],
                     "oldId": row[10],
                     "newId": row[10],
