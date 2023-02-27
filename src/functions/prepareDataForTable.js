@@ -78,6 +78,7 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
                     "newId": row[10],
                     "distance": 0,
                     "oil": 0,
+                    "duplicated": confirmedDataRows?.some(list => list.id === row[6])
                 });
             }
             return dpList;
