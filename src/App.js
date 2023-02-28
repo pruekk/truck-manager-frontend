@@ -19,7 +19,7 @@ import Driver from './scenes/Driver';
 import Home from './scenes/Home';
 import Login from './scenes/Login';
 import OilDelivery from './scenes/OilDelivery';
-import Transport from './scenes/Transport';
+import Transport from './scenes/TransportPrice';
 
 //Others
 export const drawerWidth = 250;
