@@ -32,113 +32,7 @@ import * as CalendarConstants from "../../../../constants/CalendarConstants";
 const temp = ["หนองใหญ่", "บ้านบึง", "ปลวกแดง", "หนองไผ่แก้ว", "วังจันทร์"];
 
 export default function AddNewDialog(props) {
-  const [priceListArr, setPriceListArr] = React.useState([
-    {
-      name: "L",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "Y",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "Z",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "1",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "2",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "3",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "4",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "5",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "6",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "7",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "8",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "A",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "B",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "C",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-    {
-      name: "D",
-      value: [
-        0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-        0, 0, 0, 0,
-      ],
-    },
-  ]);
+  const [priceListArr, setPriceListArr] = React.useState([]);
   const [factory, setFactory] = React.useState("");
   const [dateFrom, setDateFrom] = React.useState(moment().format());
   const [dateTo, setDateTo] = React.useState(moment().format());
@@ -154,7 +48,118 @@ export default function AddNewDialog(props) {
       setFactory(props.selectedRow[0].factory);
       setDateFrom(moment(props.selectedRow[0].from, "DD-MM-YYYY").format());
       setDateTo(moment(props.selectedRow[0].to, "DD-MM-YYYY").format());
+      setPriceListArr(props.selectedRow[0].arr);
+
+      return;
     }
+
+    setPriceListArr([
+      {
+        name: "L",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "Y",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "Z",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "1",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "2",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "3",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "4",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "5",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "6",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "7",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "8",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "A",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "B",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "C",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+      {
+        name: "D",
+        value: [
+          0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+          0, 0, 0, 0,
+        ],
+      },
+    ]);
   }
 
   const handleChangeFactory = (event) => {
@@ -276,14 +281,16 @@ export default function AddNewDialog(props) {
             </Grid>
           </Grid>
           <Grid item xs={12}>
-            <Table
-              isEditable={true}
-              priceListArr={priceListArr}
-              selectedRow={props.selectedRow}
-              isEdit={props.isEdit}
-              setPriceListArr={setPriceListArr}
-              setIsSumCorrect={setIsSumCorrect}
-            />
+            {priceListArr.length !== 0 &&
+              <Table
+                isEditable={true}
+                priceListArr={priceListArr}
+                selectedRow={props.selectedRow}
+                isEdit={props.isEdit}
+                setPriceListArr={setPriceListArr}
+                setIsSumCorrect={setIsSumCorrect}
+              />
+            }
           </Grid>
         </Grid>
       </DialogContent>

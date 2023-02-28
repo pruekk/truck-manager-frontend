@@ -9,10 +9,22 @@ import DeleteIcon from "@mui/icons-material/Delete";
 
 //Tables
 import DataGridTable from '../../../../../../components/DataGridTable';
-import { columns } from "../../../Table";
+import * as TableConstants from '../../../../../../constants/TableConstants';
+// import { columns } from "../../../Table";
 
 export default function Table(props) {
     const [deleteButtonDisabled, setDeleteButtonDisabled] = React.useState(true);
+    const columns = [
+        { field: 'id', headerName: 'เลขหน่วยงาน', minWidth: TableConstants.columnsSize.medium },
+        { field: 'dateStart', headerName: 'วันที่เริ่ม', editable: true, minWidth: TableConstants.columnsSize.medium },
+        { field: 'dateEnd', headerName: 'วันที่จบ', editable: true, minWidth: TableConstants.columnsSize.medium },
+        { field: 'agent', headerName: 'ชื่อหน่วยงาน', minWidth: TableConstants.columnsSize.large },
+        { field: 'oldId', headerName: 'รหัสเดิม', minWidth: TableConstants.columnsSize.small },
+        { field: 'newId', headerName: 'รหัสใหม่', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'distance', headerName: 'ระยะทาง', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'oil', headerName: 'น้ำมัน', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'editBy', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.xlarge },
+    ];
 
     const customStyle = {
         height: '30rem',
