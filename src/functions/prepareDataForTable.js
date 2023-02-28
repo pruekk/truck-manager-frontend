@@ -85,6 +85,9 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
         });
     }
 
-    // return dpList to handleUploadExcel
-    return dpList;
+    // filter unique DP and Agency using "id" as key
+    const uniqueDataRows = dpList.filter((item, index, self) =>
+        index === self.findIndex((i) => i.id === item.id)
+    );
+    return uniqueDataRows;
 }
