@@ -19,7 +19,7 @@ import Driver from './scenes/Driver';
 import Home from './scenes/Home';
 import Login from './scenes/Login';
 import OilDelivery from './scenes/OilDelivery';
-import Transport from './scenes/TransportPrice';
+import TransportPrice from './scenes/TransportPrice';
 
 //Others
 export const drawerWidth = 250;
@@ -33,7 +33,7 @@ const App = (props) => {
     { path: "/", element: props.isLoggedIn ? <Home /> : <Navigate to='/login' /> },
     { path: "/agency", element: props.isLoggedIn ? <Agency /> : <Navigate to='/login' /> },
     { path: "/car-replacement", element: props.isLoggedIn ? <CarReplacement /> : <Navigate to='/login' /> },
-    { path: "/transport-price", element: props.isLoggedIn ? <Transport /> : <Navigate to='/login' /> },
+    { path: "/transport-price", element: props.isLoggedIn ? <TransportPrice /> : <Navigate to='/login' /> },
     { path: "/dp-schedule", element: props.isLoggedIn ? <DP /> : <Navigate to='/login' /> },
     { path: "/oil-transaction", element: props.isLoggedIn ? <OilDelivery /> : <Navigate to='/login' /> },
     { path: "/car-information", element: props.isLoggedIn ? <Car /> : <Navigate to='/login' /> },
