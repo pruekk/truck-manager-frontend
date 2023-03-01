@@ -14,16 +14,8 @@ export default function Table(props) {
     const [isCheckedY, setIsCheckedY] = React.useState([]);
 
     useEffect(() => {
-        preparePriceList();
         checkSum();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
-
-    const preparePriceList = () => {
-        if (props.selectedRow.length === 1 && props.isEdit) {
-            const toEditArr = JSON.parse(JSON.stringify(props.selectedRow[0].arr));
-            props.setPriceListArr([...toEditArr]);
-        }
-    }
 
     const handleAddColumn = async () => {
         props.priceListArr.map(async (obj, index) => {
@@ -104,7 +96,7 @@ export default function Table(props) {
                         />
 
                         {/*Modal table header*/}
-                        {props.priceListArr[0].value.map((value, index) => {
+                        {props.priceListArr[0]?.value.map((value, index) => {
                             return (
                                 <th
                                     key={`col-${index}`}
@@ -183,7 +175,7 @@ export default function Table(props) {
                                         >
                                             <input
                                                 type="string"
-                                                defaultValue={value}
+                                                defaultValue={props.isEdit ? value : ''}
                                                 onChange={(event) => {
                                                     onChangeValue(event, obj.name, index);
                                                 }}
@@ -264,7 +256,7 @@ export default function Table(props) {
                         </td>
 
                         {/*======= ROW =======*/}
-                        {props.priceListArr[0].value.map((value, rYIndex) => {
+                        {props.priceListArr[0]?.value.map((value, rYIndex) => {
                             return (
                                 <td
                                     key={`totalrow-${rYIndex}`}
