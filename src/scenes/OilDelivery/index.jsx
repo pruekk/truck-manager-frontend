@@ -23,6 +23,7 @@ import { GetOilDelivery, AddOilDelivery, UpdateOilDelivery, DeleteOilDelivery } 
 export default function OilDelivery() {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [dataRow, setDataRow] = React.useState([]);
   const [selectedRow, setSelectedRow] = React.useState([]);
@@ -37,6 +38,8 @@ export default function OilDelivery() {
     if (response.success) {
       setDataRow(response.data);
     }
+
+    setIsLoading(false);
   }
 
   const handleClickOpenDialog = () => {
@@ -62,6 +65,8 @@ export default function OilDelivery() {
   }
 
   const addNewPrice = async (oilInfoArr, factory, dateFrom, dateTo) => {
+    setIsLoading(true);
+
     const dataRows = createData(factory, dateFrom, dateTo, oilInfoArr);
     const response = await AddOilDelivery(localStorage.getItem('userToken'), [dataRows]);
 
@@ -73,9 +78,12 @@ export default function OilDelivery() {
     }
 
     alert("Something went wrong! Please try again later.");
+    setIsLoading(false);
   };
 
   const editPrice = async (oilInfoArr, factory, dateFrom, dateTo) => {
+    setIsLoading(true);
+
     const response = await UpdateOilDelivery(localStorage.getItem('userToken'), {
       _id: selectedRow[0]._id,
       factory: factory,
@@ -93,10 +101,13 @@ export default function OilDelivery() {
     }
 
     alert("Something went wrong! Please try again later.");
+    setIsLoading(false);
 
   }
 
   const removePrice = async (selectedRow) => {
+    setIsLoading(true);
+
     const response = await DeleteOilDelivery(localStorage.getItem('userToken'), selectedRow);
 
     if (response.success) {
@@ -108,6 +119,7 @@ export default function OilDelivery() {
     }
 
     alert("Something went wrong! Please try again later.");
+    setIsLoading(false);
   }
 
   return (
@@ -116,6 +128,7 @@ export default function OilDelivery() {
         openDialog={openDialog}
         selectedRow={selectedRow}
         isEdit={isEdit}
+        isLoading={isLoading}
         addNewPrice={addNewPrice}
         editPrice={editPrice}
         handleClickOpenDialog={handleClickOpenDialog}

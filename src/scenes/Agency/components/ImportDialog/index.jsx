@@ -1,7 +1,7 @@
 import React from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -13,7 +13,6 @@ import Table from './components/Table';
 
 //Icons
 import IconButton from "@mui/material/IconButton";
-import SendIcon from '@mui/icons-material/Send';
 
 export default function ImportDialog(props) {
     const [selectedRows, setSelectedRows] = React.useState([]);
@@ -66,14 +65,14 @@ export default function ImportDialog(props) {
             </DialogContent>
             <DialogActions>
                 <React.Fragment>
-                    <Button
+                    <LoadingButton
+                        loading={props.isLoading}
                         onClick={() => {
                             props.handleConfirmImportedData(props.dataRows);
                         }}
-                        endIcon={<SendIcon />}
                     >
                         Confirm
-                        </Button>
+                    </LoadingButton>
                 </React.Fragment>
             </DialogActions>
         </Dialog>

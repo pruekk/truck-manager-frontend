@@ -1,7 +1,7 @@
 import React from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -30,22 +30,26 @@ export default function AddNewDialog(props) {
         setCarReplacementObj(driverObj);
     }
 
-    const onClickAdd = () => {
+    const [isLoading, setIsLoading] = React.useState(false);
+    const onClickAdd = async () => {
+        setIsLoading(true);
+
         if (driverObj["idCard"] && driverObj["title"] && driverObj["firstName"] && driverObj["lastName"] && driverObj["startDate"] && driverObj["salary"]) {
             setIsError(false);
 
-            props.handleAddNewDriver({
+            await props.handleAddNewDriver({
                 idCard: driverObj["idCard"],
                 title: driverObj["title"],
                 firstName: driverObj["firstName"],
                 lastName: driverObj["lastName"],
                 startDate: moment(driverObj["startDate"], moment.defaultFormat).format('DD/MM/YYYY'),
-                salary: Number(driverObj["salary"]),
-                editBy: "example@hotmail.com"
+                salary: Number(driverObj["salary"])
             });
         } else {
             setIsError(true);
         }
+
+        setIsLoading(false);
     }
 
     return (
@@ -132,11 +136,12 @@ export default function AddNewDialog(props) {
             </DialogContent>
             <DialogActions>
                 <React.Fragment>
-                    <Button
+                    <LoadingButton
+                        loading={isLoading}
                         onClick={onClickAdd}
                     >
                         Add
-                        </Button>
+                    </LoadingButton>
                 </React.Fragment>
             </DialogActions>
         </Dialog>

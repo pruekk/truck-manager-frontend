@@ -29,7 +29,7 @@ export async function AddNewAgency(token, arr) {
             method: 'post',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/agency`,
             headers: { 'Authorization': `Bearer ${token}` },
-            data: { dataRows: arr, editBy: JSON.parse(localStorage.getItem('userObject'))?.email }
+            data: { dataRows: arr, editBy: JSON.parse(localStorage.getItem('userObject')).email }
         });
 
         return {
@@ -47,7 +47,8 @@ export async function AddNewAgency(token, arr) {
 
 export async function EditAgency(token, obj) {
     try {
-        obj['editBy'] = JSON.parse(localStorage.getItem('userObject'))?.email;
+        console.log(obj, JSON.parse(localStorage.getItem('userObject')));
+        obj['editBy'] = JSON.parse(localStorage.getItem('userObject')).email;
 
         const response = await axios({
             method: 'put',

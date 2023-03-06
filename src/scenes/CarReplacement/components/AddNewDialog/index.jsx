@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -43,11 +43,14 @@ export default function AddNewDialog(props) {
         }));
     }
 
-    const onClickAdd = () => {
+    const [isLoading, setIsLoading] = React.useState(false);
+    const onClickAdd = async () => {
+        setIsLoading(true);
+
         if (carReplacementObj["carId"] && carReplacementObj["driver"] && carReplacementObj["date"] && carReplacementObj["time"]) {
             setIsError(false);
 
-            props.handleAddNewCarReplacement({
+            await props.handleAddNewCarReplacement({
                 carId: carReplacementObj["carId"],
                 driver: carReplacementObj["driver"],
                 date: moment(carReplacementObj["date"]).format('DD/MM/YYYY'),
@@ -56,6 +59,8 @@ export default function AddNewDialog(props) {
         } else {
             setIsError(true);
         }
+
+        setIsLoading(false);
     }
 
     const [drivers, setDrivers] = React.useState([]);
@@ -172,11 +177,12 @@ export default function AddNewDialog(props) {
             </DialogContent>
             <DialogActions>
                 <React.Fragment>
-                    <Button
+                    <LoadingButton
+                        loading={isLoading}
                         onClick={onClickAdd}
                     >
-                        Add
-                        </Button>
+                        Save
+                    </LoadingButton>
                 </React.Fragment>
             </DialogActions>
         </Dialog>
