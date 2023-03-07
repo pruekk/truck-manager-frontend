@@ -84,6 +84,7 @@ function Row(props) {
         </TableCell>
         <TableCell align="right">{row.from}</TableCell>
         <TableCell align="right">{row.to}</TableCell>
+        <TableCell align="right">{row.editBy}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell
@@ -124,10 +125,13 @@ export default function DataTable(props) {
               <TableCell sx={{ fontWeight: "bold" }}>โรงงาน</TableCell>
               <TableCell align="right" sx={{ fontWeight: "bold" }}>
                 จากวันที่
-            </TableCell>
+              </TableCell>
               <TableCell align="right" sx={{ fontWeight: "bold" }}>
                 ถึงวันที่
-            </TableCell>
+              </TableCell>
+              <TableCell align="right" sx={{ fontWeight: "bold" }}>
+                แก้ไขโดย
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody sx={{ backgroundColor: "#FBFBFB" }}>

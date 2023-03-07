@@ -34,8 +34,6 @@ export default function OilDelivery() {
   const getOilDelivery = async () => {
     const response = await GetOilDelivery(localStorage.getItem('userToken'));
 
-    console.log(response);
-
     if (response.success) {
       setDataRow(response.data);
     }
@@ -84,7 +82,6 @@ export default function OilDelivery() {
       from: dateFrom,
       to: dateTo,
       arr: oilInfoArr,
-
     })
 
     if (response.success) {
