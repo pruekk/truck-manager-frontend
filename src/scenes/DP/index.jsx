@@ -144,6 +144,7 @@ export default function DP() {
             <EditDialog
                 openDialog={isOpenEditDialog}
                 dataRows={selectedRow}
+                setDataRows={setDataRows}
                 handleCloseDialog={handleCloseEditDialog}
                 onClickUpdate={onClickUpdate}
             />
