@@ -1,5 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -25,11 +25,14 @@ export default function AddCarDialog(props) {
     setCarObj(carObj);
   }
 
-  const onClickAdd = () => {
+  const [isLoading, setIsLoading] = React.useState(false);
+  const onClickAdd = async () => {
+    setIsLoading(true);
+
     if (carObj["id"] && carObj["licensePlate"] && carObj["type"] && carObj["registrationDate"] && carObj["buyDate"] && carObj["price"]) {
       setIsError(false);
 
-      props.handleAddNewCar({
+      await props.handleAddNewCar({
         id: carObj["id"],
         licensePlate: carObj["licensePlate"],
         type: carObj["type"],
@@ -40,6 +43,8 @@ export default function AddCarDialog(props) {
     } else {
       setIsError(true);
     }
+
+    setIsLoading(false);
   }
 
   return (
@@ -105,7 +110,12 @@ export default function AddCarDialog(props) {
         </Grid>
       </DialogContent>
       <DialogActions sx={{ backgroundColor: "#FBFBFB" }}>
-        <Button onClick={onClickAdd}>Add</Button>
+        <LoadingButton
+          loading={isLoading}
+          onClick={onClickAdd}
+        >
+          Add
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

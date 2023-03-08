@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -44,7 +44,6 @@ export default function AddNewDialog(props) {
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const prepareOilInfo = () => {
-    console.log(props.selectedRow, props.isEdit);
     if (props.selectedRow.length === 1 && props.isEdit) {
       setOilInfoArr(props.selectedRow[0].arr);
       setFactory(props.selectedRow[0].factory);
@@ -56,8 +55,6 @@ export default function AddNewDialog(props) {
         value: ""
       }]);
     }
-
-    console.log(oilInfoArr);
   }
 
   const handleChangeFactory = (event) => {
@@ -190,7 +187,12 @@ export default function AddNewDialog(props) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClickSaveNewPrice}>Save</Button>
+        <LoadingButton
+          loading={props.isLoading}
+          onClick={onClickSaveNewPrice}
+        >
+          Save
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

@@ -1,8 +1,8 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 import Box from '@mui/material/Box';
 import CloseIcon from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -15,12 +15,25 @@ import Table from './components/Table';
 
 export default function EditDialog(props) {
     const [selectedRows, setSelectedRows] = React.useState([]);
-    const [updatedRows, setUpdatedRows] = React.useState(props.dataRows[0]);
+    const [updatedRow, setUpdatedRow] = React.useState({});
+
+    useEffect(() => {
+        prepareDataRow();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const prepareDataRow = () => {
+        setUpdatedRow(props.dataRows[0]);
+    }
 
     const onClickDeleteSelectedRows = () => {
         const filtered = props.dataRows.filter((row) => !selectedRows.includes(row.id))
         props.setDataRows(filtered);
     };
+
+    const onUpdateRow = (event) => {
+        setUpdatedRow(event);
+    }
 
     return (
         <Dialog
@@ -46,18 +59,19 @@ export default function EditDialog(props) {
             <DialogContent dividers sx={{ backgroundColor: "#FBFBFB" }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Table dataRows={props.dataRows} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} setUpdatedRows={setUpdatedRows} />
+                        <Table dataRows={props.dataRows} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} onUpdateRow={onUpdateRow} />
                     </Grid>
                 </Grid>
             </DialogContent>
             <DialogActions sx={{ backgroundColor: "#FBFBFB" }}>
                 <React.Fragment>
                     <Box sx={{ flex: '1 1 auto' }} />
-                    <Button
-                        onClick={() => { props.onClickUpdate(updatedRows) }}
+                    <LoadingButton
+                        loading={props.isLoading}
+                        onClick={() => { props.onClickUpdate(updatedRow) }}
                     >
                         Update
-                    </Button>
+                    </LoadingButton>
                 </React.Fragment>
             </DialogActions>
         </Dialog>

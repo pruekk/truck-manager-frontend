@@ -23,6 +23,7 @@ import { GetTransports, AddTransports, DeleteTransports, UpdateTransport } from 
 export default function Transport() {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = React.useState(false);
   const [dataRow, setDataRow] = React.useState([]);
   const [selectedRow, setSelectedRow] = React.useState([]);
@@ -37,6 +38,8 @@ export default function Transport() {
     if (response.success) {
       setDataRow(response.data);
     }
+
+    setIsLoading(false);
   }
 
   const handleClickOpenDialog = () => {
@@ -62,6 +65,8 @@ export default function Transport() {
   }
 
   const addNewPrice = async (priceListArr, factory, dateFrom, dateTo) => {
+    setIsLoading(true);
+
     const dataRows = createData(factory, dateFrom, dateTo, priceListArr);
     const response = await AddTransports(localStorage.getItem('userToken'), [dataRows]);
 
@@ -73,9 +78,12 @@ export default function Transport() {
     }
 
     alert("Something went wrong! Please try again later.");
+    setIsLoading(false);
   };
 
   const editPrice = async (priceListArr, factory, dateFrom, dateTo) => {
+    setIsLoading(true);
+
     const response = await UpdateTransport(localStorage.getItem('userToken'), {
       _id: selectedRow[0]._id,
       factory: factory,
@@ -94,9 +102,12 @@ export default function Transport() {
     }
 
     alert("Something went wrong! Please try again later.");
+    setIsLoading(false);
   }
 
   const removePrice = async (selectedRow) => {
+    setIsLoading(true);
+
     const response = await DeleteTransports(localStorage.getItem('userToken'), selectedRow);
 
     if (response.success) {
@@ -108,6 +119,7 @@ export default function Transport() {
     }
 
     alert("Something went wrong! Please try again later.");
+    setIsLoading(false);
   }
 
   return (
@@ -115,6 +127,7 @@ export default function Transport() {
       {openDialog && <AddNewDialog
         openDialog={openDialog}
         selectedRow={selectedRow}
+        isLoading={isLoading}
         isEdit={isEdit}
         addNewPrice={addNewPrice}
         editPrice={editPrice}

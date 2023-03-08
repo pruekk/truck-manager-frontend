@@ -2,6 +2,7 @@ import React from "react";
 
 import CloseIcon from "@mui/icons-material/Close";
 import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -17,7 +18,6 @@ import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
-import SendIcon from '@mui/icons-material/Send';
 
 //Services
 import { GetAgency } from '../../../Agency/services/AgencyServices';
@@ -164,15 +164,15 @@ export default function ImportDialog(props) {
                     </Button>
                     <Box sx={{ flex: '1 1 auto' }} />
                     {activeStep === steps.length - 1 ?
-                        <Button
-                            onClick={() => {
-                                props.handleConfirmImportedData(props.dataRows);
-                                handleReset()
+                        <LoadingButton
+                            loading={props.isLoading}
+                            onClick={async () => {
+                                await props.handleConfirmImportedData(props.dataRows);
+                                handleReset();
                             }}
-                            endIcon={<SendIcon />}
                         >
                             Confirm
-                        </Button> : <Button disabled={activeStep === 5 && props.dataRows.some((row) => row.duplicated)} onClick={handleNext}>
+                        </LoadingButton> : <Button disabled={props.dataRows.some((row) => row.duplicated)} onClick={handleNext}>
                             Next
                         </Button>
                     }

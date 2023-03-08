@@ -29,6 +29,7 @@ import handleUploadExcel from "../../functions/handleUploadExcel";
 export default function DP() {
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     useEffect(() => {
         getDP();
@@ -38,6 +39,7 @@ export default function DP() {
     const getDP = async () => {
         const response = await GetDP(localStorage.getItem('userToken'));
         setConfirmedDataRows(response.data);
+        setIsLoading(false);
     }
 
     const clearFileCache = (event) => {
@@ -80,6 +82,7 @@ export default function DP() {
     }
 
     const onClickUpdate = async (row) => {
+        setIsLoading(true);
         const response = await EditDP(localStorage.getItem('userToken'), row);
 
         if (response.success) {
@@ -90,9 +93,11 @@ export default function DP() {
         }
 
         alert("Something went wrong! Please try again later.");
+        setIsLoading(false);
     }
 
     const deleteDP = async () => {
+        setIsLoading(true);
         const response = await DeleteDP(localStorage.getItem('userToken'), selectedRowIds);
 
         if (response.success) {
@@ -102,6 +107,7 @@ export default function DP() {
         }
 
         alert("Something went wrong! Please try again later.");
+        setIsLoading(false);
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -114,6 +120,7 @@ export default function DP() {
     };
 
     const handleConfirmImportedData = async (dataRows) => {
+        setIsLoading(true);
         const response = await AddNewDP(localStorage.getItem('userToken'), dataRows);
 
         if (response.success) {
@@ -124,6 +131,7 @@ export default function DP() {
         }
 
         alert("Something went wrong! Please try again later.");
+        setIsLoading(false);
     };
 
 
@@ -135,6 +143,7 @@ export default function DP() {
     return (
         <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
             <ImportDialog
+                isLoading={isLoading}
                 openDialog={isOpenDialog}
                 dataRows={dataRows}
                 setDataRows={setDataRows}
@@ -142,6 +151,7 @@ export default function DP() {
                 handleConfirmImportedData={handleConfirmImportedData}
             />
             <EditDialog
+                isLoading={isLoading}
                 openDialog={isOpenEditDialog}
                 dataRows={selectedRow}
                 setDataRows={setDataRows}

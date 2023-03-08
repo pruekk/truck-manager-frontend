@@ -107,7 +107,7 @@ export default function Table(props) {
     }
 
     const processRowUpdate = (event) => {
-        props.setUpdatedRows(event);
+        props.onUpdateRow(event);
         handleMatchDriver(event);
     }
 

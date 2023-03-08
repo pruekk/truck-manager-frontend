@@ -30,6 +30,7 @@ import { AddNewAgency, GetAgency, DeleteAgency, EditAgency } from "./services/Ag
 export default function Agency() {
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+    const [isLoading, setIsLoading] = React.useState(false);
 
     useEffect(() => {
         getAgency();
@@ -41,6 +42,8 @@ export default function Agency() {
         if (response.success) {
             setConfirmedDataRows(response.data);
         }
+
+        setIsLoading(false);
     }
 
     const clearFileCache = (event) => {
@@ -70,6 +73,7 @@ export default function Agency() {
     }
 
     const onClickUpdate = async (row) => {
+        setIsLoading(true);
         const response = await EditAgency(localStorage.getItem('userToken'), row);
 
         if (response.success) {
@@ -80,9 +84,11 @@ export default function Agency() {
         }
 
         alert("Something went wrong! Please try again later.");
+        setIsLoading(false);
     }
 
     const deleteAgency = async () => {
+        setIsLoading(true);
         const response = await DeleteAgency(localStorage.getItem('userToken'), selectedRowIds);
 
         if (response.success) {
@@ -100,6 +106,8 @@ export default function Agency() {
     };
 
     const handleConfirmImportedData = async (dataRows) => {
+        setIsLoading(true);
+        
         const response = await AddNewAgency(localStorage.getItem('userToken'), dataRows);
 
         if (response.success) {
@@ -110,6 +118,7 @@ export default function Agency() {
         }
 
         alert("Something went wrong! Please try again later.");
+        setIsLoading(false);
     };
 
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -120,6 +129,7 @@ export default function Agency() {
     return (
         <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
             <ImportDialog
+                isLoading={isLoading}
                 openDialog={isOpenDialog}
                 dataRows={dataRows}
                 setDataRows={setDataRows}
@@ -127,6 +137,7 @@ export default function Agency() {
                 handleConfirmImportedData={handleConfirmImportedData}
             />
             <EditDialog
+                isLoading={isLoading}
                 openDialog={isOpenEditDialog}
                 dataRows={selectedRow}
                 handleCloseDialog={handleCloseEditDialog}
