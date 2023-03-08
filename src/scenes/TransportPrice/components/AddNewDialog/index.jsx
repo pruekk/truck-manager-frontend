@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -295,7 +295,13 @@ export default function AddNewDialog(props) {
         </Grid>
       </DialogContent>
       <DialogActions sx={{ backgroundColor: "#FBFBFB" }}>
-        <Button disabled={!isSumCorrect} onClick={onClickSaveNewPrice}>Save</Button>
+        <LoadingButton
+          disabled={!isSumCorrect}
+          loading={props.isLoading}
+          onClick={onClickSaveNewPrice}
+        >
+          Save
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );

@@ -1,5 +1,5 @@
 import CloseIcon from "@mui/icons-material/Close";
-import Button from "@mui/material/Button";
+import LoadingButton from '@mui/lab/LoadingButton';
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -34,12 +34,14 @@ export default function EditDialog(props) {
     }));
   }
 
-  const onClickUpdate = () => {
-    console.log(carObj);
+  const [isLoading, setIsLoading] = React.useState(false);
+  const onClickUpdate = async () => {
+    setIsLoading(true);
+
     if (carObj["id"] && carObj["licensePlate"] && carObj["type"] && carObj["registrationDate"] && carObj["buyDate"] && carObj["price"]) {
       setIsError(false);
 
-      props.onClickUpdate({
+      await props.onClickUpdate({
         id: carObj["id"],
         licensePlate: carObj["licensePlate"],
         type: carObj["type"],
@@ -52,6 +54,7 @@ export default function EditDialog(props) {
     }
 
     setIsError(true);
+    setIsLoading(false);
   }
 
   return (
@@ -117,7 +120,12 @@ export default function EditDialog(props) {
         </Grid>
       </DialogContent>
       <DialogActions sx={{ backgroundColor: "#FBFBFB" }}>
-        <Button onClick={onClickUpdate}>Update</Button>
+        <LoadingButton
+          loading={isLoading}
+          onClick={onClickUpdate}
+        >
+          Update
+        </LoadingButton>
       </DialogActions>
     </Dialog>
   );
