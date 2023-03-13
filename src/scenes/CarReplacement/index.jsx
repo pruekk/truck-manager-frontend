@@ -13,6 +13,7 @@ import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 
 //Dialogs
 import AddNewDialog from './components/AddNewDialog';
+import DeleteDialog from "./components/DeleteDialog";
 import EditDialog from "./components/EditDialog";
 
 //Services
@@ -20,6 +21,7 @@ import { AddNewCarReplacement, DeleteCarReplacement, GetCarReplacement, EditCarR
 
 export default function CarReplacement() {
   const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     getCarReplacement();
@@ -30,6 +32,7 @@ export default function CarReplacement() {
 
     if (response.success) {
       setConfirmedDataRows(response.data);
+      setIsLoading(false);
     }
   }
 
@@ -74,11 +77,22 @@ export default function CarReplacement() {
   }
 
   const deleteCarReplacement = async () => {
+    setIsLoading(true);
     const response = await DeleteCarReplacement(localStorage.getItem('userToken'), selectedRowIds[0]);
 
     if (response.success) {
       getCarReplacement();
+      onCloseDeleteDialog();
     }
+  }
+
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
+  const onOpenDeleteDialog = () => {
+    setIsOpenDeleteDialog(true);
+  }
+
+  const onCloseDeleteDialog = () => {
+    setIsOpenDeleteDialog(false)
   }
 
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -104,7 +118,6 @@ export default function CarReplacement() {
     alert("Something went wrong! Please try again later.");
   };
 
-
   return (
     <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
       <AddNewDialog
@@ -120,6 +133,13 @@ export default function CarReplacement() {
           onClickUpdate={onClickUpdate}
         />
       }
+      <DeleteDialog
+        selectedRowIds={selectedRowIds}
+        isLoading={isLoading}
+        openDialog={isOpenDeleteDialog}
+        deleteCarReplacement={deleteCarReplacement}
+        onCloseDeleteDialog={onCloseDeleteDialog}
+      />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={1}>
@@ -164,7 +184,7 @@ export default function CarReplacement() {
                   disableElevation
                   variant="contained"
                   component="label"
-                  onClick={deleteCarReplacement}
+                  onClick={onOpenDeleteDialog}
                   sx={{
                     backgroundColor: "#bd0101",
                     "&:hover": {

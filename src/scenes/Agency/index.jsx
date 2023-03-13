@@ -12,6 +12,7 @@ import Tab from '@mui/material/Tab';
 import Table from './components/Table';
 
 //Dialogs
+import DeleteDialog from "./components/DeleteDialog";
 import ImportDialog from './components/ImportDialog';
 import EditDialog from './components/EditDialog';
 
@@ -87,13 +88,25 @@ export default function Agency() {
         setIsLoading(false);
     }
 
+    const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
     const deleteAgency = async () => {
         setIsLoading(true);
         const response = await DeleteAgency(localStorage.getItem('userToken'), selectedRowIds);
 
         if (response.success) {
             getAgency();
+            onCloseDeleteDialog();
         }
+
+        onCloseDeleteDialog();
+    }
+
+    const onOpenDeleteDialog = () => {
+        setIsOpenDeleteDialog(true);
+    }
+
+    const onCloseDeleteDialog = () => {
+        setIsOpenDeleteDialog(false)
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -107,7 +120,7 @@ export default function Agency() {
 
     const handleConfirmImportedData = async (dataRows) => {
         setIsLoading(true);
-        
+
         const response = await AddNewAgency(localStorage.getItem('userToken'), dataRows);
 
         if (response.success) {
@@ -142,6 +155,13 @@ export default function Agency() {
                 dataRows={selectedRow}
                 handleCloseDialog={handleCloseEditDialog}
                 onClickUpdate={onClickUpdate}
+            />
+            <DeleteDialog
+                selectedRowIds={selectedRowIds}
+                isLoading={isLoading}
+                openDialog={isOpenDeleteDialog}
+                deleteAgency={deleteAgency}
+                onCloseDeleteDialog={onCloseDeleteDialog}
             />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -194,7 +214,8 @@ export default function Agency() {
                                     disableElevation
                                     variant="contained"
                                     component="label"
-                                    onClick={deleteAgency}
+                                    //onClick={deleteAgency}
+                                    onClick={onOpenDeleteDialog}
                                     sx={{
                                         backgroundColor: "#bd0101",
                                         "&:hover": {

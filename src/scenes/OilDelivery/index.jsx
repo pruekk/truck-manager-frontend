@@ -8,7 +8,6 @@ import Grid from "@mui/material/Grid";
 //Icons
 import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import DriveFileRenameOutlineRoundedIcon from '@mui/icons-material/DriveFileRenameOutlineRounded';
-import RemoveCircleRoundedIcon from '@mui/icons-material/RemoveCircleRounded';
 
 //Functions
 import { createData } from "./functions/Functions";
@@ -176,7 +175,6 @@ export default function OilDelivery() {
                 <Button
                   disableElevation
                   variant="contained"
-                  startIcon={<RemoveCircleRoundedIcon />}
                   sx={{
                     backgroundColor: "#c91e24",
                     "&:hover": {
