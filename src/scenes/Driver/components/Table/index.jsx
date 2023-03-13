@@ -45,6 +45,7 @@ export default function DriverTable(props) {
     const formattedData = props.dataRows.map(item => {
         return {
           ...item,
+          startDate: moment(item.startDate, moment.defaultFormat).format('DD/MM/YYYY'),
           idCard: item.idCard.replace(/(.{1})(.{4})(.{5})(.{2})(.{1})/, "$1-$2-$3-$4-$5"),
           age: calculateAge(item.age),
           telephone: item.telephone?.replace(/(.{3})(.{3})(.{4})/, "$1-$2-$3")

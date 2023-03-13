@@ -19,12 +19,9 @@ import IconButton from "@mui/material/IconButton";
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
 import { columns } from "../Table";
 
-//Others
-import moment from "moment";
+export function RenderInput(props) {
+    const filteredColumns = columns.filter(column => !props.excludeFields.includes(column.field));
 
-function RenderInput(props) {
-    const excludeFields = ['id', 'fullName', 'age', 'endDate', 'ssoEndDate', 'reason', 'editBy'];
-    const filteredColumns = columns.filter(column => !excludeFields.includes(column.field));
     return filteredColumns.map((column) => (
         <Grid item key={column.field} xs={12} md={column.minWidth}>
             <Typography variant="subtitle1" gutterBottom>
@@ -62,6 +59,8 @@ function RenderInput(props) {
 
 export default function AddNewDialog(props) {
     const [driverObj, setCarReplacementObj] = React.useState({});
+    const excludeFields = ['id', 'fullName', 'age', 'endDate', 'ssoEndDate', 'reason', 'editBy'];
+
     const [isError, setIsError] = React.useState(false);
     const onChangeInput = (event) => {
         if ( typeof event !== 'undefined' ) {
@@ -83,7 +82,6 @@ export default function AddNewDialog(props) {
             setIsError(false);
             const formattedData = {
                     ...driverObj,
-                    startDate: moment(driverObj["startDate"], moment.defaultFormat).format('DD/MM/YYYY'),
                     salary: Number(driverObj["salary"])
             }
             await props.handleAddNewDriver(formattedData);
@@ -117,20 +115,19 @@ export default function AddNewDialog(props) {
                 <Grid container spacing={2}>
                     <RenderInput
                         driverObj={driverObj}
+                        excludeFields={excludeFields}
                         onChangeInput={onChangeInput}
                         isError={isError} 
                     />
                 </Grid>
             </DialogContent>
             <DialogActions>
-                <React.Fragment>
-                    <LoadingButton
-                        loading={isLoading}
-                        onClick={onClickAdd}
-                    >
-                        Add
-                    </LoadingButton>
-                </React.Fragment>
+                <LoadingButton
+                    loading={isLoading}
+                    onClick={onClickAdd}
+                >
+                    เพิ่ม
+                </LoadingButton>
             </DialogActions>
         </Dialog>
     );
