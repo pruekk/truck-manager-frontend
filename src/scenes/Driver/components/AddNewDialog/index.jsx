@@ -17,45 +17,85 @@ import IconButton from "@mui/material/IconButton";
 
 //Constants
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
-import * as Constants from "../../constants/Constants";
+import { columns } from "../Table";
 
 //Others
 import moment from "moment";
+
+function RenderInput(props) {
+    const excludeFields = ['id', 'fullName', 'age', 'endDate', 'ssoEndDate', 'reason', 'editBy'];
+    const filteredColumns = columns.filter(column => !excludeFields.includes(column.field));
+    return filteredColumns.map((column) => (
+        <Grid item key={column.field} xs={12} md={column.minWidth}>
+            <Typography variant="subtitle1" gutterBottom>
+                {column.headerName}
+            </Typography>
+            {column.type === 'singleSelect' ? (
+                <Select
+                    id={column.field}
+                    name={column.field}
+                    value={props.driverObj[column.field] || ''}
+                    onChange={props.onChangeInput}
+                    sx={{ width: "100%" }}
+                >
+                    {column.valueOptions.map((option) => (
+                        <MenuItem key={option} value={option}>
+                            {option}
+                        </MenuItem>
+                    ))}
+                </Select>
+            ) : (
+                <TextField
+                    sx={{ width: "100%" }}
+                    id={column.field}
+                    name={column.field}
+                    type={column.type || 'input'}
+                    variant="outlined"
+                    error={props.isError && !props.driverObj[column.field]}
+                    onChange={props.onChangeInput}
+                    value={props.driverObj[column.field] || ''}
+                />
+            )}
+        </Grid>
+    ))
+}
 
 export default function AddNewDialog(props) {
     const [driverObj, setCarReplacementObj] = React.useState({});
     const [isError, setIsError] = React.useState(false);
     const onChangeInput = (event) => {
-        driverObj[`${event.target.name}`] = event.target.value;
-        setCarReplacementObj(driverObj);
+        if ( typeof event !== 'undefined' ) {
+            const { name, value } = event.target;
+            setCarReplacementObj((prevDriverObj) => ({
+                ...prevDriverObj,
+                [name]: value,
+            }));
+        }
     }
 
     const [isLoading, setIsLoading] = React.useState(false);
     const onClickAdd = async () => {
         setIsLoading(true);
-
-        if (driverObj["idCard"] && driverObj["title"] && driverObj["firstName"] && driverObj["lastName"] && driverObj["startDate"] && driverObj["salary"]) {
-            setIsError(false);
-
-            await props.handleAddNewDriver({
-                idCard: driverObj["idCard"],
-                title: driverObj["title"],
-                firstName: driverObj["firstName"],
-                lastName: driverObj["lastName"],
-                startDate: moment(driverObj["startDate"], moment.defaultFormat).format('DD/MM/YYYY'),
-                salary: Number(driverObj["salary"])
-            });
-        } else {
+    
+        if (Object.values(driverObj).some((value) => !value)) {
             setIsError(true);
+        } else {
+            setIsError(false);
+            const formattedData = {
+                    ...driverObj,
+                    startDate: moment(driverObj["startDate"], moment.defaultFormat).format('DD/MM/YYYY'),
+                    salary: Number(driverObj["salary"])
+            }
+            await props.handleAddNewDriver(formattedData);
         }
-
+    
         setIsLoading(false);
     }
 
     return (
         <Dialog
             fullWidth={true}
-            maxWidth="md"
+            maxWidth="sm"
             open={props.openDialog}
         >
             <DialogTitle>
@@ -75,63 +115,11 @@ export default function AddNewDialog(props) {
             </DialogTitle>
             <DialogContent dividers>
                 <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            เลขประจำตัวบัตรประชาชน
-                        </Typography>
-                        <TextField id="idCard" name="idCard" type="input" variant="outlined" error={isError && !driverObj["idCard"]} onChange={onChangeInput} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            คำนำหน้า
-                        </Typography>
-                        <Select
-                            labelId="title-label"
-                            id="title"
-                            name="title"
-                            error={isError && !driverObj["title"]}
-                            onChange={onChangeInput}
-                            sx={{ width: "220px" }}
-                            MenuProps={{
-                                PaperProps: {
-                                    style: {
-                                        maxHeight: "220px",
-                                        width: "220px",
-                                    },
-                                },
-                            }}
-                        >
-                            {Constants.titles.map((title) => {
-                                return (
-                                    <MenuItem key={title} value={title}>{title}</MenuItem>
-                                )
-                            })}
-                        </Select>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            ชื่อ
-                        </Typography>
-                        <TextField id="firstName" name="firstName" type="input" variant="outlined" error={isError && !driverObj["firstName"]} onChange={onChangeInput} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            นามสกุล
-                        </Typography>
-                        <TextField id="lastName" name="lastName" type="input" variant="outlined" error={isError && !driverObj["lastName"]} onChange={onChangeInput} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            วันที่เริ่มทำงาน
-                        </Typography>
-                        <TextField id="startDate" name="startDate" type="date" variant="outlined" error={isError && !driverObj["startDate"]} onChange={onChangeInput} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            ฐานเงินเดือน
-                        </Typography>
-                        <TextField id="salary" name="salary" type="number" variant="outlined" error={isError && !driverObj["salary"]} onChange={onChangeInput} />
-                    </Grid>
+                    <RenderInput
+                        driverObj={driverObj}
+                        onChangeInput={onChangeInput}
+                        isError={isError} 
+                    />
                 </Grid>
             </DialogContent>
             <DialogActions>
