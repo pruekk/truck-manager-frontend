@@ -6,56 +6,14 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Grid";
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-
-//Icons
 import IconButton from "@mui/material/IconButton";
+
+//Components
+import { DynamicDialogContent } from "../../../../components/DynamicDialogContent";
 
 //Constants
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
 import { columns } from "../Table";
-
-export function RenderInput(props) {
-    const filteredColumns = columns.filter(column => !props.excludeFields.includes(column.field));
-
-    return filteredColumns.map((column) => (
-        <Grid item key={column.field} xs={12} md={column.minWidth}>
-            <Typography variant="subtitle1" gutterBottom>
-                {column.headerName}
-            </Typography>
-            {column.type === 'singleSelect' ? (
-                <Select
-                    id={column.field}
-                    name={column.field}
-                    value={props.driverObj[column.field] || ''}
-                    onChange={props.onChangeInput}
-                    sx={{ width: "100%" }}
-                >
-                    {column.valueOptions.map((option) => (
-                        <MenuItem key={option} value={option}>
-                            {option}
-                        </MenuItem>
-                    ))}
-                </Select>
-            ) : (
-                <TextField
-                    sx={{ width: "100%" }}
-                    id={column.field}
-                    name={column.field}
-                    type={column.type || 'input'}
-                    variant="outlined"
-                    error={props.isError && !props.driverObj[column.field]}
-                    onChange={props.onChangeInput}
-                    value={props.driverObj[column.field] || ''}
-                />
-            )}
-        </Grid>
-    ))
-}
 
 export default function AddNewDialog(props) {
     const [driverObj, setCarReplacementObj] = React.useState({});
@@ -112,14 +70,13 @@ export default function AddNewDialog(props) {
                 </IconButton>
             </DialogTitle>
             <DialogContent dividers>
-                <Grid container spacing={2}>
-                    <RenderInput
-                        driverObj={driverObj}
-                        excludeFields={excludeFields}
-                        onChangeInput={onChangeInput}
-                        isError={isError} 
-                    />
-                </Grid>
+                <DynamicDialogContent
+                    columns={columns}
+                    driverObj={driverObj}
+                    excludeFields={excludeFields}
+                    onChangeInput={onChangeInput}
+                    isError={isError} 
+                />
             </DialogContent>
             <DialogActions>
                 <LoadingButton

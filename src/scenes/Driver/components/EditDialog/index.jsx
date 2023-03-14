@@ -6,11 +6,10 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Grid";
 import IconButton from "@mui/material/IconButton";
 
 //Components
-import { RenderInput } from "../AddNewDialog";
+import { DynamicDialogContent } from "../../../../components/DynamicDialogContent";
 
 //Constants
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
@@ -77,14 +76,13 @@ export default function EditDialog(props) {
                 </IconButton>
             </DialogTitle>
             <DialogContent dividers>
-                <Grid container spacing={2}>
-                    <RenderInput
-                        driverObj={driverObj}
-                        excludeFields={excludeFields}
-                        onChangeInput={onChangeInput}
-                        isError={isError}
-                    />
-                </Grid>
+                <DynamicDialogContent
+                    columns={columns}
+                    driverObj={driverObj}
+                    excludeFields={excludeFields}
+                    onChangeInput={onChangeInput}
+                    isError={isError} 
+                />
             </DialogContent>
             <DialogActions>
                 <LoadingButton 
