@@ -78,7 +78,7 @@ export default function EditDialog(props) {
             <DialogContent dividers>
                 <DynamicDialogContent
                     columns={columns}
-                    driverObj={driverObj}
+                    inputObj={driverObj}
                     excludeFields={excludeFields}
                     onChangeInput={onChangeInput}
                     isError={isError} 

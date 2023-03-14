@@ -16,14 +16,14 @@ import * as NavigationBarConstants from "../../../../constants/NavigationBarCons
 import { columns } from "../Table";
 
 export default function AddNewDialog(props) {
-    const [driverObj, setCarReplacementObj] = React.useState({});
+    const [driverObj, setDriverObj] = React.useState({});
     const excludeFields = ['id', 'fullName', 'age', 'endDate', 'ssoEndDate', 'reason', 'editBy'];
 
     const [isError, setIsError] = React.useState(false);
     const onChangeInput = (event) => {
         if ( typeof event !== 'undefined' ) {
             const { name, value } = event.target;
-            setCarReplacementObj((prevDriverObj) => ({
+            setDriverObj((prevDriverObj) => ({
                 ...prevDriverObj,
                 [name]: value,
             }));
@@ -72,7 +72,7 @@ export default function AddNewDialog(props) {
             <DialogContent dividers>
                 <DynamicDialogContent
                     columns={columns}
-                    driverObj={driverObj}
+                    inputObj={driverObj}
                     excludeFields={excludeFields}
                     onChangeInput={onChangeInput}
                     isError={isError} 

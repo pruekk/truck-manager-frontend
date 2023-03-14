@@ -21,7 +21,7 @@ export function DynamicDialogContent(props) {
                         <Select
                             id={column.field}
                             name={column.field}
-                            value={props.driverObj[column.field] || ''}
+                            value={props.inputObj[column.field] || ''}
                             onChange={props.onChangeInput}
                             sx={{ width: "100%" }}
                         >
@@ -38,9 +38,9 @@ export function DynamicDialogContent(props) {
                             name={column.field}
                             type={column.type || 'input'}
                             variant="outlined"
-                            error={props.isError && !props.driverObj[column.field]}
+                            error={props.isError && !props.inputObj[column.field]}
                             onChange={props.onChangeInput}
-                            value={props.driverObj[column.field] || ''}
+                            value={props.inputObj[column.field] || ''}
                         />
                     )}
                 </Grid>
