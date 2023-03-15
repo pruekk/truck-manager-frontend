@@ -25,7 +25,7 @@ export async function GetDrivers(token) {
 
 export async function AddNewDriver(token, data) {
     try {
-        data['editBy'] = JSON.parse(localStorage.getItem('userObject'))?.email;
+        data[0]['editBy'] = JSON.parse(localStorage.getItem('userObject'))?.email;
 
         const response = await axios({
             method: 'post',
