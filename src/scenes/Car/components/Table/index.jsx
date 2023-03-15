@@ -7,7 +7,8 @@ import DataGridTable from '../../../../components/DataGridTable';
 import * as TableConstants from '../../../../constants/TableConstants';
 
 export const columns = [
-    { field: 'id', headerName: 'รหัสรถโม่', minWidth: TableConstants.columnsSize.medium },
+    { field: 'id', headerName: 'ลำดับ', minWidth: TableConstants.columnsSize.small },
+    { field: 'carId', headerName: 'รหัสรถโม่', minWidth: TableConstants.columnsSize.medium },
     { field: 'licensePlate', headerName: 'ทะเบียนรถ', minWidth: TableConstants.columnsSize.medium },
     { field: 'type', headerName: 'ประเภทรถ', minWidth: TableConstants.columnsSize.small },
     { field: 'taxDate', headerName: 'วันที่เสียภาษีรถ', type: 'date', minWidth: TableConstants.columnsSize.medium + 20 },
