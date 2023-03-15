@@ -24,6 +24,6 @@ export default function Table(props) {
     }
 
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} processRowUpdate={processRowUpdate} checkboxSelection={true} />
+        <DataGridTable dataRows={props.dataRows} columns={columns} processRowUpdate={processRowUpdate} checkboxSelection={false} />
     );
 }

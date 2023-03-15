@@ -95,11 +95,14 @@ export default function ImportDialog(props) {
                 if (moment(maxDateFormat, 'YYYY-MM-DD').isAfter(moment(cRowMaxDateFormat, 'YYYY-MM-DD'))) {
                     row.dateStart = cRowMaxDateFormat;
                     row.dateEnd = maxDateFormat;
-                    console.log(row);
                 }
                 if (moment(maxDateFormat, 'YYYY-MM-DD').isSameOrBefore(moment(cRowMaxDateFormat, 'YYYY-MM-DD'))) {
                     duplicateArr.push(row.id);
                 }
+            }
+            if (filterDuplicate.length === 0) {
+                row.dateStart = minDateFormat;
+                row.dateEnd = maxDateFormat;
             }
 
             return row;

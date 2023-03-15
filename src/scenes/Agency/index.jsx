@@ -58,7 +58,7 @@ export default function Agency() {
     }
 
     const onClickEditRow = () => {
-        const selectedRow = confirmedDataRows.filter((row) => { return row.id === selectedRowIds[0] });
+        const selectedRow = confirmedDataRows.filter((row) => { return row._id === selectedRowIds[0] });
         setSelectedRow(selectedRow);
         handleOpenEditDialog();
     }
