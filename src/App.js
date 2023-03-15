@@ -8,6 +8,7 @@ import Toolbar from "@mui/material/Toolbar";
 
 //Components
 import NavigationBar from "./components/NavigationBar";
+import PersistentDrawerLeft from "./components/PersistentDrawer";
 import Footer from "./components/Footer";
 
 //Scenes
