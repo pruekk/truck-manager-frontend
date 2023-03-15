@@ -13,7 +13,6 @@ import IconButton from "@mui/material/IconButton";
 
 //Components
 import Table from './components/Table';
-
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
@@ -23,6 +22,10 @@ import StepLabel from '@mui/material/StepLabel';
 import { GetAgency } from '../../../Agency/services/AgencyServices';
 import { GetCarReplacement } from "../../../CarReplacement/services/CarReplacementServices";
 import { matchDriver } from "../../../../functions/prepareDataForTable";
+import { GetTransports } from "../../../TransportPrice/services/TransportServices";
+
+//Others
+import moment from 'moment';
 
 const steps = ['นำเข้าข้อมูล', 'ลบข้อมูลซ้ำ', 'ดึงข้อมูลจากหน่วยงาน', 'ดึงข้อมูลจากใบราคาค่าขนส่ง', 'ดึงข้อมูลจากรายการเปลี่ยนรถ', 'ตรวจสอบข้อมูลทั้งหมด'];
 const newSteps = ['นำเข้าข้อมูล', 'ดึงข้อมูลจากหน่วยงาน', 'ดึงข้อมูลจากใบราคาค่าขนส่ง', 'ดึงข้อมูลจากรายการเปลี่ยนรถ', 'ลบข้อมูลซ้ำ', 'ตรวจสอบข้อมูลทั้งหมด'];
@@ -34,7 +37,11 @@ export default function ImportDialog(props) {
     const handleNext = () => {
         if (activeStep === 0) {
             getAgency();
-        } if (activeStep === 2) {
+        }
+        if (activeStep === 1) {
+            getTransportPrice();
+        }
+        if (activeStep === 2) {
             getCarReplacement();
         }
 
@@ -66,7 +73,7 @@ export default function ImportDialog(props) {
             const agency = response.data
             let tempArr = [];
             props.dataRows.map((row) => {
-                const agencyObj = mapAgent(row.destination, agency);
+                const agencyObj = mapAgent(row, agency);
                 row.code = agencyObj.newId;
                 row.distance = agencyObj.distance;
                 row.oil = agencyObj.oil;
@@ -83,13 +90,17 @@ export default function ImportDialog(props) {
         alert("Something went wrong! Please try again later.");
     }
 
-    const mapAgent = (agent, agentArr) => {
-        const filteredArr = agentArr.filter((obj) => { return obj.agent === agent });
+    const mapAgent = (obj, agentArr) => {
+        console.log(obj);
+        const filteredArr = agentArr.filter((agent) => { return agent.agent === obj.destination });
+        console.log(filteredArr);
+        const filterDateRange = agentArr.filter((agent) => { return moment(obj.date, "YYYY-MM-DD").isSameOrAfter(moment(agent.dateStart, "YYYY-MM-DD")) && moment(obj.date, "YYYY-MM-DD").isSameOrBefore(moment(agent.dateEnd, "YYYY-MM-DD")) });
+        console.log(filterDateRange);
         if (filteredArr.length === 1) {
             return filteredArr[0];
         }
 
-        return filteredArr.sort((a, b) => Number(b.dateStart) - Number(a.dateStart))[0];
+        return filteredArr[0];
     }
 
     const getCarReplacement = async () => {
@@ -114,6 +125,33 @@ export default function ImportDialog(props) {
         }
 
         alert("Something went wrong! Please try again later.");
+    }
+
+    const getTransportPrice = async () => {
+        const response = await GetTransports(localStorage.getItem('userToken'));
+        if (response.success) {
+            const transportPrice = response.data
+            let tempArr = [];
+            props.dataRows.map((row) => {
+                const price = mapTransportPrice(row, transportPrice);
+                row.price = price;
+
+                tempArr.push(row);
+                return row;
+            });
+
+            props.setDataRows(tempArr);
+
+            return;
+        }
+    }
+
+    const mapTransportPrice = (obj, transportPriceArr) => {
+        const filterDateRange = transportPriceArr.filter((transport) => { return moment(obj.date, "YYYY-MM-DD").isBetween(moment(transport.from, "YYYY-MM-DD"), moment(transport.to, "YYYY-MM-DD")) })
+        const filterCode = filterDateRange[0].arr.filter((arr) => { return arr.name === String(obj.code) });
+        const mapAmountWithIndex = (parseFloat(obj.amount) / 0.25) - 1;
+
+        return filterCode[0].value[mapAmountWithIndex];
     }
 
     return (
