@@ -177,6 +177,7 @@ export default function DP(props) {
                 isLoading={isLoading}
                 openDialog={isOpenEditDialog}
                 dataRows={selectedRow}
+                setDataRows={setDataRows}
                 handleCloseDialog={handleCloseEditDialog}
                 onClickUpdate={onClickUpdate}
             />
