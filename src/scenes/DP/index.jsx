@@ -10,6 +10,7 @@ import Tab from '@mui/material/Tab';
 
 //Components
 import ImportDialog from './components/ImportDialog';
+import DeleteDialog from "./components/DeleteDialog";
 import EditDialog from './components/EditDialog';
 import Table from './components/Table';
 
@@ -102,12 +103,21 @@ export default function DP() {
 
         if (response.success) {
             getDP();
-
+            onCloseDeleteDialog();
             return;
         }
 
         alert("Something went wrong! Please try again later.");
         setIsLoading(false);
+    }
+
+    const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
+    const onOpenDeleteDialog = () => {
+        setIsOpenDeleteDialog(true);
+    }
+
+    const onCloseDeleteDialog = () => {
+        setIsOpenDeleteDialog(false)
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -156,6 +166,13 @@ export default function DP() {
                 dataRows={selectedRow}
                 handleCloseDialog={handleCloseEditDialog}
                 onClickUpdate={onClickUpdate}
+            />
+            <DeleteDialog
+                selectedRowIds={selectedRowIds}
+                isLoading={isLoading}
+                openDialog={isOpenDeleteDialog}
+                deleteDP={deleteDP}
+                onCloseDeleteDialog={onCloseDeleteDialog}
             />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -208,7 +225,7 @@ export default function DP() {
                                     disableElevation
                                     variant="contained"
                                     component="label"
-                                    onClick={deleteDP}
+                                    onClick={onOpenDeleteDialog}
                                     sx={{
                                         backgroundColor: "#bd0101",
                                         "&:hover": {

@@ -13,6 +13,7 @@ import Table from './components/Table';
 
 //Dialogs
 import AddNewDialog from './components/AddNewDialog';
+import DeleteDialog from "./components/DeleteDialog";
 import EditDialog from './components/EditDialog';
 
 //Services
@@ -20,6 +21,7 @@ import { GetCars, AddNewCar, DeleteCar, EditCar } from "./services/CarServices";
 
 export default function Car() {
   const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     getCars();
@@ -30,6 +32,7 @@ export default function Car() {
 
     if (response.success) {
       setConfirmedDataRows(response.data);
+      setIsLoading(false);
     }
   }
 
@@ -54,7 +57,6 @@ export default function Car() {
   }
 
   const onClickEditRow = () => {
-    console.log(confirmedDataRows, selectedRowIds)
     const selectedRow = confirmedDataRows.filter((row) => { return row.id === selectedRowIds[0] });
     setSelectedRow(selectedRow);
     setIsEditing(true);
@@ -88,10 +90,13 @@ export default function Car() {
   }
 
   const deleteCar = async () => {
+    setIsLoading(true);
+
     const response = await DeleteCar(localStorage.getItem('userToken'), selectedRowIds[0]);
 
     if (response.success) {
       getCars();
+      onCloseDeleteDialog();
     }
   }
 
@@ -103,6 +108,15 @@ export default function Car() {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
+  const onOpenDeleteDialog = () => {
+    setIsOpenDeleteDialog(true);
+  }
+
+  const onCloseDeleteDialog = () => {
+    setIsOpenDeleteDialog(false)
+  }
 
   return (
     <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
@@ -119,6 +133,13 @@ export default function Car() {
           onClickUpdate={onClickUpdate}
         />
       }
+      <DeleteDialog
+        selectedRowIds={selectedRowIds}
+        isLoading={isLoading}
+        openDialog={isOpenDeleteDialog}
+        deleteCar={deleteCar}
+        onCloseDeleteDialog={onCloseDeleteDialog}
+      />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={1}>
@@ -162,7 +183,7 @@ export default function Car() {
                   disableElevation
                   variant="contained"
                   component="label"
-                  onClick={deleteCar}
+                  onClick={onOpenDeleteDialog}
                   sx={{
                     backgroundColor: "#bd0101",
                     "&:hover": {
