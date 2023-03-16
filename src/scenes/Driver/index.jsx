@@ -19,12 +19,13 @@ import AddNewDialog from "./components/AddNewDialog";
 import DeleteDialog from "./components/DeleteDialog";
 import EditDialog from "./components/EditDialog";
 
-export default function Driver() {
+export default function Driver(props) {
   const [drivers, setDrivers] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     getDrivers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getDrivers = async () => {
@@ -33,7 +34,11 @@ export default function Driver() {
     if (response.success) {
       setDrivers(response.data);
       setIsLoading(false);
+
+      return;
     }
+
+    props.logOut();
   }
 
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -55,6 +60,7 @@ export default function Driver() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
   };
 
@@ -95,6 +101,7 @@ export default function Driver() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
   }
 
@@ -105,7 +112,20 @@ export default function Driver() {
     if (response.success) {
       getDrivers();
       onCloseDeleteDialog();
+
+      return;
     }
+
+    props.logOut();
+  }
+
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
+  const onOpenDeleteDialog = () => {
+    setIsOpenDeleteDialog(true);
+  }
+
+  const onCloseDeleteDialog = () => {
+    setIsOpenDeleteDialog(false)
   }
 
   const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);

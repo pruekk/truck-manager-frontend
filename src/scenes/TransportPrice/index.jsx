@@ -19,7 +19,7 @@ import { createData } from "./functions/Functions";
 //Services
 import { GetTransports, AddTransports, DeleteTransports, UpdateTransport } from "./services/TransportServices";
 
-export default function Transport() {
+export default function Transport(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -29,6 +29,7 @@ export default function Transport() {
 
   useEffect(() => {
     getTransports();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getTransports = async () => {
@@ -36,8 +37,12 @@ export default function Transport() {
 
     if (response.success) {
       setDataRow(response.data);
+      setIsLoading(false);
+
+      return;
     }
 
+    props.logOut();
     setIsLoading(false);
   }
 
@@ -76,6 +81,7 @@ export default function Transport() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
     setIsLoading(false);
   };
@@ -100,6 +106,7 @@ export default function Transport() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
     setIsLoading(false);
   }
@@ -117,6 +124,7 @@ export default function Transport() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
     setIsLoading(false);
   }

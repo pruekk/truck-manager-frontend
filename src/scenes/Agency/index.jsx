@@ -28,13 +28,14 @@ import handleUploadExcel from "../../functions/handleUploadExcel";
 //Services
 import { AddNewAgency, GetAgency, DeleteAgency, EditAgency } from "./services/AgencyServices";
 
-export default function Agency() {
+export default function Agency(props) {
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
 
     useEffect(() => {
         getAgency();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getAgency = async () => {
@@ -42,8 +43,12 @@ export default function Agency() {
 
         if (response.success) {
             setConfirmedDataRows(response.data);
+            setIsLoading(false);
+
+            return;
         }
 
+        props.logOut();
         setIsLoading(false);
     }
 
@@ -84,6 +89,7 @@ export default function Agency() {
             return;
         }
 
+        props.logOut();
         alert("Something went wrong! Please try again later.");
         setIsLoading(false);
     }
@@ -96,9 +102,11 @@ export default function Agency() {
         if (response.success) {
             getAgency();
             onCloseDeleteDialog();
+
+            return;
         }
 
-        onCloseDeleteDialog();
+        props.logOut();
     }
 
     const onOpenDeleteDialog = () => {

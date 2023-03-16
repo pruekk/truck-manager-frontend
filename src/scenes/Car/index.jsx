@@ -19,12 +19,13 @@ import EditDialog from './components/EditDialog';
 //Services
 import { GetCars, AddNewCar, DeleteCar, EditCar } from "./services/CarServices";
 
-export default function Car() {
+export default function Car(props) {
   const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     getCars();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getCars = async () => {
@@ -33,7 +34,11 @@ export default function Car() {
     if (response.success) {
       setConfirmedDataRows(response.data);
       setIsLoading(false);
+
+      return;
     }
+
+    props.logOut();
   }
 
   const handleAddNewCar = async (obj) => {
@@ -46,6 +51,7 @@ export default function Car() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.")
   }
 
@@ -86,6 +92,7 @@ export default function Car() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
   }
 
@@ -97,7 +104,11 @@ export default function Car() {
     if (response.success) {
       getCars();
       onCloseDeleteDialog();
+
+      return;
     }
+
+    props.logOut();
   }
 
   const [openDialog, setOpenDialog] = React.useState(false);

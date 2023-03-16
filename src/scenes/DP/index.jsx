@@ -27,7 +27,7 @@ import { AddNewDP, GetDP, DeleteDP, EditDP } from "./services/DPServices";
 //Functions
 import handleUploadExcel from "../../functions/handleUploadExcel";
 
-export default function DP() {
+export default function DP(props) {
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -35,12 +35,21 @@ export default function DP() {
     useEffect(() => {
         getDP();
         getCarReplacement();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getDP = async () => {
         const response = await GetDP(localStorage.getItem('userToken'));
-        setConfirmedDataRows(response.data);
+
+        if (response.success) {
+            setConfirmedDataRows(response.data);
+            setIsLoading(false);
+
+            return;
+        }
+
         setIsLoading(false);
+        props.logOut();
     }
 
     const clearFileCache = (event) => {
@@ -58,6 +67,7 @@ export default function DP() {
             return;
         }
 
+        props.logOut();
         alert("Something went wrong! Please try again later.");
     }
 
@@ -93,6 +103,7 @@ export default function DP() {
             return;
         }
 
+        props.logOut();
         alert("Something went wrong! Please try again later.");
         setIsLoading(false);
     }
@@ -107,6 +118,7 @@ export default function DP() {
             return;
         }
 
+        props.logOut();
         alert("Something went wrong! Please try again later.");
         setIsLoading(false);
     }
@@ -140,6 +152,7 @@ export default function DP() {
             return;
         }
 
+        props.logOut();
         alert("Something went wrong! Please try again later.");
         setIsLoading(false);
     };

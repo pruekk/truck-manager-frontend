@@ -19,7 +19,7 @@ import DataTable from './components/DataTable';
 //Services
 import { GetOilDelivery, AddOilDelivery, UpdateOilDelivery, DeleteOilDelivery } from "./services/OilDeliveryServices";
 
-export default function OilDelivery() {
+export default function OilDelivery(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
   const [isEdit, setIsEdit] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -29,6 +29,7 @@ export default function OilDelivery() {
 
   useEffect(() => {
     getOilDelivery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getOilDelivery = async () => {
@@ -36,8 +37,11 @@ export default function OilDelivery() {
 
     if (response.success) {
       setDataRow(response.data);
+      setIsLoading(false);
+      return;
     }
 
+    props.logOut();
     setIsLoading(false);
   }
 
@@ -76,6 +80,7 @@ export default function OilDelivery() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
     setIsLoading(false);
   };
@@ -99,6 +104,7 @@ export default function OilDelivery() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
     setIsLoading(false);
 
@@ -117,6 +123,7 @@ export default function OilDelivery() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
     setIsLoading(false);
   }
