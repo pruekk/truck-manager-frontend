@@ -10,6 +10,7 @@ import Tab from '@mui/material/Tab';
 
 //Components
 import ImportDialog from './components/ImportDialog';
+import DeleteDialog from "./components/DeleteDialog";
 import EditDialog from './components/EditDialog';
 import Table from './components/Table';
 
@@ -26,7 +27,7 @@ import { AddNewDP, GetDP, DeleteDP, EditDP } from "./services/DPServices";
 //Functions
 import handleUploadExcel from "../../functions/handleUploadExcel";
 
-export default function DP() {
+export default function DP(props) {
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
@@ -34,12 +35,21 @@ export default function DP() {
     useEffect(() => {
         getDP();
         getCarReplacement();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getDP = async () => {
         const response = await GetDP(localStorage.getItem('userToken'));
-        setConfirmedDataRows(response.data);
+
+        if (response.success) {
+            setConfirmedDataRows(response.data);
+            setIsLoading(false);
+
+            return;
+        }
+
         setIsLoading(false);
+        props.logOut();
     }
 
     const clearFileCache = (event) => {
@@ -57,6 +67,7 @@ export default function DP() {
             return;
         }
 
+        props.logOut();
         alert("Something went wrong! Please try again later.");
     }
 
@@ -92,6 +103,7 @@ export default function DP() {
             return;
         }
 
+        props.logOut();
         alert("Something went wrong! Please try again later.");
         setIsLoading(false);
     }
@@ -102,12 +114,22 @@ export default function DP() {
 
         if (response.success) {
             getDP();
-
+            onCloseDeleteDialog();
             return;
         }
 
+        props.logOut();
         alert("Something went wrong! Please try again later.");
         setIsLoading(false);
+    }
+
+    const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
+    const onOpenDeleteDialog = () => {
+        setIsOpenDeleteDialog(true);
+    }
+
+    const onCloseDeleteDialog = () => {
+        setIsOpenDeleteDialog(false)
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -130,6 +152,7 @@ export default function DP() {
             return;
         }
 
+        props.logOut();
         alert("Something went wrong! Please try again later.");
         setIsLoading(false);
     };
@@ -154,8 +177,16 @@ export default function DP() {
                 isLoading={isLoading}
                 openDialog={isOpenEditDialog}
                 dataRows={selectedRow}
+                setDataRows={setDataRows}
                 handleCloseDialog={handleCloseEditDialog}
                 onClickUpdate={onClickUpdate}
+            />
+            <DeleteDialog
+                selectedRowIds={selectedRowIds}
+                isLoading={isLoading}
+                openDialog={isOpenDeleteDialog}
+                deleteDP={deleteDP}
+                onCloseDeleteDialog={onCloseDeleteDialog}
             />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
@@ -208,7 +239,7 @@ export default function DP() {
                                     disableElevation
                                     variant="contained"
                                     component="label"
-                                    onClick={deleteDP}
+                                    onClick={onOpenDeleteDialog}
                                     sx={{
                                         backgroundColor: "#bd0101",
                                         "&:hover": {

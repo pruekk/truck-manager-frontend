@@ -13,19 +13,38 @@ import IconButton from "@mui/material/IconButton";
 
 //Components
 import Table from './components/Table';
-
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
 import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 
+//Services
+import { GetAgency } from '../../../Agency/services/AgencyServices';
+import { GetCarReplacement } from "../../../CarReplacement/services/CarReplacementServices";
+import { matchDriver } from "../../../../functions/prepareDataForTable";
+import { GetTransports } from "../../../TransportPrice/services/TransportServices";
+
+//Others
+import moment from 'moment';
+
 const steps = ['นำเข้าข้อมูล', 'ลบข้อมูลซ้ำ', 'ดึงข้อมูลจากหน่วยงาน', 'ดึงข้อมูลจากใบราคาค่าขนส่ง', 'ดึงข้อมูลจากรายการเปลี่ยนรถ', 'ตรวจสอบข้อมูลทั้งหมด'];
+const newSteps = ['นำเข้าข้อมูล', 'ดึงข้อมูลจากหน่วยงาน', 'ดึงข้อมูลจากใบราคาค่าขนส่ง', 'ดึงข้อมูลจากรายการเปลี่ยนรถ', 'ลบข้อมูลซ้ำ', 'ตรวจสอบข้อมูลทั้งหมด'];
 
 export default function ImportDialog(props) {
     const [selectedRows, setSelectedRows] = React.useState([]);
-    const [activeStep, setActiveStep] = React.useState(1);
+    const [activeStep, setActiveStep] = React.useState(0);
 
     const handleNext = () => {
+        if (activeStep === 0) {
+            getAgency();
+        }
+        if (activeStep === 1) {
+            getTransportPrice();
+        }
+        if (activeStep === 2) {
+            getCarReplacement();
+        }
+
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
     };
 
@@ -34,13 +53,106 @@ export default function ImportDialog(props) {
     };
 
     const handleReset = () => {
-        setActiveStep(1);
+        setActiveStep(0);
     };
+
+    const onClickCloseDialog = () => {
+        props.handleCloseDialog();
+        handleReset();
+    }
 
     const onClickDeleteSelectedRows = () => {
         const filtered = props.dataRows.filter((row) => !selectedRows.includes(row.id))
         props.setDataRows(filtered);
     };
+
+    const getAgency = async () => {
+        const response = await GetAgency(localStorage.getItem('userToken'));
+
+        if (response.success) {
+            const agency = response.data
+            let tempArr = [];
+            props.dataRows.map((row) => {
+                const agencyObj = mapAgent(row, agency);
+                row.code = agencyObj.newId;
+                row.distance = agencyObj.distance;
+                row.oil = agencyObj.oil;
+                tempArr.push(row);
+
+                return row;
+            });
+
+            props.setDataRows(tempArr);
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
+    }
+
+    const mapAgent = (obj, agentArr) => {
+        console.log(obj);
+        const filteredArr = agentArr.filter((agent) => { return agent.agent === obj.destination });
+        console.log(filteredArr);
+        const filterDateRange = agentArr.filter((agent) => { return moment(obj.date, "YYYY-MM-DD").isSameOrAfter(moment(agent.dateStart, "YYYY-MM-DD")) && moment(obj.date, "YYYY-MM-DD").isSameOrBefore(moment(agent.dateEnd, "YYYY-MM-DD")) });
+        console.log(filterDateRange);
+        if (filteredArr.length === 1) {
+            return filteredArr[0];
+        }
+
+        return filteredArr[0];
+    }
+
+    const getCarReplacement = async () => {
+        const response = await GetCarReplacement(localStorage.getItem('userToken'));
+
+        if (response.success) {
+            const carReplacement = response.data
+            let tempArr = [];
+            props.dataRows.map((row) => {
+                const driver = matchDriver(row.car, new Date(), row.time, carReplacement); // Will change temp date after
+                if (driver) {
+                    row.driver = driver;
+                }
+                tempArr.push(row);
+
+                return row;
+            });
+
+            props.setDataRows(tempArr);
+
+            return;
+        }
+
+        alert("Something went wrong! Please try again later.");
+    }
+
+    const getTransportPrice = async () => {
+        const response = await GetTransports(localStorage.getItem('userToken'));
+        if (response.success) {
+            const transportPrice = response.data
+            let tempArr = [];
+            props.dataRows.map((row) => {
+                const price = mapTransportPrice(row, transportPrice);
+                row.price = price;
+
+                tempArr.push(row);
+                return row;
+            });
+
+            props.setDataRows(tempArr);
+
+            return;
+        }
+    }
+
+    const mapTransportPrice = (obj, transportPriceArr) => {
+        const filterDateRange = transportPriceArr.filter((transport) => { return moment(obj.date, "YYYY-MM-DD").isBetween(moment(transport.from, "YYYY-MM-DD"), moment(transport.to, "YYYY-MM-DD")) })
+        const filterCode = filterDateRange[0].arr.filter((arr) => { return arr.name === String(obj.code) });
+        const mapAmountWithIndex = (parseFloat(obj.amount) / 0.25) - 1;
+
+        return filterCode[0].value[mapAmountWithIndex];
+    }
 
     return (
         <Dialog
@@ -50,7 +162,7 @@ export default function ImportDialog(props) {
         >
             <DialogTitle sx={{ backgroundColor: "#FBFBFB" }}>
                 <Stepper activeStep={activeStep} alternativeLabel>
-                    {steps.map((label) => {
+                    {newSteps.map((label) => {
                         const stepProps = {};
                         const labelProps = {};
                         return (
@@ -62,7 +174,7 @@ export default function ImportDialog(props) {
                 </Stepper>
                 <IconButton
                     aria-label="close"
-                    onClick={props.handleCloseDialog}
+                    onClick={onClickCloseDialog}
                     sx={{
                         position: "absolute",
                         right: 8,
@@ -76,7 +188,7 @@ export default function ImportDialog(props) {
             <DialogContent dividers sx={{ backgroundColor: "#FBFBFB" }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Table dataRows={props.dataRows} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} />
+                        <Table dataRows={props.dataRows} checkboxSelection={activeStep === 4} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} />
                     </Grid>
                 </Grid>
             </DialogContent>

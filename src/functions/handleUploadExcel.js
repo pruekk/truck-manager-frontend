@@ -23,7 +23,7 @@ export default function handleUploadExcel(e, formatType, confirmedDataRows, hand
 
             if (dataParse.length !== 0) {
                 const cleanupData = dataParse.filter((data) => data.length !== 0)
-                allSheetData.push(...prepareDataForTable(formatType, sheetName, cleanupData, confirmedDataRows, carReplacement));
+                allSheetData.push(...prepareDataForTable(formatType, sheetName.replaceAll('_', '/'), cleanupData, confirmedDataRows, carReplacement));
             }
         }
 

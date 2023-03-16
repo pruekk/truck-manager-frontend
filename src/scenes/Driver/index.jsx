@@ -16,13 +16,16 @@ import { GetDrivers, AddNewDriver, EditDriver, DeleteDriver } from './services/D
 
 //Dialogs
 import AddNewDialog from "./components/AddNewDialog";
+import DeleteDialog from "./components/DeleteDialog";
 import EditDialog from "./components/EditDialog";
 
-export default function Driver() {
+export default function Driver(props) {
   const [drivers, setDrivers] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     getDrivers();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getDrivers = async () => {
@@ -30,7 +33,12 @@ export default function Driver() {
 
     if (response.success) {
       setDrivers(response.data);
+      setIsLoading(false);
+
+      return;
     }
+
+    props.logOut();
   }
 
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -52,6 +60,7 @@ export default function Driver() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
   };
 
@@ -92,15 +101,31 @@ export default function Driver() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
   }
 
   const deleteDriver = async () => {
+    setIsLoading(true);
     const response = await DeleteDriver(localStorage.getItem('userToken'), selectedRowIds[0]);
 
     if (response.success) {
       getDrivers();
+      onCloseDeleteDialog();
+
+      return;
     }
+
+    props.logOut();
+  }
+
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
+  const onOpenDeleteDialog = () => {
+    setIsOpenDeleteDialog(true);
+  }
+
+  const onCloseDeleteDialog = () => {
+    setIsOpenDeleteDialog(false)
   }
 
   return (
@@ -118,6 +143,13 @@ export default function Driver() {
           handleUpdateDriver={handleUpdateDriver}
         />
       }
+      <DeleteDialog
+        selectedRowIds={selectedRowIds}
+        isLoading={isLoading}
+        openDialog={isOpenDeleteDialog}
+        deleteDriver={deleteDriver}
+        onCloseDeleteDialog={onCloseDeleteDialog}
+      />
 
       <Grid container spacing={2}>
         <Grid item xs={12}>
@@ -163,7 +195,7 @@ export default function Driver() {
                   disableElevation
                   variant="contained"
                   component="label"
-                  onClick={deleteDriver}
+                  onClick={onOpenDeleteDialog}
                   sx={{
                     backgroundColor: "#bd0101",
                     "&:hover": {

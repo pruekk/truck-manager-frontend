@@ -32,13 +32,13 @@ const NotFound = () => {
 const App = (props) => {
   let routes = useRoutes([
     { path: "/", element: props.isLoggedIn ? <Home /> : <Navigate to='/login' /> },
-    { path: "/agency", element: props.isLoggedIn ? <Agency /> : <Navigate to='/login' /> },
-    { path: "/car-replacement", element: props.isLoggedIn ? <CarReplacement /> : <Navigate to='/login' /> },
-    { path: "/transport-price", element: props.isLoggedIn ? <TransportPrice /> : <Navigate to='/login' /> },
-    { path: "/dp-schedule", element: props.isLoggedIn ? <DP /> : <Navigate to='/login' /> },
-    { path: "/oil-transaction", element: props.isLoggedIn ? <OilDelivery /> : <Navigate to='/login' /> },
-    { path: "/car-information", element: props.isLoggedIn ? <Car /> : <Navigate to='/login' /> },
-    { path: "/driver", element: props.isLoggedIn ? <Driver /> : <Navigate to='/login' /> },
+    { path: "/agency", element: props.isLoggedIn ? <Agency logOut={props.logOut} /> : <Navigate to='/login' /> },
+    { path: "/car-replacement", element: props.isLoggedIn ? <CarReplacement logOut={props.logOut} /> : <Navigate to='/login' /> },
+    { path: "/transport-price", element: props.isLoggedIn ? <TransportPrice logOut={props.logOut} /> : <Navigate to='/login' /> },
+    { path: "/dp-schedule", element: props.isLoggedIn ? <DP logOut={props.logOut} /> : <Navigate to='/login' /> },
+    { path: "/oil-transaction", element: props.isLoggedIn ? <OilDelivery logOut={props.logOut} /> : <Navigate to='/login' /> },
+    { path: "/car-information", element: props.isLoggedIn ? <Car logOut={props.logOut} /> : <Navigate to='/login' /> },
+    { path: "/driver", element: props.isLoggedIn ? <Driver logOut={props.logOut} /> : <Navigate to='/login' /> },
     { path: "/login", element: <Login onLogIn={props.logIn} /> },
     { path: "*", element: <NotFound /> }
   ]);
@@ -84,7 +84,7 @@ export default function AppWrapper() {
             sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` } }}
           >
             <Toolbar />
-            <App isLoggedIn={isLoggedIn} logIn={logIn} />
+            <App isLoggedIn={isLoggedIn} logIn={logIn} logOut={logOut} />
           </Box>
         </Box>
         <Footer />
