@@ -105,15 +105,6 @@ export default function CarReplacement(props) {
     setIsOpenDeleteDialog(false)
   }
 
-  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
-  const onOpenDeleteDialog = () => {
-    setIsOpenDeleteDialog(true);
-  }
-
-  const onCloseDeleteDialog = () => {
-    setIsOpenDeleteDialog(false)
-  }
-
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
 
   const handleOpenDialog = () => {
