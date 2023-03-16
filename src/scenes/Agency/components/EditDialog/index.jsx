@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import Box from '@mui/material/Box';
 import CloseIcon from "@mui/icons-material/Close";
@@ -15,24 +15,14 @@ import Table from './components/Table';
 
 export default function EditDialog(props) {
     const [selectedRows, setSelectedRows] = React.useState([]);
-    const [updatedRow, setUpdatedRow] = React.useState({});
-
-    useEffect(() => {
-        prepareDataRow();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
-
-    const prepareDataRow = () => {
-        setUpdatedRow(props.dataRows[0]);
-    }
 
     const onClickDeleteSelectedRows = () => {
         const filtered = props.dataRows.filter((row) => !selectedRows.includes(row.id))
         props.setDataRows(filtered);
     };
 
-    const onUpdateRow = (event) => {
-        setUpdatedRow(event);
+    const onUpdateRow = (updateObj) => {
+        props.onUpdateSelectedRow(updateObj);
     }
 
     return (
@@ -68,7 +58,7 @@ export default function EditDialog(props) {
                     <Box sx={{ flex: '1 1 auto' }} />
                     <LoadingButton
                         loading={props.isLoading}
-                        onClick={() => { props.onClickUpdate(updatedRow) }}
+                        onClick={() => { props.onClickUpdate(props.dataRows[0]) }}
                     >
                         Update
                     </LoadingButton>
