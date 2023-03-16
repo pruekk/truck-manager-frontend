@@ -17,7 +17,7 @@ import { columns } from "../Table";
 
 export default function AddNewDialog(props) {
     const [driverObj, setDriverObj] = React.useState({});
-    const excludeFields = ['id', 'fullName', 'age', 'endDate', 'ssoEndDate', 'reason', 'editBy'];
+    const excludeFields = ['id', 'fullName', 'age', 'ssoStartDate', 'endDate', 'ssoEndDate', 'reason', 'editBy'];
 
     const [isError, setIsError] = React.useState(false);
     const onChangeInput = (event) => {
