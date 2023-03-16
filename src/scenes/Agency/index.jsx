@@ -12,6 +12,7 @@ import Tab from '@mui/material/Tab';
 import Table from './components/Table';
 
 //Dialogs
+import DeleteDialog from "./components/DeleteDialog";
 import ImportDialog from './components/ImportDialog';
 import EditDialog from './components/EditDialog';
 
@@ -27,13 +28,14 @@ import handleUploadExcel from "../../functions/handleUploadExcel";
 //Services
 import { AddNewAgency, GetAgency, DeleteAgency, EditAgency } from "./services/AgencyServices";
 
-export default function Agency() {
+export default function Agency(props) {
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
 
     useEffect(() => {
         getAgency();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getAgency = async () => {
@@ -41,8 +43,12 @@ export default function Agency() {
 
         if (response.success) {
             setConfirmedDataRows(response.data);
+            setIsLoading(false);
+
+            return;
         }
 
+        props.logOut();
         setIsLoading(false);
     }
 
@@ -83,17 +89,32 @@ export default function Agency() {
             return;
         }
 
+        props.logOut();
         alert("Something went wrong! Please try again later.");
         setIsLoading(false);
     }
 
+    const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
     const deleteAgency = async () => {
         setIsLoading(true);
         const response = await DeleteAgency(localStorage.getItem('userToken'), selectedRowIds);
 
         if (response.success) {
             getAgency();
+            onCloseDeleteDialog();
+
+            return;
         }
+
+        props.logOut();
+    }
+
+    const onOpenDeleteDialog = () => {
+        setIsOpenDeleteDialog(true);
+    }
+
+    const onCloseDeleteDialog = () => {
+        setIsOpenDeleteDialog(false)
     }
 
     const [isOpenDialog, setIsOpenDialog] = React.useState(false);
@@ -150,6 +171,13 @@ export default function Agency() {
                 handleCloseDialog={handleCloseEditDialog}
                 onClickUpdate={onClickUpdate}
             />
+            <DeleteDialog
+                selectedRowIds={selectedRowIds}
+                isLoading={isLoading}
+                openDialog={isOpenDeleteDialog}
+                deleteAgency={deleteAgency}
+                onCloseDeleteDialog={onCloseDeleteDialog}
+            />
             <Grid container spacing={2}>
                 <Grid item xs={12}>
                     <Grid container spacing={1}>
@@ -201,7 +229,8 @@ export default function Agency() {
                                     disableElevation
                                     variant="contained"
                                     component="label"
-                                    onClick={deleteAgency}
+                                    //onClick={deleteAgency}
+                                    onClick={onOpenDeleteDialog}
                                     sx={{
                                         backgroundColor: "#bd0101",
                                         "&:hover": {
