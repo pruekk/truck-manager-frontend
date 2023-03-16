@@ -64,7 +64,7 @@ export default function Agency(props) {
     }
 
     const onClickEditRow = () => {
-        const selectedRow = confirmedDataRows.filter((row) => { return row.id === selectedRowIds[0] });
+        const selectedRow = confirmedDataRows.filter((row) => { return row._id === selectedRowIds[0] });
         setSelectedRow(selectedRow);
         handleOpenEditDialog();
     }
@@ -129,7 +129,11 @@ export default function Agency(props) {
     const handleConfirmImportedData = async (dataRows) => {
         setIsLoading(true);
 
-        const response = await AddNewAgency(localStorage.getItem('userToken'), dataRows);
+        const uniqueDataRows = dataRows.filter((item, index, self) =>
+            index === self.findIndex((i) => i.id === item.id)
+        );
+
+        const response = await AddNewAgency(localStorage.getItem('userToken'), uniqueDataRows);
 
         if (response.success) {
             getAgency();
@@ -149,14 +153,17 @@ export default function Agency(props) {
 
     return (
         <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
-            <ImportDialog
-                isLoading={isLoading}
-                openDialog={isOpenDialog}
-                dataRows={dataRows}
-                setDataRows={setDataRows}
-                handleCloseDialog={handleCloseDialog}
-                handleConfirmImportedData={handleConfirmImportedData}
-            />
+            {isOpenDialog &&
+                <ImportDialog
+                    isLoading={isLoading}
+                    openDialog={isOpenDialog}
+                    dataRows={dataRows}
+                    confirmedDataRows={confirmedDataRows}
+                    setDataRows={setDataRows}
+                    handleCloseDialog={handleCloseDialog}
+                    handleConfirmImportedData={handleConfirmImportedData}
+                />
+            }
             <EditDialog
                 isLoading={isLoading}
                 openDialog={isOpenEditDialog}
