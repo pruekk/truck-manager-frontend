@@ -6,56 +6,52 @@ import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Grid";
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-
-//Icons
 import IconButton from "@mui/material/IconButton";
+
+//Components
+import { DynamicDialogContent } from "../../../../components/DynamicDialogContent";
 
 //Constants
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
-import * as Constants from "../../constants/Constants";
-
-//Others
-import moment from "moment";
+import { columns } from "../Table";
 
 export default function AddNewDialog(props) {
-    const [driverObj, setCarReplacementObj] = React.useState({});
+    const [driverObj, setDriverObj] = React.useState({});
+    const excludeFields = ['id', 'fullName', 'age', 'ssoStartDate', 'endDate', 'ssoEndDate', 'reason', 'editBy'];
+
     const [isError, setIsError] = React.useState(false);
     const onChangeInput = (event) => {
-        driverObj[`${event.target.name}`] = event.target.value;
-        setCarReplacementObj(driverObj);
+        if ( typeof event !== 'undefined' ) {
+            const { name, value } = event.target;
+            setDriverObj((prevDriverObj) => ({
+                ...prevDriverObj,
+                [name]: value,
+            }));
+        }
     }
 
     const [isLoading, setIsLoading] = React.useState(false);
     const onClickAdd = async () => {
         setIsLoading(true);
-
-        if (driverObj["idCard"] && driverObj["title"] && driverObj["firstName"] && driverObj["lastName"] && driverObj["startDate"] && driverObj["salary"]) {
-            setIsError(false);
-
-            await props.handleAddNewDriver({
-                idCard: driverObj["idCard"],
-                title: driverObj["title"],
-                firstName: driverObj["firstName"],
-                lastName: driverObj["lastName"],
-                startDate: moment(driverObj["startDate"], moment.defaultFormat).format('DD/MM/YYYY'),
-                salary: Number(driverObj["salary"])
-            });
-        } else {
+    
+        if (Object.values(driverObj).some((value) => !value)) {
             setIsError(true);
+        } else {
+            setIsError(false);
+            const formattedData = {
+                    ...driverObj,
+                    salary: Number(driverObj["salary"])
+            }
+            await props.handleAddNewDriver(formattedData);
         }
-
+    
         setIsLoading(false);
     }
 
     return (
         <Dialog
             fullWidth={true}
-            maxWidth="md"
+            maxWidth="sm"
             open={props.openDialog}
         >
             <DialogTitle>
@@ -74,75 +70,21 @@ export default function AddNewDialog(props) {
                 </IconButton>
             </DialogTitle>
             <DialogContent dividers>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            เลขประจำตัวบัตรประชาชน
-                        </Typography>
-                        <TextField id="idCard" name="idCard" type="input" variant="outlined" error={isError && !driverObj["idCard"]} onChange={onChangeInput} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            คำนำหน้า
-                        </Typography>
-                        <Select
-                            labelId="title-label"
-                            id="title"
-                            name="title"
-                            error={isError && !driverObj["title"]}
-                            onChange={onChangeInput}
-                            sx={{ width: "220px" }}
-                            MenuProps={{
-                                PaperProps: {
-                                    style: {
-                                        maxHeight: "220px",
-                                        width: "220px",
-                                    },
-                                },
-                            }}
-                        >
-                            {Constants.titles.map((title) => {
-                                return (
-                                    <MenuItem key={title} value={title}>{title}</MenuItem>
-                                )
-                            })}
-                        </Select>
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            ชื่อ
-                        </Typography>
-                        <TextField id="firstName" name="firstName" type="input" variant="outlined" error={isError && !driverObj["firstName"]} onChange={onChangeInput} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            นามสกุล
-                        </Typography>
-                        <TextField id="lastName" name="lastName" type="input" variant="outlined" error={isError && !driverObj["lastName"]} onChange={onChangeInput} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            วันที่เริ่มทำงาน
-                        </Typography>
-                        <TextField id="startDate" name="startDate" type="date" variant="outlined" error={isError && !driverObj["startDate"]} onChange={onChangeInput} />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            ฐานเงินเดือน
-                        </Typography>
-                        <TextField id="salary" name="salary" type="number" variant="outlined" error={isError && !driverObj["salary"]} onChange={onChangeInput} />
-                    </Grid>
-                </Grid>
+                <DynamicDialogContent
+                    columns={columns}
+                    inputObj={driverObj}
+                    excludeFields={excludeFields}
+                    onChangeInput={onChangeInput}
+                    isError={isError} 
+                />
             </DialogContent>
             <DialogActions>
-                <React.Fragment>
-                    <LoadingButton
-                        loading={isLoading}
-                        onClick={onClickAdd}
-                    >
-                        Add
-                    </LoadingButton>
-                </React.Fragment>
+                <LoadingButton
+                    loading={isLoading}
+                    onClick={onClickAdd}
+                >
+                    เพิ่ม
+                </LoadingButton>
             </DialogActions>
         </Dialog>
     );
