@@ -128,6 +128,15 @@ export default function Driver(props) {
     setIsOpenDeleteDialog(false)
   }
 
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
+  const onOpenDeleteDialog = () => {
+    setIsOpenDeleteDialog(true);
+  }
+
+  const onCloseDeleteDialog = () => {
+    setIsOpenDeleteDialog(false)
+  }
+
   return (
     <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
       <AddNewDialog

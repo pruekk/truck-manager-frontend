@@ -107,7 +107,6 @@ export default function Agency(props) {
         }
 
         props.logOut();
-        onCloseDeleteDialog();
     }
 
     const onOpenDeleteDialog = () => {
