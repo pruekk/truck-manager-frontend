@@ -19,7 +19,11 @@ export const columns = [
 ];
 
 export default function Table(props) {
+    const customRowId = (row) => {
+        return row._id
+    }
+
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} onSelectionModelChange={props.onSelectionModelChange} checkboxSelection={true} />
+        <DataGridTable dataRows={props.dataRows} columns={columns} onSelectionModelChange={props.onSelectionModelChange} checkboxSelection={true} customRowId={customRowId} />
     );
 }

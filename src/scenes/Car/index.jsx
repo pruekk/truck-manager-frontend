@@ -13,16 +13,19 @@ import Table from './components/Table';
 
 //Dialogs
 import AddNewDialog from './components/AddNewDialog';
+import DeleteDialog from "./components/DeleteDialog";
 import EditDialog from './components/EditDialog';
 
 //Services
 import { GetCars, AddNewCar, DeleteCar, EditCar } from "./services/CarServices";
 
-export default function Car() {
+export default function Car(props) {
   const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
   useEffect(() => {
     getCars();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const getCars = async () => {
@@ -30,7 +33,12 @@ export default function Car() {
 
     if (response.success) {
       setConfirmedDataRows(response.data);
+      setIsLoading(false);
+
+      return;
     }
+
+    props.logOut();
   }
 
   const handleAddNewCar = async (obj) => {
@@ -43,6 +51,7 @@ export default function Car() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.")
   }
 
@@ -54,7 +63,6 @@ export default function Car() {
   }
 
   const onClickEditRow = () => {
-    console.log(confirmedDataRows, selectedRowIds)
     const selectedRow = confirmedDataRows.filter((row) => { return row.id === selectedRowIds[0] });
     setSelectedRow(selectedRow);
     setIsEditing(true);
@@ -84,15 +92,23 @@ export default function Car() {
       return;
     }
 
+    props.logOut();
     alert("Something went wrong! Please try again later.");
   }
 
   const deleteCar = async () => {
+    setIsLoading(true);
+
     const response = await DeleteCar(localStorage.getItem('userToken'), selectedRowIds[0]);
 
     if (response.success) {
       getCars();
+      onCloseDeleteDialog();
+
+      return;
     }
+
+    props.logOut();
   }
 
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -103,6 +119,15 @@ export default function Car() {
   const handleCloseDialog = () => {
     setOpenDialog(false);
   };
+
+  const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
+  const onOpenDeleteDialog = () => {
+    setIsOpenDeleteDialog(true);
+  }
+
+  const onCloseDeleteDialog = () => {
+    setIsOpenDeleteDialog(false)
+  }
 
   return (
     <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
@@ -119,6 +144,13 @@ export default function Car() {
           onClickUpdate={onClickUpdate}
         />
       }
+      <DeleteDialog
+        selectedRowIds={selectedRowIds}
+        isLoading={isLoading}
+        openDialog={isOpenDeleteDialog}
+        deleteCar={deleteCar}
+        onCloseDeleteDialog={onCloseDeleteDialog}
+      />
       <Grid container spacing={2}>
         <Grid item xs={12}>
           <Grid container spacing={1}>
@@ -162,7 +194,7 @@ export default function Car() {
                   disableElevation
                   variant="contained"
                   component="label"
-                  onClick={deleteCar}
+                  onClick={onOpenDeleteDialog}
                   sx={{
                     backgroundColor: "#bd0101",
                     "&:hover": {

@@ -52,7 +52,7 @@ export async function EditAgency(token, obj) {
 
         const response = await axios({
             method: 'put',
-            url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/agency/${obj.id}`,
+            url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/agency/${obj._id}`,
             headers: { 'Authorization': `Bearer ${token}` },
             data: obj
         });

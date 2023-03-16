@@ -88,7 +88,7 @@ export default function Table(props) {
         <DataGridTable
             dataRows={props.dataRows}
             columns={columns}
-            checkboxSelection={true}
+            checkboxSelection={props.checkboxSelection}
             customStyle={customStyle}
             getRowClassName={getRowClassName}
             isRowSelectable={isRowSelectable}
