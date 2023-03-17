@@ -49,6 +49,7 @@ export default function Table(props) {
 
     const processRowUpdate = (newRow) => {
         props.onUpdateRow(newRow);
+        return newRow;
     }
 
     const CustomFooter = () => {
