@@ -25,13 +25,11 @@ export async function GetDrivers(token) {
 
 export async function AddNewDriver(token, data) {
     try {
-        data['editBy'] = JSON.parse(localStorage.getItem('userObject'))?.email;
-
         const response = await axios({
             method: 'post',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/drivers`,
             headers: { 'Authorization': `Bearer ${token}` },
-            data: { dataRows: data }
+            data: { dataRows: data, editBy: JSON.parse(localStorage.getItem('userObject'))?.email }
         });
 
         return {
