@@ -35,20 +35,32 @@ export default function DriverTable(props) {
         const birthDate = moment(birthdate);
         const now = moment();
         const age = moment.duration(now.diff(birthDate));
-        
+
         const years = age.years();
         const months = age.months();
         const days = age.days();
 
         return `${years} ปี ${months} เดือน ${days} วัน`;
     }
+
+    const displayDate = (date) => {
+        if (!date) {
+            return
+        }
+        return moment(date, moment.defaultFormat).add(543, 'year').format('DD/MM/YYYY')
+    }
+
     const formattedData = props.dataRows.map(item => {
         return {
           ...item,
-          startDate: moment(item.startDate, moment.defaultFormat).format('DD/MM/YYYY'),
+          telephone: item.telephone?.replace(/(.{3})(.{3})(.{4})/, "$1-$2-$3"),
+          startDate: displayDate(item.startDate),
+          birthDate: displayDate(item.birthDate),
           idCard: item.idCard.replace(/(.{1})(.{4})(.{5})(.{2})(.{1})/, "$1-$2-$3-$4-$5"),
-          age: calculateAge(item.age),
-          telephone: item.telephone?.replace(/(.{3})(.{3})(.{4})/, "$1-$2-$3")
+          age: calculateAge(item.birthDate),
+          ssoStartDate: displayDate(item.ssoStartDate),
+          endDate: displayDate(item.endDate),
+          ssoEndDate: displayDate(item.ssoEndDate)
         }
     });
     return (
