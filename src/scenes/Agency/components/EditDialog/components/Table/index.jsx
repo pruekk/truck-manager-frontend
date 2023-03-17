@@ -20,8 +20,8 @@ export default function Table(props) {
         { field: 'dateEnd', headerName: 'วันที่จบ', editable: true, minWidth: TableConstants.columnsSize.medium },
         { field: 'agent', headerName: 'ชื่อหน่วยงาน', minWidth: TableConstants.columnsSize.large },
         { field: 'oldId', headerName: 'รหัสเดิม', minWidth: TableConstants.columnsSize.small },
-        { field: 'newId', headerName: 'รหัสใหม่', editable: true, minWidth: TableConstants.columnsSize.small },
-        { field: 'distance', headerName: 'ระยะทาง', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'newId', headerName: 'รหัสใหม่', type: 'number', editable: true, minWidth: TableConstants.columnsSize.small },
+        { field: 'distance', headerName: 'ระยะทาง', type: 'number', editable: true, minWidth: TableConstants.columnsSize.small },
         { field: 'oil', headerName: 'น้ำมัน', editable: true, minWidth: TableConstants.columnsSize.small },
         { field: 'editBy', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.xlarge },
     ];
@@ -45,6 +45,10 @@ export default function Table(props) {
         '& .MuiCheckbox-root.Mui-checked': {
             color: 'rgb(214,50,50)'
         }
+    }
+
+    const processRowUpdate = (newRow) => {
+        props.onUpdateRow(newRow);
     }
 
     const CustomFooter = () => {
@@ -73,10 +77,6 @@ export default function Table(props) {
 
     const getRowClassName = (params) => {
         return `row-theme--${params.row.duplicated ? "duplicated" : "normal"}`
-    }
-
-    const processRowUpdate = (event) => {
-        props.onUpdateRow(event);
     }
 
     return (

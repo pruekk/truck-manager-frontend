@@ -58,7 +58,7 @@ export default function Agency(props) {
     }
 
     const [selectedRowIds, setSelectedRowIds] = React.useState([]);
-    const [selectedRow, setSelectedRow] = React.useState({});
+    const [selectedRow, setSelectedRow] = React.useState([]);
     const onSelectionModelChange = (ids) => {
         setSelectedRowIds(ids);
     }
@@ -67,6 +67,10 @@ export default function Agency(props) {
         const selectedRow = confirmedDataRows.filter((row) => { return row._id === selectedRowIds[0] });
         setSelectedRow(selectedRow);
         handleOpenEditDialog();
+    }
+
+    const onUpdateSelectedRow = (row) => {
+        setSelectedRow([row]);
     }
 
     const [isOpenEditDialog, setIsOpenEditDialog] = React.useState(false);
@@ -170,6 +174,7 @@ export default function Agency(props) {
                 dataRows={selectedRow}
                 handleCloseDialog={handleCloseEditDialog}
                 onClickUpdate={onClickUpdate}
+                onUpdateSelectedRow={onUpdateSelectedRow}
             />
             <DeleteDialog
                 selectedRowIds={selectedRowIds}
