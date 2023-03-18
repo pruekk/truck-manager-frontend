@@ -128,7 +128,7 @@ export default function AddNewDialog(props) {
                         >
                             {cars.map((car) => {
                                 return (
-                                    <MenuItem key={car.id} value={car.id}>{car.id}</MenuItem>
+                                    <MenuItem key={car.carId} value={car.carId}>{car.carId}</MenuItem>
                                 )
                             })}
                         </Select>
