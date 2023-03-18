@@ -25,13 +25,11 @@ export async function GetCars(token) {
 
 export async function AddNewCar(token, data) {
     try {
-        data['editBy'] = JSON.parse(localStorage.getItem('userObject'))?.email;
-        
         const response = await axios({
             method: 'post',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/cars`,
             headers: { 'Authorization': `Bearer ${token}` },
-            data: data
+            data: { dataRows: data, editBy: JSON.parse(localStorage.getItem('userObject'))?.email }
         });
 
         return {
