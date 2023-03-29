@@ -9,8 +9,7 @@ import Toolbar from "@mui/material/Toolbar";
 import Container from "@mui/material/Container";
 
 //Components
-import PersistentDrawerLeft from "./components/PersistentDrawer";
-// import NavigationBar from "./components/NavigationBar";
+import NavigationBar from "./components/NavigationBar";
 // import Footer from "./components/Footer";
 
 //Scenes
@@ -98,7 +97,7 @@ export default function AppWrapper() {
     <ThemeProvider theme={theme}>
       <Router>
         <Box sx={{ display: 'flex', backgroundColor: '#FBFBFB', height: '100vh' }}>
-          <PersistentDrawerLeft logOut={logOut} isLoggedIn={isLoggedIn} />
+          <NavigationBar logOut={logOut} isLoggedIn={isLoggedIn} />
           <Main
             component="main"
             // sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` } }}
@@ -109,7 +108,6 @@ export default function AppWrapper() {
             </Container>
           </Main>
         </Box>
-        {/* <Footer /> */}
       </Router>
     </ThemeProvider>
   );
