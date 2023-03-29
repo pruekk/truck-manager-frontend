@@ -24,7 +24,7 @@ import ListItemText from '@mui/material/ListItemText';
 
 import * as MenusConstants from "../../constants/NavigationBarConstants";
 import { drawerWidth } from '../../App.js';
-const settings = ["Profile", "Account", "Dashboard", "Logout"];
+const settings = ["ออกจากระบบ"];
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -72,7 +72,7 @@ export default function PersistentDrawerLeft(props) {
     setAnchorElUser(event.currentTarget);
   };
   const handleCloseUserMenu = (setting) => {
-    if (setting === "Logout") {
+    if (setting === "ออกจากระบบ") {
       props.logOut();
       navigate("/login");
     }
@@ -83,38 +83,37 @@ export default function PersistentDrawerLeft(props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} sx={{ backgroundColor: "#30C464" }}>
+      <AppBar position="fixed" open={open} sx={{ backgroundColor: "#30C464", paddingLeft: '1rem', paddingRight: '1rem' }}>
         <Toolbar>
           <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(!props.isLoggedIn && { display: 'none' }) }}
+            sx={{ ml: 0, mr: 2, ...(!props.isLoggedIn && { display: 'none' }) }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div" sx={{ width: '300px' }}>
+          <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>
-          <ListItem disablePadding sx={{ ...(!props.isLoggedIn && { display: 'none' }) }}>
-            <ListItemButton 
-              sx={{ justifyContent: 'flex-end' }} 
-              onClick={handleOpenUserMenu}
+          <ListItemButton 
+            sx={{ justifyContent: 'flex-end', ...(!props.isLoggedIn && { display: 'none' }) }} 
+            onClick={handleOpenUserMenu}
+          >
+            <ListItemIcon>
+              <Avatar alt="Profile Image" src={JSON.parse(localStorage.getItem('userObject'))?.picture} />
+            </ListItemIcon>
+            <Typography
+              variant="50%"
+              sx={{
+                color: "inherit",
+                textDecoration: "none",
+              }}
             >
-              <ListItemIcon>
-                <Avatar alt="Profile Image" src={JSON.parse(localStorage.getItem('userObject'))?.picture} />
-              </ListItemIcon>
-              <Typography
-                variant="50%"
-                sx={{
-                  color: "inherit",
-                  textDecoration: "none",
-                }}
-              >
-                {JSON.parse(localStorage.getItem('userObject'))?.name}
-              </Typography>
-            </ListItemButton>
+              {JSON.parse(localStorage.getItem('userObject'))?.name.toUpperCase()}
+            </Typography>
+          </ListItemButton>
             <Menu
               sx={{ mt: '45px' }}
               id="menu-appbar"
@@ -136,7 +135,6 @@ export default function PersistentDrawerLeft(props) {
                 </MenuItem>
               ))}
             </Menu>
-          </ListItem>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -157,9 +155,9 @@ export default function PersistentDrawerLeft(props) {
             backgroundColor: "#F5F5F5",
           }
         }}
-        variant="persistent"
         anchor="left"
         open={open}
+        onClose={handleDrawerClose}
       >
         <DrawerHeader>
           <Toolbar>
@@ -190,51 +188,47 @@ export default function PersistentDrawerLeft(props) {
         </DrawerHeader>
         <Divider />
         <List>
-            {MenusConstants.menus.map((menu) => (
-              <React.Fragment key={menu.main}>
-                <ListItem key={menu.main} sx={{ padding: "16px", paddingTop: "8px", paddingBottom: "8px" }}>
-                  <Typography
-                    sx={{
-                      fontWeight: 600,
-                    }}
-                  >
-                    {menu.main}
-                  </Typography>
-                </ListItem>
-                {menu.sub.map((sub_menu) => (
-                  <ListItem key={sub_menu.name} sx={{ padding: 0 }}>
-                    <ListItemButton
-                      sx={{ paddingTop: 0, paddingBottom: 0 }}
-                      disabled={!sub_menu.isAvailable}
-                      onClick={() => setTitle(`${sub_menu.name}`)}
-                      component={Link}
-                      to={!sub_menu.isAvailable ? '#' : sub_menu.url}
-                    >
-                      <ListItemIcon>
-                        {sub_menu.icon}
-                      </ListItemIcon>
-                      <ListItemText primary={sub_menu.name} />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </React.Fragment>
-            ))}
-            <Divider sx={{ paddingTop: '1rem' }} />
-            <Toolbar disableGutters>
-              <ListItem disablePadding>
-                <ListItemButton disabled onClick={handleOpenUserMenu}>
-                  <Typography variant="body1">
-                    {new Date().getFullYear()} © บริษัท ธ.นุชาพร จำกัด
-                  </Typography>
-                </ListItemButton>
+          {MenusConstants.menus.map((menu) => (
+            <React.Fragment key={menu.main}>
+              <ListItem key={menu.main} sx={{ padding: "16px", paddingTop: "8px", paddingBottom: "8px" }}>
+                <Typography
+                  sx={{
+                    fontWeight: 600,
+                  }}
+                >
+                  {menu.main}
+                </Typography>
               </ListItem>
-            </Toolbar>
-          </List>
-        <Divider />
+              {menu.sub.map((sub_menu) => (
+                <ListItem key={sub_menu.name} sx={{ padding: 0 }}>
+                  <ListItemButton
+                    sx={{ paddingTop: 0, paddingBottom: 0 }}
+                    disabled={!sub_menu.isAvailable}
+                    onClick={() => setTitle(`${sub_menu.name}`)}
+                    component={Link}
+                    to={!sub_menu.isAvailable ? '#' : sub_menu.url}
+                  >
+                    <ListItemIcon>
+                      {sub_menu.icon}
+                    </ListItemIcon>
+                    <ListItemText primary={sub_menu.name} />
+                  </ListItemButton>
+                </ListItem>
+              ))}
+            </React.Fragment>
+          ))}
+          <Divider sx={{ paddingTop: '1rem' }} />
+          <Toolbar disableGutters>
+            <ListItem disablePadding>
+              <ListItemButton disabled onClick={handleOpenUserMenu}>
+                <Typography variant="body1">
+                  {new Date().getFullYear()} © บริษัท ธ.นุชาพร จำกัด
+                </Typography>
+              </ListItemButton>
+            </ListItem>
+          </Toolbar>
+        </List>
       </Drawer>
-      {/* <Main open={open}>
-        <DrawerHeader />
-      </Main> */}
     </Box>
   );
 }

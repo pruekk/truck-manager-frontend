@@ -3,9 +3,10 @@ import { BrowserRouter as Router, useRoutes, Navigate } from "react-router-dom";
 
 //Material UI
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import { styled } from '@mui/material/styles';
+import Container from "@mui/material/Container";
 
 //Components
 import PersistentDrawerLeft from "./components/PersistentDrawer";
@@ -55,7 +56,6 @@ const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
     }),
-    marginLeft: `-${drawerWidth}px`,
     ...(open && {
       transition: theme.transitions.create('margin', {
         easing: theme.transitions.easing.easeOut,
@@ -89,7 +89,7 @@ export default function AppWrapper() {
   
   const logOut = () => {
     setIsLoggedIn(false);
-    localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+    localStorage.setItem('isLoggedIn', false);
     localStorage.setItem('userToken', null);
     localStorage.setItem('userObject', null);
   };
@@ -101,10 +101,12 @@ export default function AppWrapper() {
           <PersistentDrawerLeft logOut={logOut} isLoggedIn={isLoggedIn} />
           <Main
             component="main"
-            sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+            // sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` } }}
           >
             <Toolbar />
-            <App isLoggedIn={isLoggedIn} logIn={logIn} logOut={logOut} />
+            <Container maxWidth={false}>
+              <App isLoggedIn={isLoggedIn} logIn={logIn} logOut={logOut} />
+            </Container>
           </Main>
         </Box>
         {/* <Footer /> */}

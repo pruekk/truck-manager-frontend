@@ -1,7 +1,6 @@
 import React from "react";
 
 //Material UI
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Typography from "@mui/material/Typography";
 
@@ -178,7 +177,7 @@ const CustomFooter = () => {
 
 export default function Home() {
   return (
-    <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
+    <>
       {/* <Grid container spacing={2}>
         <Grid item align="center" xs={12}>
           <Typography variant="h1" gutterBottom sx={{ fontWeight: 700 }}>
@@ -233,6 +232,6 @@ export default function Home() {
           />
         </div>
       </Grid>
-    </Container>
+    </>
   );
 }

@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 //Material UI
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
 //Icons
@@ -130,7 +129,7 @@ export default function Car(props) {
   }
 
   return (
-    <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
+    <>
       <AddNewDialog
         openDialog={openDialog}
         handleCloseDialog={handleCloseDialog}
@@ -212,6 +211,6 @@ export default function Car(props) {
           <Table dataRows={confirmedDataRows} onSelectionModelChange={onSelectionModelChange} />
         </Grid>
       </Grid>
-    </Container>
+    </>
   );
 }
