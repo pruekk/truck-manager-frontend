@@ -1,9 +1,14 @@
 import * as React from 'react';
+import { Link, useNavigate } from "react-router-dom";
+
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import Drawer from '@mui/material/Drawer';
 import CssBaseline from '@mui/material/CssBaseline';
 import MuiAppBar from '@mui/material/AppBar';
+import Avatar from "@mui/material/Avatar";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import Typography from '@mui/material/Typography';
@@ -16,33 +21,10 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import InboxIcon from '@mui/icons-material/MoveToInbox';
-import MailIcon from '@mui/icons-material/Mail';
 
 import * as MenusConstants from "../../constants/NavigationBarConstants";
-import { Link } from "react-router-dom";
-
-
-const drawerWidth = 240;
-
-const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
-  ({ theme, open }) => ({
-    flexGrow: 1,
-    padding: theme.spacing(3),
-    transition: theme.transitions.create('margin', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-    marginLeft: `-${drawerWidth}px`,
-    ...(open && {
-      transition: theme.transitions.create('margin', {
-        easing: theme.transitions.easing.easeOut,
-        duration: theme.transitions.duration.enteringScreen,
-      }),
-      marginLeft: 0,
-    }),
-  }),
-);
+import { drawerWidth } from '../../App.js';
+const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const AppBar = styled(MuiAppBar, {
   shouldForwardProp: (prop) => prop !== 'open',
@@ -70,17 +52,32 @@ const DrawerHeader = styled('div')(({ theme }) => ({
   justifyContent: 'flex-end',
 }));
 
-export default function PersistentDrawerLeft() {
-  const [title, setTitle] = React.useState("Welcome");
+export default function PersistentDrawerLeft(props) {
+  const navigate = useNavigate();
   const theme = useTheme();
+
+  const [title, setTitle] = React.useState("Dashboard");
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
     setOpen(true);
   };
-
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+
+  const [anchorElUser, setAnchorElUser] = React.useState(null);
+  const anchorElUserOpen = Boolean(anchorElUser);
+  const handleOpenUserMenu = (event) => {
+    setAnchorElUser(event.currentTarget);
+  };
+  const handleCloseUserMenu = (setting) => {
+    if (setting === "Logout") {
+      props.logOut();
+      navigate("/login");
+    }
+    setAnchorElUser(null);
+    return;
   };
 
   return (
@@ -93,13 +90,53 @@ export default function PersistentDrawerLeft() {
             aria-label="open drawer"
             onClick={handleDrawerOpen}
             edge="start"
-            sx={{ mr: 2, ...(open && { display: 'none' }) }}
+            sx={{ mr: 2, ...(!props.isLoggedIn && { display: 'none' }) }}
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap component="div">
+          <Typography variant="h6" noWrap component="div" sx={{ width: '300px' }}>
             {title}
           </Typography>
+          <ListItem disablePadding sx={{ ...(!props.isLoggedIn && { display: 'none' }) }}>
+            <ListItemButton 
+              sx={{ justifyContent: 'flex-end' }} 
+              onClick={handleOpenUserMenu}
+            >
+              <ListItemIcon>
+                <Avatar alt="Profile Image" src={JSON.parse(localStorage.getItem('userObject'))?.picture} />
+              </ListItemIcon>
+              <Typography
+                variant="50%"
+                sx={{
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                {JSON.parse(localStorage.getItem('userObject'))?.name}
+              </Typography>
+            </ListItemButton>
+            <Menu
+              sx={{ mt: '45px' }}
+              id="menu-appbar"
+              anchorEl={anchorElUser}
+              anchorOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+              }}
+              transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'right',
+              }}
+              open={anchorElUserOpen}
+              onClose={handleCloseUserMenu}
+            >
+              {settings.map((setting) => (
+                <MenuItem key={setting} onClick={() => { handleCloseUserMenu(setting); }}>
+                  <Typography textAlign="center">{setting}</Typography>
+                </MenuItem>
+              ))}
+            </Menu>
+          </ListItem>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -110,12 +147,43 @@ export default function PersistentDrawerLeft() {
             width: drawerWidth,
             boxSizing: 'border-box',
           },
+          '*::-webkit-scrollbar': {
+            width: '0.75rem'
+          },
+          '*::-webkit-scrollbar-track': {
+            background: "#FFFFFF"
+          },
+          '*::-webkit-scrollbar-thumb': {
+            backgroundColor: "#F5F5F5",
+          }
         }}
         variant="persistent"
         anchor="left"
         open={open}
       >
         <DrawerHeader>
+          <Toolbar>
+            <Avatar src="logo_2.png" sx={{ ml: 1, mr: 3 }} />
+            <Link 
+              to="/" 
+              style={{ textDecoration: 'none', color: 'black' }}
+              onClick={() => setTitle('Dashboard')}
+            >
+              <Typography
+                variant="h5"
+                noWrap
+                component="a"
+                sx={{
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                TNCP
+              </Typography>
+            </Link>
+          </Toolbar>
           <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'ltr' ? <ChevronLeftIcon /> : <ChevronRightIcon />}
           </IconButton>
@@ -125,7 +193,13 @@ export default function PersistentDrawerLeft() {
             {MenusConstants.menus.map((menu) => (
               <React.Fragment key={menu.main}>
                 <ListItem key={menu.main} sx={{ padding: "16px", paddingTop: "8px", paddingBottom: "8px" }}>
-                  <ListItemText primary={menu.main} />
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                    }}
+                  >
+                    {menu.main}
+                  </Typography>
                 </ListItem>
                 {menu.sub.map((sub_menu) => (
                   <ListItem key={sub_menu.name} sx={{ padding: 0 }}>
@@ -145,38 +219,22 @@ export default function PersistentDrawerLeft() {
                 ))}
               </React.Fragment>
             ))}
+            <Divider sx={{ paddingTop: '1rem' }} />
+            <Toolbar disableGutters>
+              <ListItem disablePadding>
+                <ListItemButton disabled onClick={handleOpenUserMenu}>
+                  <Typography variant="body1">
+                    {new Date().getFullYear()} © บริษัท ธ.นุชาพร จำกัด
+                  </Typography>
+                </ListItemButton>
+              </ListItem>
+            </Toolbar>
           </List>
         <Divider />
-        <List>
-          {['All mail', 'Trash', 'Spam'].map((text, index) => (
-            <ListItem key={text} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>
-                  {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                </ListItemIcon>
-                <ListItemText primary={text} />
-              </ListItemButton>
-            </ListItem>
-          ))}
-        </List>
       </Drawer>
-      <Main open={open}>
+      {/* <Main open={open}>
         <DrawerHeader />
-        {/* <Typography paragraph>
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-          tempor incididunt ut labore et dolore magna aliqua. Rhoncus dolor purus non
-          enim praesent elementum facilisis leo vel. Risus at ultrices mi tempus
-          imperdiet. Semper risus in hendrerit gravida rutrum quisque non tellus.
-          Convallis convallis tellus id interdum velit laoreet id donec ultrices.
-          Odio morbi quis commodo odio aenean sed adipiscing. Amet nisl suscipit
-          adipiscing bibendum est ultricies integer quis. Cursus euismod quis viverra
-          nibh cras. Metus vulputate eu scelerisque felis imperdiet proin fermentum
-          leo. Mauris commodo quis imperdiet massa tincidunt. Cras tincidunt lobortis
-          feugiat vivamus at augue. At augue eget arcu dictum varius duis at
-          consectetur lorem. Velit sed ullamcorper morbi tincidunt. Lorem donec massa
-          sapien faucibus et molestie ac.
-        </Typography> */}
-      </Main>
+      </Main> */}
     </Box>
   );
 }

@@ -1,20 +1,27 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
-
-//Material UI
-import Container from "@mui/material/Container";
+import { styled } from "@mui/material/styles";
 import Grid from "@mui/material/Grid";
-// import Typography from "@mui/material/Typography";
 
-//Constants
+import { useNavigate } from "react-router-dom";
 import * as Constants from "./constants/Constants";
 
 //Services
 import { LoginWithGoogle } from "./services/LoginServices";
-
 import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
-export default function Login(props) {
+
+const LoginContainer = styled(Grid)({
+  display: "flex",
+  flexDirection: "column",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundColor: "#ffffff",
+  padding: (theme) => theme.spacing(8, 4),
+  borderRadius: "10px",
+  boxShadow: "0px 3px 6px #00000029",
+});
+
+const LoginPage = (props) => {
     const navigate = useNavigate();
 
     const loginWithGoogle = async (credentialResponse) => {
@@ -31,25 +38,31 @@ export default function Login(props) {
         localStorage.setItem('isLoggedIn', JSON.stringify(false));
         return;
     }
-
     return (
-        <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
-            <Grid container spacing={2} sx={{ paddingLeft: "1rem" }}>
-                <Grid item align="center" xs={12}>
-                    <GoogleOAuthProvider clientId={Constants.GOOGLE_OAUTH_CLIENT_ID}>
-                        <GoogleLogin
-                            onSuccess={credentialResponse => {
-                                loginWithGoogle(credentialResponse);
-                            }}
-                            onError={() => {
-                                console.log('Login Failed');
-                            }}
-                            cookiePolicy={'single_host_origin'}
-                            width="285"
-                        />
-                    </GoogleOAuthProvider>
-                </Grid>
+        <div style={{ width: "75%", margin: "auto" }}>
+        <Grid container component="main" sx={{ height: "75vh", marginTop: "10%" }}>
+            <Grid item xs={false} sm={4} md={7} sx={{ backgroundImage: "url('https://images-global.nhst.tech/image/SEZRdU1DUys3M2s1VjdNR2IwT3JaZzQ4SnNiblNCZUIvRk9QNEt4SE1mZz0=/nhst/binary/92885359a07529500b8c0f7f0584a800')", backgroundRepeat: "no-repeat", backgroundSize: "cover", backgroundPosition: "center" }} />
+            <Grid item xs={12} sm={8} md={5} sx={{ display: "flex", alignItems: "center", justifyContent: "center" }}>
+                <LoginContainer>
+                    <Grid item align="center" xs={12}>
+                        <GoogleOAuthProvider clientId={Constants.GOOGLE_OAUTH_CLIENT_ID}>
+                            <GoogleLogin
+                                onSuccess={credentialResponse => {
+                                    loginWithGoogle(credentialResponse);
+                                }}
+                                onError={() => {
+                                    console.log('Login Failed');
+                                }}
+                                cookiePolicy={'single_host_origin'}
+                                width="285"
+                            />
+                        </GoogleOAuthProvider>
+                    </Grid>
+                </LoginContainer>
             </Grid>
-        </Container>
+        </Grid>
+        </div>
     );
-}
+};
+
+export default LoginPage;

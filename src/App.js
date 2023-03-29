@@ -5,11 +5,12 @@ import { BrowserRouter as Router, useRoutes, Navigate } from "react-router-dom";
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import { styled } from '@mui/material/styles';
 
 //Components
-import NavigationBar from "./components/NavigationBar";
 import PersistentDrawerLeft from "./components/PersistentDrawer";
-import Footer from "./components/Footer";
+// import NavigationBar from "./components/NavigationBar";
+// import Footer from "./components/Footer";
 
 //Scenes
 import Agency from './scenes/Agency';
@@ -46,6 +47,25 @@ const App = (props) => {
   return routes;
 };
 
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    marginLeft: `-${drawerWidth}px`,
+    ...(open && {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    }),
+  }),
+);
+
 const theme = createTheme({
   backgroundColor: "#FBFBFB",
   typography: {
@@ -78,16 +98,16 @@ export default function AppWrapper() {
     <ThemeProvider theme={theme}>
       <Router>
         <Box sx={{ display: 'flex', backgroundColor: '#FBFBFB', height: '100vh' }}>
-          <NavigationBar logOut={logOut} isLoggedIn={isLoggedIn} />
-          <Box
+          <PersistentDrawerLeft logOut={logOut} isLoggedIn={isLoggedIn} />
+          <Main
             component="main"
             sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` } }}
           >
             <Toolbar />
             <App isLoggedIn={isLoggedIn} logIn={logIn} logOut={logOut} />
-          </Box>
+          </Main>
         </Box>
-        <Footer />
+        {/* <Footer /> */}
       </Router>
     </ThemeProvider>
   );

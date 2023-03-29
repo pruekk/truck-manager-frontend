@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 //List
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
-import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import Drawer from '@mui/material/Drawer';
 import List from '@mui/material/List';
 import ListItemButton from '@mui/material/ListItemButton';
@@ -47,21 +46,62 @@ export default function NavigationBar(props) {
 
   return (
     <>
-      <AppBar
-        position="fixed"
-        sx={{
-          width: props.isLoggedIn ? `calc(100% - ${drawerWidth}px)` : '100%', 
-          ml: `${drawerWidth}px`,
-          backgroundColor: "#30C464"
-        }}
-      >
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div" sx={{ marginLeft: "1rem" }}>
-            {title}
-          </Typography>
-        </Toolbar>
-      </AppBar>
-      {props.isLoggedIn &&
+      {props.isLoggedIn && 
+      <React.Fragment>
+        <AppBar
+          position="fixed"
+          sx={{
+            width: props.isLoggedIn ? `calc(100% - ${drawerWidth}px)` : '100%', 
+            ml: `${drawerWidth}px`,
+            backgroundColor: "#30C464"
+          }}
+        >
+          <Toolbar sx={{ display: 'flex' }}>
+            <Typography variant="h6" noWrap component="div" sx={{ width: '300px', marginLeft: "1rem" }}>
+              {title}
+            </Typography>
+            <ListItem disablePadding>
+              <ListItemButton 
+                sx={{ justifyContent: 'flex-end' }} 
+                onClick={handleOpenUserMenu}
+              >
+                <ListItemIcon>
+                  <Avatar alt="Profile Image" src={JSON.parse(localStorage.getItem('userObject'))?.picture} />
+                </ListItemIcon>
+                <Typography
+                  variant="50%"
+                  sx={{
+                    color: "inherit",
+                    textDecoration: "none",
+                  }}
+                >
+                  {JSON.parse(localStorage.getItem('userObject'))?.name}
+                </Typography>
+              </ListItemButton>
+              <Menu
+                sx={{ mt: '45px' }}
+                id="menu-appbar"
+                anchorEl={anchorElUser}
+                anchorOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                open={open}
+                onClose={handleCloseUserMenu}
+              >
+                {settings.map((setting) => (
+                  <MenuItem key={setting} onClick={() => { handleCloseUserMenu(setting); }}>
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                ))}
+              </Menu>
+            </ListItem>
+          </Toolbar>
+        </AppBar>
         <Drawer
           sx={{
             width: drawerWidth,
@@ -98,7 +138,7 @@ export default function NavigationBar(props) {
                 }}
               >
                 TNCP
-          </Typography>
+              </Typography>
             </Link>
           </Toolbar>
           <Divider />
@@ -106,7 +146,14 @@ export default function NavigationBar(props) {
             {MenusConstants.menus.map((menu) => (
               <React.Fragment key={menu.main}>
                 <ListItem key={menu.main} sx={{ padding: "16px", paddingTop: "8px", paddingBottom: "8px" }}>
-                  <ListItemText primary={menu.main} />
+                  {/* <ListItemText primary={menu.main} /> */}
+                  <Typography
+                    sx={{
+                      fontWeight: 600,
+                    }}
+                  >
+                    {menu.main}
+                  </Typography>
                 </ListItem>
                 {menu.sub.map((sub_menu) => (
                   <ListItem key={sub_menu.name} sx={{ padding: 0 }}>
@@ -130,34 +177,14 @@ export default function NavigationBar(props) {
           <Toolbar disableGutters>
             <ListItem disablePadding>
               <ListItemButton onClick={handleOpenUserMenu}>
-                <ListItemIcon>
-                  <PersonRoundedIcon />
-                </ListItemIcon>
-                <Typography
-                  variant="50%"
-                  sx={{
-                    color: "inherit",
-                    textDecoration: "none",
-                  }}
-                >
-                  {JSON.parse(localStorage.getItem('userObject'))?.name ? JSON.parse(localStorage.getItem('userObject'))?.name : "example@gmail.com"}
+                <Typography variant="body1" style={{ color: "#bbb8bb" }}>
+                  {new Date().getFullYear()} © บริษัท ธ.นุชาพร จำกัด
                 </Typography>
               </ListItemButton>
-              <Menu
-                sx={{ mt: "0", ml: `${drawerWidth - 15}px` }}
-                anchorEl={anchorElUser}
-                open={open}
-                onClose={handleCloseUserMenu}
-              >
-                {settings.map((setting) => (
-                  <MenuItem key={setting} onClick={() => { handleCloseUserMenu(setting); }}>
-                    <Typography textAlign="center">{setting}</Typography>
-                  </MenuItem>
-                ))}
-              </Menu>
             </ListItem>
           </Toolbar>
         </Drawer>
+      </React.Fragment>
       }
     </>
   );
