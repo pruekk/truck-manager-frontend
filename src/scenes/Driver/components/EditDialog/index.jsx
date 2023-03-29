@@ -18,7 +18,7 @@ import { columns } from "../Table";
 export default function EditDialog(props) {
     const [driverObj, setDriverObj] = useState(props.dataRows);
     const excludeFields = ['id', 'fullName', 'age', 'editBy'];
-    const optionalFields = ['endDate', 'ssoEndDate', 'reason'];
+    const optionalFields = ['ssoStartDate', 'endDate', 'ssoEndDate', 'reason'];
 
     const [isError, setIsError] = useState(false);
 

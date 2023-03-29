@@ -42,7 +42,7 @@ export default function Car(props) {
   }
 
   const handleAddNewCar = async (obj) => {
-    const response = await AddNewCar(localStorage.getItem('userToken'), obj);
+    const response = await AddNewCar(localStorage.getItem('userToken'), [obj]);
 
     if (response.success) {
       getCars();

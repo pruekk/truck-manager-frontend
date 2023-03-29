@@ -15,9 +15,6 @@ import { DynamicDialogContent } from "../../../../components/DynamicDialogConten
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
 import { columns } from "../Table";
 
-//Others
-import moment from "moment";
-
 export default function AddCarDialog(props) {
     const [carObj, setCarObj] = React.useState({});
     const excludeFields = ['id', 'editBy'];
@@ -37,19 +34,15 @@ export default function AddCarDialog(props) {
     const onClickAdd = async () => {
         setIsLoading(true);
 
-        if (carObj["id"] && carObj["licensePlate"] && carObj["type"] && carObj["registrationDate"] && carObj["buyDate"] && carObj["price"]) {
-            setIsError(false);
-
-            await props.handleAddNewCar({
-                id: carObj["id"],
-                licensePlate: carObj["licensePlate"],
-                type: carObj["type"],
-                registrationDate: moment(carObj["registrationDate"]).format('DD/MM/YYYY'),
-                buyDate: moment(carObj["buyDate"]).format('DD/MM/YYYY'),
-                price: Number(carObj["price"]),
-            });
-        } else {
+        if (Object.values(carObj).some((value) => !value)) {
             setIsError(true);
+        } else {
+            setIsError(false);
+            const formattedData = {
+                    ...carObj,
+                    price: Number(carObj["price"])
+            }
+            await props.handleAddNewCar(formattedData);
         }
 
         setIsLoading(false);
