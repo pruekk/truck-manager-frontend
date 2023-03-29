@@ -3,12 +3,14 @@ import { BrowserRouter as Router, useRoutes, Navigate } from "react-router-dom";
 
 //Material UI
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { styled } from '@mui/material/styles';
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
+import Container from "@mui/material/Container";
 
 //Components
 import NavigationBar from "./components/NavigationBar";
-import Footer from "./components/Footer";
+// import Footer from "./components/Footer";
 
 //Scenes
 import Agency from './scenes/Agency';
@@ -45,6 +47,24 @@ const App = (props) => {
   return routes;
 };
 
+const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
+  ({ theme, open }) => ({
+    flexGrow: 1,
+    padding: theme.spacing(3),
+    transition: theme.transitions.create('margin', {
+      easing: theme.transitions.easing.sharp,
+      duration: theme.transitions.duration.leavingScreen,
+    }),
+    ...(open && {
+      transition: theme.transitions.create('margin', {
+        easing: theme.transitions.easing.easeOut,
+        duration: theme.transitions.duration.enteringScreen,
+      }),
+      marginLeft: 0,
+    }),
+  }),
+);
+
 const theme = createTheme({
   backgroundColor: "#FBFBFB",
   typography: {
@@ -68,7 +88,7 @@ export default function AppWrapper() {
   
   const logOut = () => {
     setIsLoggedIn(false);
-    localStorage.setItem('isLoggedIn', JSON.stringify(isLoggedIn));
+    localStorage.setItem('isLoggedIn', false);
     localStorage.setItem('userToken', null);
     localStorage.setItem('userObject', null);
   };
@@ -78,15 +98,16 @@ export default function AppWrapper() {
       <Router>
         <Box sx={{ display: 'flex', backgroundColor: '#FBFBFB', height: '100vh' }}>
           <NavigationBar logOut={logOut} isLoggedIn={isLoggedIn} />
-          <Box
+          <Main
             component="main"
-            sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` } }}
+            // sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` } }}
           >
             <Toolbar />
-            <App isLoggedIn={isLoggedIn} logIn={logIn} logOut={logOut} />
-          </Box>
+            <Container maxWidth={false}>
+              <App isLoggedIn={isLoggedIn} logIn={logIn} logOut={logOut} />
+            </Container>
+          </Main>
         </Box>
-        <Footer />
       </Router>
     </ThemeProvider>
   );

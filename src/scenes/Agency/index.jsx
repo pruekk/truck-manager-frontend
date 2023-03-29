@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 //Material UI
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
@@ -156,7 +155,7 @@ export default function Agency(props) {
     };
 
     return (
-        <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
+        <>
             {isOpenDialog &&
                 <ImportDialog
                     isLoading={isLoading}
@@ -264,6 +263,6 @@ export default function Agency(props) {
                     <Table dataRows={confirmedDataRows} onSelectionModelChange={onSelectionModelChange} />
                 </Grid>
             </Grid>
-        </Container>
+        </>
     );
 }

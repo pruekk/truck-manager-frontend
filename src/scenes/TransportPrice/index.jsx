@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 //Material UI
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
 //Icons
@@ -130,7 +129,7 @@ export default function Transport(props) {
   }
 
   return (
-    <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
+    <>
       {openDialog && <AddNewDialog
         openDialog={openDialog}
         selectedRow={selectedRow}
@@ -236,6 +235,6 @@ export default function Transport(props) {
           />
         </Grid>
       </Grid>
-    </Container>
+    </>
   );
 }

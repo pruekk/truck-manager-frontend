@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 
 //Material UI
 import Button from "@mui/material/Button";
-import Container from "@mui/material/Container";
 import Grid from "@mui/material/Grid";
 
 //Icons
@@ -129,7 +128,7 @@ export default function OilDelivery(props) {
   }
 
   return (
-    <Container sx={{ paddingTop: "2rem", marginLeft: "1rem" }} maxWidth="xl">
+    <>
       {openDialog && <AddNewDailog
         openDialog={openDialog}
         selectedRow={selectedRow}
@@ -207,6 +206,6 @@ export default function OilDelivery(props) {
           />
         </Grid>
       </Grid>
-    </Container>
+    </>
   );
 }
