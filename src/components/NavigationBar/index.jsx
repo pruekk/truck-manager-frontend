@@ -171,7 +171,6 @@ export default function PersistentDrawerLeft(props) {
               <Typography
                 variant="h5"
                 noWrap
-                component="a"
                 sx={{
                   fontWeight: 700,
                   letterSpacing: ".3rem",
