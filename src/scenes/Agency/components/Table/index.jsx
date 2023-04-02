@@ -14,7 +14,7 @@ export const columns = [
     { field: 'oldId', headerName: 'รหัสเดิม', minWidth: TableConstants.columnsSize.small },
     { field: 'newId', headerName: 'รหัสใหม่', minWidth: TableConstants.columnsSize.small },
     { field: 'distance', headerName: 'ระยะทาง', minWidth: TableConstants.columnsSize.small },
-    { field: 'oil', headerName: 'น้ำมัน', minWidth: TableConstants.columnsSize.small },
+    { field: 'oil', headerName: 'น้ำมัน', type: 'number', minWidth: TableConstants.columnsSize.small },
     { field: 'editBy', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.xlarge },
 ];
 

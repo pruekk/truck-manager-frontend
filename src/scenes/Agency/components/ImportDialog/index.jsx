@@ -25,8 +25,77 @@ import { GetOilDelivery } from "../../../OilDelivery/services/OilDeliveryService
 
 const steps = ['นำเข้าข้อมูล', 'แก้ไขรหัส', 'ดึงข้อมูล/แก้ไขน้ำมัน', 'เช็คซ้ำ', 'เพิ่มระยะทาง'];
 
+const validateNewAgency = (newAgencyList, existingAgencyList) => {
+    const duplicates = [];
+    const notDuplicates = [];
+  
+    newAgencyList.forEach(newAgency => {
+        const matchingAgencies = existingAgencyList.filter(existingAgency => existingAgency.id === newAgency.id);
+        let isDuplicate = false;
+        // This code below make sure that we aren't loop to much when we have mutiple matchingAgencies
+        if (matchingAgencies.length > 1) {
+            const latestAgencyList = [
+                matchingAgencies.reduce((latest, current) => {
+                    return moment(current.dateStart, "DD/MM/YYYY").isSameOrBefore(moment(latest.dateStart, "DD/MM/YYYY")) ? latest : current;
+                })
+            ];
+            isDuplicate = latestAgencyList.some(agency => {
+                const newAgencyStartDate = moment(newAgency.dateStart, "DD/MM/YYYY");
+                const agencyEndDate = moment(agency.dateEnd, "DD/MM/YYYY");
+                return newAgency.id === agency.id && newAgencyStartDate.isSameOrBefore(agencyEndDate);
+            });
+        } else {
+            isDuplicate = matchingAgencies.some(agency => {
+                const newAgencyStartDate = moment(newAgency.dateStart, "DD/MM/YYYY");
+                const agencyStartDate = moment(agency.dateStart, "DD/MM/YYYY");
+                const agencyEndDate = moment(agency.dateEnd, "DD/MM/YYYY");
+                return newAgency.id === agency.id && newAgencyStartDate.isSameOrAfter(agencyStartDate) && newAgencyStartDate.isSameOrBefore(agencyEndDate);
+            });
+        }
+    
+        if (isDuplicate) {
+            // duplicate but first seen
+            if (!duplicates.some(agency => agency.id === newAgency.id)) {
+                duplicates.push(matchingAgencies[0]);
+            }
+        } else {
+            const index = notDuplicates.findIndex(obj => obj.id === newAgency.id);
+            if (index === -1) {
+                // If not seen before, add object to array
+                const newDateEnd = moment(newAgency.dateEnd, "DD/MM/YYYY").add(7, 'days')
+                notDuplicates.push({
+                    ...newAgency,
+                    dateEnd: newDateEnd.format("DD/MM/YYYY")
+                });
+            } else {
+                // If seen before, update startDate and endDate accordingly
+                const existingObject = notDuplicates[index];
+                const existingStartDate = moment(existingObject.dateStart, "DD/MM/YYYY");
+                const existingEndDate = moment(existingObject.dateEnd, "DD/MM/YYYY");
+                const newStartDate = moment(newAgency.dateStart, "DD/MM/YYYY");
+                const newEndDate = moment(newAgency.dateEnd, "DD/MM/YYYY");
+        
+                if (newStartDate <= existingStartDate) {
+                    existingObject.dateStart = newAgency.dateStart;
+                }
+                if (newEndDate > existingEndDate) {
+                    existingObject.dateEnd = newAgency.dateEnd;
+                }
+        
+                notDuplicates[index] = existingObject;
+            }
+        }
+    });
+  
+    return {
+      duplicates: duplicates,
+      notDuplicates: notDuplicates
+    };
+}
+
 export default function ImportDialog(props) {
     const [selectedRows, setSelectedRows] = React.useState([]);
+    const [duplicateAgency, setDuplicateAgency] = React.useState([])
 
     useEffect(() => {
         formattedDataRows();
@@ -49,13 +118,13 @@ export default function ImportDialog(props) {
         props.setDataRows(dataRows);
     }
 
-    const [activeStep, setActiveStep] = React.useState(1);
+    const [activeStep, setActiveStep] = React.useState(0);
 
     const handleNext = () => {
-        if (activeStep === 1) {
+        if (activeStep === 0) {
             getOilDelivery();
         }
-        if (activeStep === 2) {
+        if (activeStep === 1) {
             removeDuplicate();
         }
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
@@ -66,50 +135,12 @@ export default function ImportDialog(props) {
     };
 
     const formattedDataRows = () => {
-        const uniqueDataRows = props.dataRows.filter((item, index, self) =>
-            index === self.findIndex((i) => i.id === item.id)
-        );
+        const existingAgency = props.confirmedDataRows
+        const newAgency = props.dataRows
 
-        const momentsMax = uniqueDataRows.map(x => moment(x.dateEnd, "DD/MM/YYYY")),
-            maxDate = moment.max(momentsMax)
-        const momentsMin = uniqueDataRows.map(x => moment(x.dateStart, "DD/MM/YYYY")),
-            minDate = moment.min(momentsMin)
-        let duplicateArr = [];
-
-        uniqueDataRows.map(function (row) {
-            const minDateFormat = minDate.format("DD/MM/YYYY");
-            const maxDateFormat = maxDate.format("DD/MM/YYYY");
-
-            const filterDuplicate = props.confirmedDataRows.filter((cRow) => {
-                return cRow.id === row.id
-                    && moment(minDateFormat, 'YYYY-MM-DD').isSameOrAfter(moment(cRow.dateStart, 'YYYY-MM-DD'))
-                    && moment(minDateFormat, 'YYYY-MM-DD').isSameOrBefore(moment(cRow.dateEnd, 'YYYY-MM-DD'))
-            });
-
-            if (filterDuplicate.length > 0) {
-                const cRowMax = filterDuplicate.map(x => moment(x.dateEnd, "DD/MM/YYYY")),
-                    cRowMaxDate = moment.max(cRowMax)
-
-                const cRowMaxDateFormat = cRowMaxDate.format("DD/MM/YYYY");
-
-                if (moment(maxDateFormat, 'YYYY-MM-DD').isAfter(moment(cRowMaxDateFormat, 'YYYY-MM-DD'))) {
-                    row.dateStart = cRowMaxDateFormat;
-                    row.dateEnd = maxDateFormat;
-                }
-                if (moment(maxDateFormat, 'YYYY-MM-DD').isSameOrBefore(moment(cRowMaxDateFormat, 'YYYY-MM-DD'))) {
-                    duplicateArr.push(row.id);
-                }
-            }
-            if (filterDuplicate.length === 0) {
-                row.dateStart = minDateFormat;
-                row.dateEnd = maxDateFormat;
-            }
-
-            return row;
-        });
-
-        const finalDataRows = uniqueDataRows.filter((row) => { return !duplicateArr.includes(row.id) });
-        props.setDataRows(finalDataRows);
+        const { duplicates, notDuplicates } = validateNewAgency(newAgency, existingAgency)
+        props.setDataRows(notDuplicates);
+        setDuplicateAgency(duplicates)
     }
 
     const removeDuplicate = () => {
@@ -178,6 +209,7 @@ export default function ImportDialog(props) {
             <DialogContent dividers>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
+                        หน่วยงานใหม่
                         <Table
                             dataRows={props.dataRows}
                             activeStep={activeStep}
@@ -187,13 +219,18 @@ export default function ImportDialog(props) {
                             onUpdateRow={onUpdateRow}
                             handleChangeDataRows={handleChangeDataRows}
                         />
+                        <br />
+                        หน่วยงานซ้ำ
+                        <Table
+                            dataRows={duplicateAgency}
+                        />
                     </Grid>
                 </Grid>
             </DialogContent>
             <DialogActions>
                 <React.Fragment>
                     <Button
-                        disabled={activeStep === 1}
+                        disabled={activeStep === 0}
                         onClick={handleBack}
                     >
                         Back
