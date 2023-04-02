@@ -9,14 +9,14 @@ import * as TableConstants from '../../../../constants/TableConstants';
 function Table(props) {
     const columns = [
         { field: 'id', headerName: 'เลขดีพี', minWidth: TableConstants.columnsSize.medium },
-        { field: 'date', headerName: 'วันที่', minWidth: TableConstants.columnsSize.medium },
+        { field: 'date', headerName: 'วันที่', type: 'date', minWidth: TableConstants.columnsSize.medium },
         { field: 'time', headerName: 'เวลา', minWidth: TableConstants.columnsSize.small },
         { field: 'destination', headerName: 'หน่วยงาน', minWidth: TableConstants.columnsSize.large },
-        { field: 'distance', headerName: 'ระยะทาง', minWidth: TableConstants.columnsSize.small },
+        { field: 'distance', headerName: 'ระยะทาง', type: 'number', minWidth: TableConstants.columnsSize.small },
         { field: 'code', headerName: 'รหัส', minWidth: TableConstants.columnsSize.small },
-        { field: 'amount', headerName: 'คิว', minWidth: TableConstants.columnsSize.small },
-        { field: 'price', headerName: 'ราคา', minWidth: TableConstants.columnsSize.small },
-        { field: 'oil', headerName: 'น้ำมัน', minWidth: TableConstants.columnsSize.small },
+        { field: 'amount', headerName: 'คิว', type: 'number', minWidth: TableConstants.columnsSize.small },
+        { field: 'price', headerName: 'ราคา', type: 'number', minWidth: TableConstants.columnsSize.small },
+        { field: 'oil', headerName: 'น้ำมัน', type: 'number', minWidth: TableConstants.columnsSize.small },
         { field: 'car', headerName: 'เบอร์รถ', minWidth: TableConstants.columnsSize.small },
         { field: 'driver', headerName: 'คนขับรถ', minWidth: TableConstants.columnsSize.large },
         { field: 'status', headerName: 'สถานะ', type: 'singleSelect', valueOptions: ['Accepted', 'Canceled', 'Spoiled'], minWidth: TableConstants.columnsSize.small },
@@ -24,7 +24,7 @@ function Table(props) {
     ];
 
     const customStyle = {
-        height: '30rem',
+        height: '40rem',
         width: '100%',
         '& .row-theme--Accepted': {
             bgcolor: 'rgb(245, 245, 245))',
@@ -47,8 +47,16 @@ function Table(props) {
         return `row-theme--${params.row.status}`
     }
 
+    const formattedData = props.dataRows.map(item => {
+        return {
+          ...item,
+          amount: item.amount.toFixed(2),
+          price: item.price.toFixed(2),
+        }
+    });
+
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} checkboxSelection={true} customStyle={customStyle} getRowClassName={getRowClassName} onSelectionModelChange={props.onSelectionModelChange} />
+        <DataGridTable dataRows={formattedData} columns={columns} checkboxSelection={true} customStyle={customStyle} getRowClassName={getRowClassName} onSelectionModelChange={props.onSelectionModelChange} />
     );
 }
 

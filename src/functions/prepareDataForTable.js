@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { dateFormat } from '../constants/CalendarConstants';
 
 const dpStatus = (status) => {
     switch (status) {
@@ -16,7 +17,6 @@ const dpStatus = (status) => {
 const convertToTimeFormat = (num) => {
     var hours = Math.floor(num * 24);
     var minutes = Math.round((num * 24 - hours) * 60);
-    // var seconds = Math.round((((num * 24 - hours) * 60) - minutes) * 60);
     return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
 }
 
@@ -41,7 +41,6 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
     }]
     const factoryName = data[2][0]?.split(' ')[2]; // get factoryName from row 3 [FC256 - บ้านบึง2]
     const factory = factoryStruct.find(fac => fac.name === factoryName);
-    const price = 0;
     const customDate = date.trim().replace(/-/g, '/')
 
     // Start from row 4 in Excel
@@ -55,8 +54,8 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
                     "destination": row[7],
                     "distance": 0,
                     "code": row[10],
-                    "amount": row[16].toFixed(2),
-                    "price": price.toFixed(2),
+                    "amount": row[16],
+                    "price": 0,
                     "oil": 0,
                     "car": row[13],
                     "driver": matchDriver(row[13], date, convertToTimeFormat(row[20]), carReplacement),
@@ -67,6 +66,7 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
             return dpList;
         });
     } else {
+        // Agency
         data.slice(3).map((row) => {
             if (row[1]?.includes(factory.code)) {
                 dpList.push({

@@ -91,11 +91,8 @@ export default function ImportDialog(props) {
     }
 
     const mapAgent = (obj, agentArr) => {
-        console.log(obj);
         const filteredArr = agentArr.filter((agent) => { return agent.agent === obj.destination });
-        console.log(filteredArr);
         const filterDateRange = agentArr.filter((agent) => { return moment(obj.date, "YYYY-MM-DD").isSameOrAfter(moment(agent.dateStart, "YYYY-MM-DD")) && moment(obj.date, "YYYY-MM-DD").isSameOrBefore(moment(agent.dateEnd, "YYYY-MM-DD")) });
-        console.log(filterDateRange);
         if (filteredArr.length === 1) {
             return filteredArr[0];
         }
