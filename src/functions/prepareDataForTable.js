@@ -14,22 +14,31 @@ const dpStatus = (status) => {
 }
 
 const convertToTimeFormat = (num) => {
-    var hours = Math.floor(num * 24);
-    var minutes = Math.round((num * 24 - hours) * 60);
-    // var seconds = Math.round((((num * 24 - hours) * 60) - minutes) * 60);
+    if (typeof num === 'string') {
+        return "00:00"
+    }
+    let hours = Math.floor(num * 24);
+    let minutes = Math.round((num * 24 - hours) * 60);
     return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0');
 }
 
-export function matchDriver(car, date, time, history) {
-    const filterByCar = history.filter((data) => { return data.carId === car });
-    
-    if (filterByCar.length > 0) {
-        const filterByDate = history.filter((data) => { return moment(data.date).isSameOrBefore(date); });
-        const sortByDateTime = filterByDate.sort((a, b) => moment(`${a.date}T${a.time}`) - moment(`${b.date}T${b.time}`));
+export function matchDriver(car, date, time, replacementHistory) {
+    const filterByCar = replacementHistory.filter((replacement) => { return replacement.carId === car });
 
-        return filterByDate.length > 0 ? sortByDateTime[0].driver : "";
+    if (filterByCar.length === 1) {
+        const latestDriver = filterByCar[0];
+        return latestDriver.driver;
+    } else if (filterByCar.length > 1) {
+        const latestMoment = filterByCar.reduce((latest, item) => {
+            const itemMoment = moment(`${item.date} ${item.time}`, "DD/MM/YYYY HH:mm");
+            return itemMoment.isAfter(latest) ? itemMoment : latest;
+        }, moment(0));
+        
+        const latestDriver = filterByCar.find(item => moment(`${item.date} ${item.time}`, "DD/MM/YYYY HH:mm").isSameOrAfter(latestMoment));
+        
+        return latestDriver.driver;
     }
-
+    
     return "";
 }
 
@@ -41,7 +50,6 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
     }]
     const factoryName = data[2][0]?.split(' ')[2]; // get factoryName from row 3 [FC256 - บ้านบึง2]
     const factory = factoryStruct.find(fac => fac.name === factoryName);
-    const price = 0;
     const customDate = date.trim().replace(/-/g, '/')
 
     // Start from row 4 in Excel
@@ -55,8 +63,8 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
                     "destination": row[7],
                     "distance": 0,
                     "code": row[10],
-                    "amount": row[16].toFixed(2),
-                    "price": price.toFixed(2),
+                    "amount": row[16],
+                    "price": 0,
                     "oil": 0,
                     "car": row[13],
                     "driver": matchDriver(row[13], date, convertToTimeFormat(row[20]), carReplacement),
@@ -67,6 +75,7 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
             return dpList;
         });
     } else {
+        // Agency
         data.slice(3).map((row) => {
             if (row[1]?.includes(factory.code)) {
                 dpList.push({

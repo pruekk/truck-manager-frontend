@@ -6,6 +6,11 @@ import Grid from "@mui/material/Grid";
 import Box from '@mui/material/Box';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
+import Divider from '@mui/material/Divider';
+import Card from '@mui/material/Card';
+import CardHeader from '@mui/material/CardHeader';
+import CardContent from '@mui/material/CardContent';
+import Typography from '@mui/material/Typography';
 
 //Components
 import ImportDialog from './components/ImportDialog';
@@ -31,6 +36,9 @@ export default function DP(props) {
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
     const [isLoading, setIsLoading] = React.useState(false);
 
+    const [summarizeTrip, setSummarizeTrip] = React.useState({ accept: 0, cancel: 0, spoil: 0 })
+    const [summarizeAmount, setSummarizeAmount] = React.useState({ accept: 0, cancel: 0, spoil: 0 })
+
     useEffect(() => {
         getDP();
         getCarReplacement();
@@ -42,6 +50,21 @@ export default function DP(props) {
 
         if (response.success) {
             setConfirmedDataRows(response.data);
+            
+            const acceptedRecords = response.data.filter((record) => record.status === "Accepted")
+            const canceledRecords = response.data.filter((record) => record.status === "Canceled")
+            const spoiledRecords = response.data.filter((record) => record.status === "Spoiled")
+            setSummarizeTrip({
+                accept: acceptedRecords.length,
+                cancel: canceledRecords.length,
+                spoil: spoiledRecords.length
+            })
+            setSummarizeAmount({
+                accept: acceptedRecords.reduce((accumulator, record) => accumulator + record.amount, 0),
+                cancel: canceledRecords.reduce((accumulator, record) => accumulator + record.amount, 0),
+                spoil: spoiledRecords.reduce((accumulator, record) => accumulator + record.amount, 0)
+            })
+
             setIsLoading(false);
 
             return;
@@ -261,6 +284,95 @@ export default function DP(props) {
                             )}
                         </Tabs>
                     </Box>
+                </Grid>
+
+                <Grid item xs={12}>
+                    <Grid container spacing={2}>
+                        <Grid item>
+                            <Card sx={{ minWidth: 275 }}>
+                                <CardHeader
+                                    title="จำนวนเที่ยว"
+                                    subheader="14 กันยายน 2016"
+                                />
+                                <Divider flexItem />
+                                <CardContent>
+                                    <Grid container sx={{ textAlign: "center", alignContent: "center"  }}>
+                                        <Grid item xs="auto" md={4}>
+                                            <Typography variant="h5" component="div">
+                                                {summarizeTrip.accept}
+                                                <br />
+                                                <Typography variant="body2" color="text.secondary">
+                                                    เที่ยว
+                                                </Typography>
+                                            </Typography>
+                                        </Grid>
+                                        {/* <Divider orientation="vertical" flexItem /> */}
+                                        <Grid item xs={3} md={4}>
+                                            <Typography variant="h5" component="div">
+                                                {summarizeTrip.cancel}
+                                                <br />
+                                                <Typography variant="body2" color="text.secondary">
+                                                    ยกเลิก
+                                                </Typography>
+                                            </Typography>
+                                        </Grid>
+                                        {/* <Divider orientation="vertical" flexItem /> */}
+                                        <Grid item xs={3} md={4}>
+                                            <Typography variant="h5" component="div">
+                                                {summarizeTrip.spoil}
+                                                <br />
+                                                <Typography variant="body2" color="text.secondary">
+                                                    สปอย
+                                                </Typography>
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                        <Grid item>
+                            <Card sx={{ minWidth: 275 }}>
+                                <CardHeader
+                                    title="จำนวนคิว"
+                                    subheader="14 กันยายน 2016"
+                                />
+                                <Divider flexItem />
+                                <CardContent>
+                                    <Grid container sx={{ textAlign: "center", alignContent: "center"  }}>
+                                        <Grid item xs="auto" md={4}>
+                                            <Typography variant="h5" component="div">
+                                                {summarizeAmount.accept}
+                                                <br />
+                                                <Typography variant="body2" color="text.secondary">
+                                                    คิว
+                                                </Typography>
+                                            </Typography>
+                                        </Grid>
+                                        {/* <Divider orientation="vertical" flexItem /> */}
+                                        <Grid item xs={3} md={4}>
+                                            <Typography variant="h5" component="div">
+                                                {summarizeAmount.cancel}
+                                                <br />
+                                                <Typography variant="body2" color="text.secondary">
+                                                    ยกเลิก
+                                                </Typography>
+                                            </Typography>
+                                        </Grid>
+                                        {/* <Divider orientation="vertical" flexItem /> */}
+                                        <Grid item xs={3} md={4}>
+                                            <Typography variant="h5" component="div">
+                                                {summarizeAmount.spoil}
+                                                <br />
+                                                <Typography variant="body2" color="text.secondary">
+                                                    สปอย
+                                                </Typography>
+                                            </Typography>
+                                        </Grid>
+                                    </Grid>
+                                </CardContent>
+                            </Card>
+                        </Grid>
+                    </Grid>
                 </Grid>
 
                 <Grid item xs={12}>

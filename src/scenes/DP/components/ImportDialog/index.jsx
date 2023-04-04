@@ -91,11 +91,8 @@ export default function ImportDialog(props) {
     }
 
     const mapAgent = (obj, agentArr) => {
-        console.log(obj);
         const filteredArr = agentArr.filter((agent) => { return agent.agent === obj.destination });
-        console.log(filteredArr);
-        const filterDateRange = agentArr.filter((agent) => { return moment(obj.date, "YYYY-MM-DD").isSameOrAfter(moment(agent.dateStart, "YYYY-MM-DD")) && moment(obj.date, "YYYY-MM-DD").isSameOrBefore(moment(agent.dateEnd, "YYYY-MM-DD")) });
-        console.log(filterDateRange);
+        // const filterDateRange = agentArr.filter((agent) => { return moment(obj.date, "YYYY-MM-DD").isSameOrAfter(moment(agent.dateStart, "YYYY-MM-DD")) && moment(obj.date, "YYYY-MM-DD").isSameOrBefore(moment(agent.dateEnd, "YYYY-MM-DD")) });
         if (filteredArr.length === 1) {
             return filteredArr[0];
         }
@@ -105,22 +102,22 @@ export default function ImportDialog(props) {
 
     const getCarReplacement = async () => {
         const response = await GetCarReplacement(localStorage.getItem('userToken'));
+        const currentDPList = props.dataRows;
 
         if (response.success) {
-            const carReplacement = response.data
-            let tempArr = [];
-            props.dataRows.map((row) => {
-                const driver = matchDriver(row.car, new Date(), row.time, carReplacement); // Will change temp date after
+            const carReplacementHistory = response.data
+            let dpWithDriverName = [];
+            currentDPList.map((dp) => {
+                const driver = matchDriver(dp.car, dp.date, dp.time, carReplacementHistory);
                 if (driver) {
-                    row.driver = driver;
+                    dp.driver = driver;
                 }
-                tempArr.push(row);
+                dpWithDriverName.push(dp);
 
-                return row;
+                return dp;
             });
 
-            props.setDataRows(tempArr);
-
+            props.setDataRows(dpWithDriverName);
             return;
         }
 
@@ -146,12 +143,19 @@ export default function ImportDialog(props) {
         }
     }
 
-    const mapTransportPrice = (obj, transportPriceArr) => {
-        const filterDateRange = transportPriceArr.filter((transport) => { return moment(obj.date, "YYYY-MM-DD").isBetween(moment(transport.from, "YYYY-MM-DD"), moment(transport.to, "YYYY-MM-DD")) })
-        const filterCode = filterDateRange[0].arr.filter((arr) => { return arr.name === String(obj.code) });
-        const mapAmountWithIndex = (parseFloat(obj.amount) / 0.25) - 1;
+    const mapTransportPrice = (dp, transportPriceArr) => {
+        const filterDateRange = transportPriceArr.filter((transport) => { 
+            return moment(dp.date, "YYYY-MM-DD").isBetween(moment(transport.from, "YYYY-MM-DD"), moment(transport.to, "YYYY-MM-DD")) 
+        })
+        if (filterDateRange.length > 0) {
+            const filterCode = filterDateRange[0].arr.filter((arr) => { 
+                return arr.name === String(dp.code) 
+            })
+            const mapAmountWithIndex = (parseFloat(dp.amount) / 0.25) - 1
 
-        return filterCode[0].value[mapAmountWithIndex];
+            return filterCode[0].value[mapAmountWithIndex]
+        }
+        return 0
     }
 
     return (
@@ -188,7 +192,7 @@ export default function ImportDialog(props) {
             <DialogContent dividers sx={{ backgroundColor: "#FBFBFB" }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Table dataRows={props.dataRows} checkboxSelection={activeStep === 4} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} />
+                        <Table dataRows={props.dataRows} checkboxSelection={activeStep === 0 || activeStep === 4} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} />
                     </Grid>
                 </Grid>
             </DialogContent>

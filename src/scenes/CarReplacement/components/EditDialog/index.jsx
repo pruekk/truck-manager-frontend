@@ -91,7 +91,7 @@ export default function EditDialog(props) {
             open={props.openDialog}
         >
             <DialogTitle>
-                เพิ่ม{NavigationBarConstants.menus[0].sub[3].name}
+                แก้ไข{NavigationBarConstants.menus[0].sub[3].name}
                 <IconButton
                     aria-label="close"
                     onClick={props.handleCloseDialog}
@@ -130,7 +130,7 @@ export default function EditDialog(props) {
                         >
                             {cars.map((car) => {
                                 return (
-                                    <MenuItem key={car.id} value={car.id}>{car.id}</MenuItem>
+                                    <MenuItem key={car.carId} value={car.carId}>{car.carId}</MenuItem>
                                 )
                             })}
                         </Select>
