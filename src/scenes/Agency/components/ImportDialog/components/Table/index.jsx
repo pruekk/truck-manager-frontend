@@ -15,7 +15,7 @@ export default function Table(props) {
         { field: 'oldId', headerName: 'รหัสเดิม', minWidth: TableConstants.columnsSize.small },
         { field: 'newId', headerName: 'รหัสใหม่', editable: props.activeStep === 1, minWidth: TableConstants.columnsSize.small },
         { field: 'distance', headerName: 'ระยะทาง', editable: props.activeStep === 4, minWidth: TableConstants.columnsSize.small },
-        { field: 'oil', headerName: 'น้ำมัน', editable: props.activeStep === 2, minWidth: TableConstants.columnsSize.small },
+        { field: 'oil', headerName: 'น้ำมัน', type: 'number', editable: props.activeStep === 2, minWidth: TableConstants.columnsSize.small },
     ];
 
     const processRowUpdate = (newRow) => {
