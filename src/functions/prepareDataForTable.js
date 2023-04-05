@@ -23,18 +23,22 @@ const convertToTimeFormat = (num) => {
 }
 
 export function matchDriver(car, date, time, replacementHistory) {
-    const filterByCar = replacementHistory.filter((replacement) => { return replacement.carId === car });
+    const filterByCar = replacementHistory.filter((replacement) => { 
+        const dpDateTime = moment(`${date} ${time}`, "DD/MM/YYYY HH:mm")
+        const replacementDateTime = moment(`${replacement.date} ${replacement.time}`, "DD/MM/YYYY HH:mm")
+        return replacement.carId === car && dpDateTime.isSameOrAfter(replacementDateTime)
+    });
 
     if (filterByCar.length === 1) {
         const latestDriver = filterByCar[0];
         return latestDriver.driver;
     } else if (filterByCar.length > 1) {
-        const latestMoment = filterByCar.reduce((latest, item) => {
+        const latestReplacementCar = filterByCar.reduce((latest, item) => {
             const itemMoment = moment(`${item.date} ${item.time}`, "DD/MM/YYYY HH:mm");
             return itemMoment.isAfter(latest) ? itemMoment : latest;
         }, moment(0));
         
-        const latestDriver = filterByCar.find(item => moment(`${item.date} ${item.time}`, "DD/MM/YYYY HH:mm").isSameOrAfter(latestMoment));
+        const latestDriver = filterByCar.find(item => moment(`${item.date} ${item.time}`, "DD/MM/YYYY HH:mm").isSameOrAfter(latestReplacementCar));
         
         return latestDriver.driver;
     }
