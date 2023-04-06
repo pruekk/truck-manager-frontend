@@ -20,10 +20,9 @@ export default function handleUploadExcel(e, formatType, confirmedDataRows, hand
         for (const sheetName of readedData.SheetNames) {
             const ws = readedData.Sheets[sheetName];
             const dataParse = XLSX.utils.sheet_to_json(ws, { header: 1 });
-
-            if (dataParse.length !== 0) {
-                const cleanupData = dataParse.filter((data) => data.length !== 0)
-                allSheetData.push(...prepareDataForTable(formatType, sheetName.replaceAll('_', '/'), cleanupData, confirmedDataRows, carReplacement));
+            if (dataParse.length > 0) {
+                const cleanupData = dataParse.filter((data) => data.length > 0)
+                allSheetData.push(...prepareDataForTable(formatType, sheetName.replaceAll('-', '/'), cleanupData, confirmedDataRows, carReplacement));
             }
         }
 
