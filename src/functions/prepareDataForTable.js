@@ -51,7 +51,7 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
     const factoryStruct = [
         {
             code: "F272",
-            name: "หนองใหญ่ 2"
+            name: "หนองใหญ่"
         },
         {
             code: "F256",
@@ -71,7 +71,7 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
         },
     ]
     const factoryName = data[2][0]?.split(' ')[2]; // get factoryName from row 3 [FC256 - บ้านบึง2]
-    const factory = factoryStruct.find(fac => fac.name.contain(factoryName));
+    const factory = factoryStruct.find(fac => fac.name === factoryName);
     const customDate = date.trim().replace(/-/g, '/')
 
     // Start from row 4 in Excel
