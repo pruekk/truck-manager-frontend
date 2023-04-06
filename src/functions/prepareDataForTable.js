@@ -48,12 +48,30 @@ export function matchDriver(car, date, time, replacementHistory) {
 
 export default function prepareDataForTable(formatType, date, data, confirmedDataRows, carReplacement) {
     const dpList = [];
-    const factoryStruct = [{
-        code: "F256",
-        name: "บ้านบึง2"
-    }]
+    const factoryStruct = [
+        {
+            code: "F272",
+            name: "หนองใหญ่ 2"
+        },
+        {
+            code: "F256",
+            name: "บ้านบึง2"
+        },
+        {
+            code: "F071",
+            name: "ปลวกแดง"
+        },
+        {
+            code: "F300",
+            name: "หนองไผ่แก้ว"
+        },
+        {
+            code: "F332",
+            name: "วังจันทร์"
+        },
+    ]
     const factoryName = data[2][0]?.split(' ')[2]; // get factoryName from row 3 [FC256 - บ้านบึง2]
-    const factory = factoryStruct.find(fac => fac.name === factoryName);
+    const factory = factoryStruct.find(fac => fac.name.contain(factoryName));
     const customDate = date.trim().replace(/-/g, '/')
 
     // Start from row 4 in Excel
