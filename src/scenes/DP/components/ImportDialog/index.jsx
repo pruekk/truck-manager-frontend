@@ -24,8 +24,8 @@ import { GetCarReplacement } from "../../../CarReplacement/services/CarReplaceme
 import { matchDriver } from "../../../../functions/prepareDataForTable";
 import { GetTransports } from "../../../TransportPrice/services/TransportServices";
 
-//Others
-import moment from 'moment';
+//Functions
+import { formatDate } from "../../../../functions/dateFotmat";
 
 const steps = ['นำเข้าข้อมูล', 'ลบข้อมูลซ้ำ', 'ดึงข้อมูลจากหน่วยงาน', 'ดึงข้อมูลจากใบราคาค่าขนส่ง', 'ดึงข้อมูลจากรายการเปลี่ยนรถ', 'ตรวจสอบข้อมูลทั้งหมด'];
 const newSteps = ['นำเข้าข้อมูล', 'ดึงข้อมูลจากหน่วยงาน', 'ดึงข้อมูลจากใบราคาค่าขนส่ง', 'ดึงข้อมูลจากรายการเปลี่ยนรถ', 'ลบข้อมูลซ้ำ', 'ตรวจสอบข้อมูลทั้งหมด'];
@@ -145,8 +145,9 @@ export default function ImportDialog(props) {
 
     const mapTransportPrice = (dp, transportPriceArr) => {
         const filterDateRange = transportPriceArr.filter((transport) => { 
-            return moment(dp.date, "YYYY-MM-DD").isBetween(moment(transport.from, "YYYY-MM-DD"), moment(transport.to, "YYYY-MM-DD")) 
+            return formatDate(dp.date).isBetween(formatDate(transport.from), formatDate(transport.to))
         })
+
         if (filterDateRange.length > 0) {
             const filterCode = filterDateRange[0].arr.filter((arr) => { 
                 return arr.name === String(dp.code) 
@@ -192,7 +193,7 @@ export default function ImportDialog(props) {
             <DialogContent dividers sx={{ backgroundColor: "#FBFBFB" }}>
                 <Grid container spacing={2}>
                     <Grid item xs={12}>
-                        <Table dataRows={props.dataRows} checkboxSelection={activeStep === 0 || activeStep === 4} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} />
+                        <Table dataRows={props.dataRows} checkboxSelection={activeStep === 4} selectedRows={selectedRows} setSelectedRows={setSelectedRows} onClickDeleteSelectedRows={onClickDeleteSelectedRows} />
                     </Grid>
                 </Grid>
             </DialogContent>
@@ -214,7 +215,7 @@ export default function ImportDialog(props) {
                             }}
                         >
                             Confirm
-                        </LoadingButton> : <Button disabled={props.dataRows.some((row) => row.duplicated)} onClick={handleNext}>
+                        </LoadingButton> : <Button disabled={activeStep === 4 && props.dataRows.some((row) => row.duplicated)} onClick={handleNext}>
                             Next
                         </Button>
                     }
