@@ -17,6 +17,7 @@ import EditDialog from "./components/EditDialog";
 
 //Services
 import { AddNewCarReplacement, DeleteCarReplacement, GetCarReplacement, EditCarReplacement } from './services/CarReplacementServices';
+import { formatDateTime } from "../../functions/dateFotmat";
 
 export default function CarReplacement(props) {
   const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
@@ -31,7 +32,12 @@ export default function CarReplacement(props) {
     const response = await GetCarReplacement(localStorage.getItem('userToken'));
 
     if (response.success) {
-      setConfirmedDataRows(response.data);
+      const sortedList = response.data.sort((current, next) => {
+        const dateCurrent = formatDateTime(current.date, current.time);
+        const dateNext = formatDateTime(next.date, next.time);
+        return dateNext - dateCurrent;
+      })
+      setConfirmedDataRows(sortedList);
       setIsLoading(false);
 
       return;

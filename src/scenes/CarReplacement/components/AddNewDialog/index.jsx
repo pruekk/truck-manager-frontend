@@ -7,10 +7,10 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import Grid from "@mui/material/Grid";
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
+import Autocomplete from '@mui/material/Autocomplete';
+
 
 //Icons
 import IconButton from "@mui/material/IconButton";
@@ -27,6 +27,8 @@ import moment from "moment";
 
 export default function AddNewDialog(props) {
     const [carReplacementObj, setCarReplacementObj] = React.useState({});
+    const [drivers, setDrivers] = React.useState([]);
+    const [cars, setCars] = React.useState([]);
     const [isError, setIsError] = React.useState(false);
 
     useEffect(() => {
@@ -34,11 +36,22 @@ export default function AddNewDialog(props) {
         getDrivers();
     }, []);
 
-    const onChangeInput = (event) => {
+    const onChangeInput = (event, value) => {
+        const key = `${event.currentTarget.id.split("-")[0]}`
         let updatedValue = {};
-        updatedValue[`${event.target.name}`] = event.target.value;
-        setCarReplacementObj(carReplacementObj => ({
-            ...carReplacementObj,
+        switch (key) {
+            case "carId":
+                updatedValue[key] = value ? value.carId : "";
+                break;
+            case "driver":
+                updatedValue[key] = value ? `${value.firstName} ${value.lastName}` : "";
+                break;
+            default:
+                updatedValue[`${event.target.name}`] = event.target.value;
+                break;
+        }
+        setCarReplacementObj((prevCarReplacementObj) => ({
+            ...prevCarReplacementObj,
             ...updatedValue
         }));
     }
@@ -48,23 +61,20 @@ export default function AddNewDialog(props) {
         setIsLoading(true);
 
         if (carReplacementObj["carId"] && carReplacementObj["driver"] && carReplacementObj["date"] && carReplacementObj["time"]) {
-            setIsError(false);
-
             await props.handleAddNewCarReplacement({
                 carId: carReplacementObj["carId"],
                 driver: carReplacementObj["driver"],
                 date: moment(carReplacementObj["date"]).format('DD/MM/YYYY'),
                 time: carReplacementObj["time"],
             });
+            setCarReplacementObj({})
+            setIsError(false);
         } else {
             setIsError(true);
         }
 
         setIsLoading(false);
     }
-
-    const [drivers, setDrivers] = React.useState([]);
-    const [cars, setCars] = React.useState([]);
 
     const getDrivers = async () => {
         const response = await GetDrivers(localStorage.getItem('userToken'));
@@ -78,9 +88,18 @@ export default function AddNewDialog(props) {
         const response = await GetCars(localStorage.getItem('userToken'));
 
         if (response.success) {
-            setCars(response.data);
+            const sortedList = response.data.sort((current, next) => (current.carId > next.carId) ? 1 : -1);
+            setCars(sortedList);
         }
     }
+
+    const carsCategories = cars.map((car) => {
+        const firstLetter = car.carId[0].toUpperCase();
+        return {
+          firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
+          ...car,
+        };
+    });
 
     return (
         <Dialog
@@ -109,57 +128,30 @@ export default function AddNewDialog(props) {
                         <Typography variant="subtitle1" gutterBottom>
                             รหัสรถ
                         </Typography>
-                        <Select
-                            labelId="carId-label"
+                        <Autocomplete
                             id="carId"
-                            name="carId"
-                            value={carReplacementObj["carId"] || ""}
-                            error={isError && !carReplacementObj["carId"]}
+                            options={carsCategories.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
+                            groupBy={(option) => option.firstLetter}
+                            getOptionLabel={(option) => option.carId}
+                            isOptionEqualToValue={(option, value) => option.carId === value.carId}
                             onChange={onChangeInput}
-                            sx={{ width: "300px" }}
-                            MenuProps={{
-                                PaperProps: {
-                                    style: {
-                                        maxHeight: "300px",
-                                        width: "300px",
-                                    },
-                                },
-                            }}
-                        >
-                            {cars.map((car) => {
-                                return (
-                                    <MenuItem key={car.carId} value={car.carId}>{car.carId}</MenuItem>
-                                )
-                            })}
-                        </Select>
+                            sx={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="subtitle1" gutterBottom>
                             คนขับรถโม่
                         </Typography>
-                        <Select
-                            labelId="driver-label"
+                        <Autocomplete
                             id="driver"
-                            name="driver"
-                            value={carReplacementObj["driver"] || ""}
-                            error={isError && !carReplacementObj["driver"]}
+                            options={drivers}
+                            getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
+                            isOptionEqualToValue={(option, value) => `${option.firstName} ${option.lastName}` === `${value.firstName} ${value.lastName}`}
                             onChange={onChangeInput}
-                            sx={{ width: "300px" }}
-                            MenuProps={{
-                                PaperProps: {
-                                    style: {
-                                        maxHeight: "300px",
-                                        width: "300px",
-                                    },
-                                },
-                            }}
-                        >
-                            {drivers.filter((driver) => driver.firstName && driver.lastName).map((driver) => {
-                                return (
-                                    <MenuItem key={`${driver.firstName} ${driver.lastName}`} value={`${driver.firstName} ${driver.lastName}`}>{`${driver.firstName} ${driver.lastName}`}</MenuItem>
-                                )
-                            })}
-                        </Select>
+                            sx={{ width: 300 }}
+                            renderInput={(params) => <TextField {...params} />}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="subtitle1" gutterBottom>
