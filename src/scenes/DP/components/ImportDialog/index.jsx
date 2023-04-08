@@ -145,7 +145,7 @@ export default function ImportDialog(props) {
 
     const mapTransportPrice = (dp, transportPriceArr) => {
         const filterDateRange = transportPriceArr.filter((transport) => { 
-            return formatDate(dp.date).isBetween(formatDate(transport.from), formatDate(transport.to))
+            return formatDate(dp.date).isBetween(formatDate(transport.from), formatDate(transport.to), undefined, "[]")
         })
 
         if (filterDateRange.length > 0) {
