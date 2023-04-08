@@ -21,6 +21,8 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, LabelList } from 'recharts'
 import { DataGrid, GridFooterContainer, GridFooter } from '@mui/x-data-grid';
 // import TableCell from '@mui/material/TableCell';
 
+import TxtToCsvConverter from './MigrateData'
+
 const columns = [
   { field: 'id', headerName: 'รถโม่', width: 70 },
   { field: 'factoryId', headerName: 'โรงงาน', width: 130 },
@@ -185,6 +187,9 @@ export default function Home() {
           </Typography>
         </Grid>
       </Grid> */}
+       <Grid container spacing={2} sx={{ paddingLeft: "1rem", paddingBottom: "2rem" }}>
+        <TxtToCsvConverter />
+      </Grid>
       <Grid container spacing={2} sx={{ paddingLeft: "1rem" }}>
         {factorySummary()}
       </Grid>
