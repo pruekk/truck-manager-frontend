@@ -20,6 +20,12 @@ export default function Table(props) {
     }
 
     return (
-        <DataGridTable dataRows={props.dataRows} columns={columns} onSelectionModelChange={props.onSelectionModelChange} checkboxSelection={true} customRowId={customRowId}  />
+        <DataGridTable 
+            dataRows={props.dataRows} 
+            columns={columns} 
+            onSelectionModelChange={props.onSelectionModelChange} 
+            checkboxSelection={true} 
+            customRowId={customRowId}
+        />
     );
 }

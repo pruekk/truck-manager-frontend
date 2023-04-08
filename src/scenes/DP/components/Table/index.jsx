@@ -9,7 +9,7 @@ import * as TableConstants from '../../../../constants/TableConstants';
 function Table(props) {
     const columns = [
         { field: 'id', headerName: 'เลขดีพี', minWidth: TableConstants.columnsSize.medium },
-        { field: 'date', headerName: 'วันที่', type: 'date', minWidth: TableConstants.columnsSize.medium },
+        { field: 'date', headerName: 'วันที่', minWidth: TableConstants.columnsSize.medium },
         { field: 'time', headerName: 'เวลา', minWidth: TableConstants.columnsSize.small },
         { field: 'destination', headerName: 'หน่วยงาน', minWidth: TableConstants.columnsSize.large },
         { field: 'distance', headerName: 'ระยะทาง', type: 'number', minWidth: TableConstants.columnsSize.small },

@@ -76,6 +76,7 @@ export default function Table(props) {
     }
 
     const checkSumAll = () => {
+        console.log("debug: ", sumY)
         props.setIsSumCorrect(calculateSum(sumY) === calculateSum(isCheckedY));
     }
 
