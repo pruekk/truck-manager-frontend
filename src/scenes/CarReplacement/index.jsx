@@ -12,7 +12,7 @@ import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 
 //Dialogs
 import AddNewDialog from './components/AddNewDialog';
-import DeleteDialog from "./components/DeleteDialog";
+import DeleteDialog from "../../components/DeleteDialog";
 import EditDialog from "./components/EditDialog";
 
 //Services
@@ -153,7 +153,7 @@ export default function CarReplacement(props) {
         selectedRowIds={selectedRowIds}
         isLoading={isLoading}
         openDialog={isOpenDeleteDialog}
-        deleteCarReplacement={deleteCarReplacement}
+        onClickDelete={deleteCarReplacement}
         onCloseDeleteDialog={onCloseDeleteDialog}
       />
       <Grid container spacing={2}>

@@ -15,7 +15,7 @@ import { GetDrivers, AddNewDriver, EditDriver, DeleteDriver } from './services/D
 
 //Dialogs
 import AddNewDialog from "./components/AddNewDialog";
-import DeleteDialog from "./components/DeleteDialog";
+import DeleteDialog from "../../components/DeleteDialog";
 import EditDialog from "./components/EditDialog";
 
 export default function Driver(props) {
@@ -142,11 +142,12 @@ export default function Driver(props) {
           handleUpdateDriver={handleUpdateDriver}
         />
       }
+
       <DeleteDialog
         selectedRowIds={selectedRowIds}
         isLoading={isLoading}
         openDialog={isOpenDeleteDialog}
-        deleteDriver={deleteDriver}
+        onClickDelete={deleteDriver}
         onCloseDeleteDialog={onCloseDeleteDialog}
       />
 

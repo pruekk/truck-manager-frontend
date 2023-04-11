@@ -11,7 +11,7 @@ import Tab from '@mui/material/Tab';
 import Table from './components/Table';
 
 //Dialogs
-import DeleteDialog from "./components/DeleteDialog";
+import DeleteDialog from "../../components/DeleteDialog";
 import ImportDialog from './components/ImportDialog';
 import EditDialog from './components/EditDialog';
 
@@ -179,7 +179,7 @@ export default function Agency(props) {
                 selectedRowIds={selectedRowIds}
                 isLoading={isLoading}
                 openDialog={isOpenDeleteDialog}
-                deleteAgency={deleteAgency}
+                onClickDelete={deleteAgency}
                 onCloseDeleteDialog={onCloseDeleteDialog}
             />
             <Grid container spacing={2}>
