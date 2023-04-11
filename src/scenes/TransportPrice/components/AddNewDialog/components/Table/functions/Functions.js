@@ -1,5 +1,5 @@
 export function calculateSum(array) {
-    return array.reduce((accumulator, value) => accumulator + value, 0);
+    return parseFloat(array.reduce((accumulator, value) => accumulator + value, 0).toFixed(2));
 }
 
 export function calculateSumY(priceListArr) {
