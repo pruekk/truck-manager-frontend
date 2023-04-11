@@ -189,6 +189,9 @@ export default function EditDialog(props) {
                             value={carReplacementObj["time"] ? carReplacementObj["time"] : ""}
                             error={isError && !carReplacementObj["time"]}
                             onChange={onChangeInput}
+                            inputProps={{
+                                step: 60, // Allow only hours and minutes input
+                            }}
                         />
                     </Grid>
                 </Grid>
