@@ -12,7 +12,7 @@ import Table from './components/Table';
 
 //Dialogs
 import AddNewDialog from './components/AddNewDialog';
-import DeleteDialog from "./components/DeleteDialog";
+import DeleteDialog from "../../components/DeleteDialog";
 import EditDialog from './components/EditDialog';
 
 //Services
@@ -147,7 +147,7 @@ export default function Car(props) {
         selectedRowIds={selectedRowIds}
         isLoading={isLoading}
         openDialog={isOpenDeleteDialog}
-        deleteCar={deleteCar}
+        onClickDelete={deleteCar}
         onCloseDeleteDialog={onCloseDeleteDialog}
       />
       <Grid container spacing={2}>

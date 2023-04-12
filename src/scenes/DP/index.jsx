@@ -14,7 +14,7 @@ import Typography from '@mui/material/Typography';
 
 //Components
 import ImportDialog from './components/ImportDialog';
-import DeleteDialog from "./components/DeleteDialog";
+import DeleteDialog from "../../components/DeleteDialog";
 import EditDialog from './components/EditDialog';
 import Table from './components/Table';
 
@@ -207,7 +207,7 @@ export default function DP(props) {
                 selectedRowIds={selectedRowIds}
                 isLoading={isLoading}
                 openDialog={isOpenDeleteDialog}
-                deleteDP={deleteDP}
+                onClickDelete={deleteDP}
                 onCloseDeleteDialog={onCloseDeleteDialog}
             />
             <Grid container spacing={2}>

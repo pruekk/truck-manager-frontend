@@ -55,7 +55,7 @@ export default function DeleteDialog(props) {
                             backgroundColor: "#eb8a8d",
                         }
                     }}
-                    onClick={props.deleteAgency}
+                    onClick={props.onClickDelete}
                 >
                     Delete
                 </LoadingButton>
