@@ -7,13 +7,17 @@ import IconButton from "@mui/material/IconButton";
 import AddBoxRoundedIcon from "@mui/icons-material/AddBoxRounded";
 
 //Functions
-import { calculateSum } from "./functions/Functions";
+import { calculateSum, calculateSumY } from "./functions/Functions";
 
 export default function Table(props) {
     const [sumY, setSumY] = React.useState([]);
     const [isCheckedY, setIsCheckedY] = React.useState([]);
 
     useEffect(() => {
+        if (props.isEdit) {
+            prepSumY();
+        }
+
         checkSum();
     }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
@@ -47,7 +51,8 @@ export default function Table(props) {
     };
 
     const checkSum = () => {
-        calculateSumY();
+        const sumY = calculateSumY(props.priceListArr);
+        setSumY(sumY);
     }
 
     const checkSumY = (event, index) => {
@@ -57,27 +62,14 @@ export default function Table(props) {
         checkSumAll();
     }
 
-    const calculateSumY = () => {
-        let tempYArr = [];
-        props.priceListArr[0].value.map((obj, index) => {
-            let tempArr = [];
-            props.priceListArr.map((obj, xIndex) => {
-                tempArr[xIndex] = obj.value[index];
-
-                return tempArr;
-            })
-
-            tempYArr[index] = calculateSum(tempArr)
-
-            return tempYArr;
-        });
-
-        setSumY(tempYArr);
-    }
-
     const checkSumAll = () => {
         console.log("debug: ", sumY)
         props.setIsSumCorrect(calculateSum(sumY) === calculateSum(isCheckedY));
+    }
+
+    const prepSumY = () => {
+        const sumY = calculateSumY(props.priceListArr);
+        setIsCheckedY(sumY);
     }
 
     return (
@@ -274,6 +266,7 @@ export default function Table(props) {
                                         onBlur={(event) => {
                                             checkSumY(event, rYIndex);
                                         }}
+                                        defaultValue={props.isEdit ? isCheckedY[rYIndex] : ''}
                                         style={{
                                             width: "60px",
                                             textAlign: "end",
