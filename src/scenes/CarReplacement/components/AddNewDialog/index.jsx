@@ -11,7 +11,6 @@ import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
 import Autocomplete from '@mui/material/Autocomplete';
 
-
 //Icons
 import IconButton from "@mui/material/IconButton";
 
@@ -96,8 +95,8 @@ export default function AddNewDialog(props) {
     const carsCategories = cars.map((car) => {
         const firstLetter = car.carId[0].toUpperCase();
         return {
-          firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
-          ...car,
+            firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
+            ...car,
         };
     });
 
@@ -163,7 +162,17 @@ export default function AddNewDialog(props) {
                         <Typography variant="subtitle1" gutterBottom>
                             เวลา
                         </Typography>
-                        <TextField id="time" name="time" type="time" variant="outlined" error={isError && !carReplacementObj["time"]} onChange={onChangeInput} />
+                        <TextField
+                            id="time"
+                            name="time"
+                            type="time"
+                            variant="outlined"
+                            error={isError && !carReplacementObj["time"]}
+                            onChange={onChangeInput}
+                            inputProps={{
+                                step: 60, // Allow only hours and minutes input
+                            }}
+                        />
                     </Grid>
                 </Grid>
             </DialogContent>
