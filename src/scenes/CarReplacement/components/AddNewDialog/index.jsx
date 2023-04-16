@@ -129,13 +129,13 @@ export default function AddNewDialog(props) {
                         </Typography>
                         <Autocomplete
                             id="carId"
+                            size="small"
                             options={carsCategories.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
                             groupBy={(option) => option.firstLetter}
                             getOptionLabel={(option) => option.carId}
                             isOptionEqualToValue={(option, value) => option.carId === value.carId}
                             onChange={onChangeInput}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} />}
+                            renderInput={(params) => <TextField fullWidth {...params} />}
                         />
                     </Grid>
                     <Grid item xs={12}>
@@ -144,26 +144,37 @@ export default function AddNewDialog(props) {
                         </Typography>
                         <Autocomplete
                             id="driver"
+                            size="small"
                             options={drivers}
                             getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
                             isOptionEqualToValue={(option, value) => `${option.firstName} ${option.lastName}` === `${value.firstName} ${value.lastName}`}
                             onChange={onChangeInput}
-                            sx={{ width: 300 }}
-                            renderInput={(params) => <TextField {...params} />}
+                            renderInput={(params) => <TextField fullWidth {...params} />}
                         />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="subtitle1" gutterBottom>
                             วันที่
                         </Typography>
-                        <TextField id="date" name="date" type="date" variant="outlined" error={isError && !carReplacementObj["date"]} onChange={onChangeInput} />
+                        <TextField
+                            fullWidth
+                            id="date"
+                            size="small"
+                            name="date"
+                            type="date"
+                            variant="outlined"
+                            error={isError && !carReplacementObj["date"]}
+                            onChange={onChangeInput}
+                        />
                     </Grid>
                     <Grid item xs={12}>
                         <Typography variant="subtitle1" gutterBottom>
                             เวลา
                         </Typography>
                         <TextField
+                            fullWidth
                             id="time"
+                            size="small"
                             name="time"
                             type="time"
                             variant="outlined"
