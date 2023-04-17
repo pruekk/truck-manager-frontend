@@ -1,19 +1,5 @@
 import React, { useEffect } from "react";
 
-import CloseIcon from "@mui/icons-material/Close";
-import LoadingButton from '@mui/lab/LoadingButton';
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
-import Grid from "@mui/material/Grid";
-import TextField from '@mui/material/TextField';
-import Typography from '@mui/material/Typography';
-import Autocomplete from '@mui/material/Autocomplete';
-
-//Icons
-import IconButton from "@mui/material/IconButton";
-
 //Constants
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
 
@@ -21,22 +7,30 @@ import * as NavigationBarConstants from "../../../../constants/NavigationBarCons
 import { GetCars } from '../../../Car/services/CarServices';
 import { GetDrivers } from '../../../Driver/services/DriverServices';
 
+//Function
+import { addKeyValuePairToObjectArray } from '../../../../functions/prepareDataForDialog';
+
 //Others
 import moment from "moment";
+import { columns } from "../Table";
+import AddDialog from "../../../../components/AddDialog";
 
 export default function AddNewDialog(props) {
     const [carReplacementObj, setCarReplacementObj] = React.useState({});
+    const [columnArr, setColumnArr] = React.useState(columns);
     const [drivers, setDrivers] = React.useState([]);
     const [cars, setCars] = React.useState([]);
     const [isError, setIsError] = React.useState(false);
+    const excludeFields = ['editBy'];
 
     useEffect(() => {
         getCars();
         getDrivers();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const onChangeInput = (event, value) => {
-        const key = `${event.currentTarget.id.split("-")[0]}`
+        const key = event.target.name === 'date' ? 'date' : `${event.currentTarget.id.split("-")[0]}`
         let updatedValue = {};
         switch (key) {
             case "carId":
@@ -79,6 +73,8 @@ export default function AddNewDialog(props) {
         const response = await GetDrivers(localStorage.getItem('userToken'));
 
         if (response.success) {
+            const tempColumnArr = addKeyValuePairToObjectArray(columnArr, 'field', 'driver', { valueOptions: response.data });
+            setColumnArr(tempColumnArr)
             setDrivers(response.data);
         }
     }
@@ -88,115 +84,36 @@ export default function AddNewDialog(props) {
 
         if (response.success) {
             const sortedList = response.data.sort((current, next) => (current.carId > next.carId) ? 1 : -1);
+            const tempColumnArr = addKeyValuePairToObjectArray(columnArr, 'field', 'carId', { valueOptions: transformCarsData(sortedList) });
+            setColumnArr(tempColumnArr)
             setCars(sortedList);
         }
     }
 
-    const carsCategories = cars.map((car) => {
-        const firstLetter = car.carId[0].toUpperCase();
-        return {
-            firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
-            ...car,
-        };
-    });
+    const transformCarsData = (cars) => {
+        const carsCategories = cars.map((car) => {
+            const firstLetter = car.carId[0].toUpperCase();
+            return {
+                firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
+                ...car,
+            };
+        });
+
+        return carsCategories.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter));
+    }
 
     return (
-        <Dialog
-            fullWidth={true}
-            maxWidth="md"
-            open={props.openDialog}
-        >
-            <DialogTitle>
-                เพิ่ม{NavigationBarConstants.menus[0].sub[3].name}
-                <IconButton
-                    aria-label="close"
-                    onClick={props.handleCloseDialog}
-                    sx={{
-                        position: "absolute",
-                        right: 8,
-                        top: 8,
-                        color: (theme) => theme.palette.grey[500],
-                    }}
-                >
-                    <CloseIcon />
-                </IconButton>
-            </DialogTitle>
-            <DialogContent dividers>
-                <Grid container spacing={2}>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            รหัสรถ
-                        </Typography>
-                        <Autocomplete
-                            id="carId"
-                            size="small"
-                            options={carsCategories.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter))}
-                            groupBy={(option) => option.firstLetter}
-                            getOptionLabel={(option) => option.carId}
-                            isOptionEqualToValue={(option, value) => option.carId === value.carId}
-                            onChange={onChangeInput}
-                            renderInput={(params) => <TextField fullWidth {...params} />}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            คนขับรถโม่
-                        </Typography>
-                        <Autocomplete
-                            id="driver"
-                            size="small"
-                            options={drivers}
-                            getOptionLabel={(option) => `${option.firstName} ${option.lastName}`}
-                            isOptionEqualToValue={(option, value) => `${option.firstName} ${option.lastName}` === `${value.firstName} ${value.lastName}`}
-                            onChange={onChangeInput}
-                            renderInput={(params) => <TextField fullWidth {...params} />}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            วันที่
-                        </Typography>
-                        <TextField
-                            fullWidth
-                            id="date"
-                            size="small"
-                            name="date"
-                            type="date"
-                            variant="outlined"
-                            error={isError && !carReplacementObj["date"]}
-                            onChange={onChangeInput}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Typography variant="subtitle1" gutterBottom>
-                            เวลา
-                        </Typography>
-                        <TextField
-                            fullWidth
-                            id="time"
-                            size="small"
-                            name="time"
-                            type="time"
-                            variant="outlined"
-                            error={isError && !carReplacementObj["time"]}
-                            onChange={onChangeInput}
-                            inputProps={{
-                                step: 60, // Allow only hours and minutes input
-                            }}
-                        />
-                    </Grid>
-                </Grid>
-            </DialogContent>
-            <DialogActions>
-                <React.Fragment>
-                    <LoadingButton
-                        loading={isLoading}
-                        onClick={onClickAdd}
-                    >
-                        Save
-                    </LoadingButton>
-                </React.Fragment>
-            </DialogActions>
-        </Dialog>
+        <AddDialog
+            pageName={NavigationBarConstants.menus[0].sub[3].name}
+            openDialog={cars.length > 0 && drivers.length > 0 && props.openDialog}
+            handleCloseDialog={props.handleCloseDialog}
+            columns={columnArr}
+            dataObj={carReplacementObj}
+            excludeFields={excludeFields}
+            onChangeInput={onChangeInput}
+            isError={isError}
+            isLoading={isLoading}
+            onClickAdd={onClickAdd}
+        />
     );
 }

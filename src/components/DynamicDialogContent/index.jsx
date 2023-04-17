@@ -1,6 +1,7 @@
 import React from "react";
 
 //Material UI
+import Autocomplete from '@mui/material/Autocomplete';
 import Grid from "@mui/material/Grid";
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
@@ -12,6 +13,57 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { MobileDatePicker } from "@mui/x-date-pickers/MobileDatePicker";
 import * as CalendarConstants from "../../constants/CalendarConstants";
+
+function AutoCompleteSelectInput(props) {
+  const { column, onChangeInput } = props;
+
+  const groupBy = (option) => {
+    switch (column.field) {
+      case "driver":
+        return false;
+      case "carId":
+        return option.firstLetter;
+      default:
+        return false;
+    }
+  }
+
+  const getOptionLabel = (option) => {
+    switch (column.field) {
+      case "driver":
+        return `${option.firstName} ${option.lastName}`;
+      case "carId":
+        return option.carId === undefined ? option : option.carId;
+      default:
+        return false;
+    }
+  }
+
+  const isOptionEqualToValue = (option, value) => {
+    switch (column.field) {
+      case "driver":
+        return `${option.firstName} ${option.lastName}` === `${value.firstName} ${value.lastName}`;
+      case "carId":
+        return option.carId === undefined ? option.carId === value : option.carId === value.carId;
+      default:
+        return false;
+    }
+  }
+
+  return (
+    <Autocomplete
+      id={column.field}
+      name={column.field}
+      size="small"
+      options={column.valueOptions}
+      groupBy={(option) => groupBy(option)}
+      getOptionLabel={(option) => getOptionLabel(option)}
+      isOptionEqualToValue={(option, value) => isOptionEqualToValue(option, value)}
+      onChange={onChangeInput}
+      renderInput={(params) => <TextField fullWidth {...params} />}
+    />
+  )
+}
 
 function SingleSelectInput(props) {
     const { column, inputObj, onChangeInput } = props;
@@ -32,6 +84,26 @@ function SingleSelectInput(props) {
         ))}
       </Select>
     );
+}
+
+function TimeInput(props) {
+  const { column, inputObj, onChangeInput } = props;
+
+  return (
+    <TextField
+      fullWidth
+      id="time"
+      size="small"
+      name="time"
+      type="time"
+      variant="outlined"
+      error={props.isError && !inputObj[column.field]}
+      onChange={onChangeInput}
+      inputProps={{
+        step: 60, // Allow only hours and minutes input
+      }}
+    />
+  );
 }
 
 function DateInput(props) {
@@ -85,11 +157,15 @@ const getInputComponent = (inputObj, onChangeInput, column) => {
     switch (column.type) {
         case "singleSelect":
           return <SingleSelectInput inputObj={inputObj} onChangeInput={onChangeInput} column={column} />;
+        case "selection":
+          return <AutoCompleteSelectInput inputObj={inputObj} onChangeInput={onChangeInput} column={column} />;
         case "date":
           return <DateInput inputObj={inputObj} onChangeInput={onChangeInput} column={column} />;
+        case "time":
+          return <TimeInput inputObj={inputObj} onChangeInput={onChangeInput} column={column} />;
         default:
           return <DefaultInput inputObj={inputObj} onChangeInput={onChangeInput} column={column} />;
-      }
+    }
 }
 
 export function DynamicDialogContent(props) {
