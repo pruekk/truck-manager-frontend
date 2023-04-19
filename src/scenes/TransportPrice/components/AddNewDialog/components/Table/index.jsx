@@ -70,6 +70,7 @@ export default function Table(props) {
     const prepSumY = () => {
         const sumY = calculateSumY(props.priceListArr);
         setIsCheckedY(sumY);
+        props.setIsSumCorrect(true);
     }
 
     return (
