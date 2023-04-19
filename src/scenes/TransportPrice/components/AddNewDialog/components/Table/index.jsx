@@ -44,6 +44,8 @@ export default function Table(props) {
     const onChangeValue = async (event, xAxis, index) => {
         props.priceListArr.filter((obj) => obj.name === xAxis)[0].value[index] =
             Number(event.target.value);
+
+        checkSumAll();
     };
 
     const onChangeRowKey = (event, index) => {
