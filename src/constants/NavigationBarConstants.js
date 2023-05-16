@@ -11,6 +11,9 @@ import LocalGasStationRoundedIcon from '@mui/icons-material/LocalGasStationRound
 import MoveDownRoundedIcon from '@mui/icons-material/MoveDownRounded';
 import BuildRoundedIcon from '@mui/icons-material/BuildRounded';
 import OilBarrelIcon from '@mui/icons-material/OilBarrel';
+import DepartureBoardRoundedIcon from '@mui/icons-material/DepartureBoardRounded';
+import ConstructionRoundedIcon from '@mui/icons-material/ConstructionRounded';
+import StorefrontRoundedIcon from '@mui/icons-material/StorefrontRounded';
 
 import BusinessRoundedIcon from "@mui/icons-material/BusinessRounded";
 import PaidRoundedIcon from '@mui/icons-material/PaidRounded';
@@ -21,6 +24,7 @@ import EngineeringRoundedIcon from '@mui/icons-material/EngineeringRounded';
 
 import FactoryRoundedIcon from '@mui/icons-material/FactoryRounded';
 import AdminPanelSettingsRoundedIcon from '@mui/icons-material/AdminPanelSettingsRounded';
+import ForestRoundedIcon from '@mui/icons-material/ForestRounded';
 
 export const menus = [
   {
@@ -39,6 +43,12 @@ export const menus = [
         icon: <LocalShippingRoundedIcon />
       },
       {
+        name: "ข้อมูลการวิ่งเที่ยว",
+        url: "/trip",
+        isAvailable: true,
+        icon: <DepartureBoardRoundedIcon />
+      },
+      {
         name: "หน่วยงาน",
         url: "/agency",
         isAvailable: true,
@@ -52,21 +62,33 @@ export const menus = [
       },
       {
         name: "รายการเติมน้ำมัน",
-        url: "/",
-        isAvailable: false,
+        url: "/fuel",
+        isAvailable: true,
         icon: <LocalGasStationRoundedIcon />
       },
       {
         name: "รายการโยกรถ",
-        url: "/",
-        isAvailable: false,
+        url: "/extra-fuel",
+        isAvailable: true,
         icon: <MoveDownRoundedIcon />
       },
       {
         name: "รายการซ่อมรถ",
-        url: "/",
-        isAvailable: false,
+        url: "/engine-replacement",
+        isAvailable: true,
         icon: <BuildRoundedIcon />
+      },
+      {
+        name: "รายการอะไหล่",
+        url: "/engine-detail",
+        isAvailable: true,
+        icon: <ConstructionRoundedIcon />
+      },
+      {
+        name: "รายการร้านค้า",
+        url: "/engine-store",
+        isAvailable: true,
+        icon: <StorefrontRoundedIcon />
       },
     ],
     icon: <LocalShippingRoundedIcon />,
@@ -76,14 +98,14 @@ export const menus = [
     sub: [
       {
         name: "รายได้",
-        url: "/",
-        isAvailable: false,
+        url: "/company-income",
+        isAvailable: true,
         icon: <BusinessRoundedIcon />
       },
       {
         name: "รายจ่าย",
-        url: "/",
-        isAvailable: false,
+        url: "/company-expense",
+        isAvailable: true,
         icon: <PaidRoundedIcon />
       },
     ],
@@ -208,15 +230,21 @@ export const menus = [
     sub: [
       {
         name: "รายได้",
-        url: "/",
-        isAvailable: false,
+        url: "/farm-income",
+        isAvailable: true,
         icon: <ParkRoundedIcon />
       },
       {
         name: "รายจ่าย",
-        url: "/",
-        isAvailable: false,
+        url: "/farm-expense",
+        isAvailable: true,
         icon: <PaidRoundedIcon />
+      },
+      {
+        name: "รายการสวนปาล์ม",
+        url: "/farm",
+        isAvailable: true,
+        icon: <ForestRoundedIcon />
       },
     ],
     icon: <ParkRoundedIcon />,
@@ -238,14 +266,14 @@ export const menus = [
       },
       {
         name: "ข้อมูลโรงงาน",
-        url: "/",
-        isAvailable: false,
+        url: "/factory",
+        isAvailable: true,
         icon: <FactoryRoundedIcon />
       },
       {
         name: "ข้อมูลบริษัท",
-        url: "/",
-        isAvailable: false,
+        url: "/company",
+        isAvailable: true,
         icon: <BusinessRoundedIcon />
       },
       {
