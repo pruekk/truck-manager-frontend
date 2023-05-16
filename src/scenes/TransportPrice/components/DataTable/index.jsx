@@ -17,7 +17,7 @@ import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 
 //Components
 import InfoTable from "./components/InfoTable";
-import DeleteDialog from "./components/DeleteDialog";
+import DeleteDialog from "../../../../components/DeleteDialog";
 
 function Row(props) {
   const { row, index } = props;
@@ -114,7 +114,14 @@ function Row(props) {
 export default function DataTable(props) {
   return (
     <div>
-      <DeleteDialog openDialog={props.openDeleteDialog} onClickCloseDeleteDialog={props.handleCloseDeleteDialog} removePrice={props.removePrice} selectedRow={props.selectedRow} />
+      <DeleteDialog
+        isLoading={props.isLoading}
+        isShowDeleteRowInfo={true}
+        openDialog={props.openDeleteDialog}
+        onCloseDeleteDialog={props.handleCloseDeleteDialog}
+        selectedRow={props.selectedRow}
+        removeData={props.removePrice}
+      />
 
       <TableContainer component={Paper}>
         <Table aria-label="collapsible table">

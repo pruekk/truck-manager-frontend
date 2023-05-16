@@ -4,8 +4,7 @@ import React, { useEffect } from "react";
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
 
 //Services
-import { GetCars } from '../../../Car/services/CarServices';
-import { GetDrivers } from '../../../Driver/services/DriverServices';
+import { GetComponent } from "../../../../services/TruckManagerApiServices";
 
 //Function
 import { addKeyValuePairToObjectArray } from '../../../../functions/prepareDataForDialog';
@@ -61,7 +60,7 @@ export default function AddNewDialog(props) {
     }
 
     const getDrivers = async () => {
-        const response = await GetDrivers(localStorage.getItem('userToken'));
+        const response = await GetComponent('drivers', localStorage.getItem('userToken'));
 
         if (response.success) {
             const driverArr = transformDriverData(response.data);
@@ -72,7 +71,7 @@ export default function AddNewDialog(props) {
     }
 
     const getCars = async () => {
-        const response = await GetCars(localStorage.getItem('userToken'));
+        const response = await GetComponent('cars', localStorage.getItem('userToken'));
 
         if (response.success) {
             const sortedList = response.data.sort((current, next) => (current.carId > next.carId) ? 1 : -1);

@@ -19,13 +19,11 @@ import Step from '@mui/material/Step';
 import StepLabel from '@mui/material/StepLabel';
 
 //Services
-import { GetAgency } from '../../../Agency/services/AgencyServices';
-import { GetCarReplacement } from "../../../CarReplacement/services/CarReplacementServices";
 import { matchDriver } from "../../../../functions/prepareDataForTable";
-import { GetTransports } from "../../../TransportPrice/services/TransportServices";
 
 //Functions
 import { formatDate } from "../../../../functions/dateFotmat";
+import { GetComponent } from "../../../../services/TruckManagerApiServices";
 
 const steps = ['นำเข้าข้อมูล', 'ลบข้อมูลซ้ำ', 'ดึงข้อมูลจากหน่วยงาน', 'ดึงข้อมูลจากใบราคาค่าขนส่ง', 'ดึงข้อมูลจากรายการเปลี่ยนรถ', 'ตรวจสอบข้อมูลทั้งหมด'];
 const newSteps = ['นำเข้าข้อมูล', 'ดึงข้อมูลจากหน่วยงาน', 'ดึงข้อมูลจากใบราคาค่าขนส่ง', 'ดึงข้อมูลจากรายการเปลี่ยนรถ', 'ลบข้อมูลซ้ำ', 'ตรวจสอบข้อมูลทั้งหมด'];
@@ -67,7 +65,7 @@ export default function ImportDialog(props) {
     };
 
     const getAgency = async () => {
-        const response = await GetAgency(localStorage.getItem('userToken'));
+        const response = await GetComponent('agency', localStorage.getItem('userToken'));
 
         if (response.success) {
             const agency = response.data
@@ -101,7 +99,7 @@ export default function ImportDialog(props) {
     }
 
     const getCarReplacement = async () => {
-        const response = await GetCarReplacement(localStorage.getItem('userToken'));
+        const response = await GetComponent('car-replacement', localStorage.getItem('userToken'));
         const currentDPList = props.dataRows;
 
         if (response.success) {
@@ -125,7 +123,7 @@ export default function ImportDialog(props) {
     }
 
     const getTransportPrice = async () => {
-        const response = await GetTransports(localStorage.getItem('userToken'));
+        const response = await GetComponent('transports', localStorage.getItem('userToken'));
         if (response.success) {
             const transportPrice = response.data
             let tempArr = [];

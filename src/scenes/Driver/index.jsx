@@ -11,12 +11,16 @@ import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
 import Table from './components/Table';
 
 //Services
-import { GetDrivers, AddNewDriver, EditDriver, DeleteDriver } from './services/DriverServices';
+import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
 
 //Dialogs
 import AddNewDialog from "./components/AddNewDialog";
 import DeleteDialog from "../../components/DeleteDialog";
 import EditDialog from "./components/EditDialog";
+
+//Constants
+import * as Constants from "./constants/Constants";
+import { addIdToRow } from "../../functions/prepareDataForApi";
 
 export default function Driver(props) {
   const [drivers, setDrivers] = React.useState([]);
@@ -28,7 +32,7 @@ export default function Driver(props) {
   }, []);
 
   const getDrivers = async () => {
-    const response = await GetDrivers(localStorage.getItem('userToken'));
+    const response = await GetComponent("drivers", localStorage.getItem('userToken'))
 
     if (response.success) {
       setDrivers(response.data);
@@ -50,7 +54,7 @@ export default function Driver(props) {
   };
 
   const handleAddNewDriver = async (obj) => {
-    const response = await AddNewDriver(localStorage.getItem('userToken'), [obj]);
+    const response = await AddNewData([obj], 'drivers', localStorage.getItem('userToken'));
 
     if (response.success) {
       getDrivers();
@@ -89,7 +93,8 @@ export default function Driver(props) {
   }
 
   const handleUpdateDriver = async (row) => {
-    const response = await EditDriver(localStorage.getItem('userToken'), row);
+    const rowInfo = addIdToRow(drivers, row);
+    const response = await EditData(rowInfo, 'drivers', localStorage.getItem('userToken'));
 
     if (response.success) {
       getDrivers();
@@ -106,7 +111,7 @@ export default function Driver(props) {
 
   const deleteDriver = async () => {
     setIsLoading(true);
-    const response = await DeleteDriver(localStorage.getItem('userToken'), selectedRowIds[0]);
+    const response = await DeleteData(selectedRowIds, Constants.component.name, localStorage.getItem('userToken'));
 
     if (response.success) {
       getDrivers();
@@ -189,7 +194,7 @@ export default function Driver(props) {
                 </Button>
               </Grid>
             }
-            {selectedRowIds.length === 1 &&
+            {selectedRowIds.length > 0 &&
               <Grid item>
                 <Button
                   disableElevation

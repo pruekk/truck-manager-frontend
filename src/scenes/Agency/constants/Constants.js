@@ -38,3 +38,7 @@ export const factories = [
         name: "วังจันทร์",
     }
 ]
+
+export const component = {
+    name: "agency"
+}

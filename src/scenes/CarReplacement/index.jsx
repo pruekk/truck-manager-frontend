@@ -16,8 +16,12 @@ import DeleteDialog from "../../components/DeleteDialog";
 import EditDialog from "./components/EditDialog";
 
 //Services
-import { AddNewCarReplacement, DeleteCarReplacement, GetCarReplacement, EditCarReplacement } from './services/CarReplacementServices';
 import { formatDateTime } from "../../functions/dateFotmat";
+import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
+
+//Constants
+import * as Constants from "./constants/Constants";
+import { addIdToRow } from "../../functions/prepareDataForApi";
 
 export default function CarReplacement(props) {
   const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
@@ -29,7 +33,7 @@ export default function CarReplacement(props) {
   }, []);
 
   const getCarReplacement = async () => {
-    const response = await GetCarReplacement(localStorage.getItem('userToken'));
+    const response = await GetComponent("car-replacement", localStorage.getItem('userToken'))
 
     if (response.success) {
       const sortedList = response.data.sort((current, next) => {
@@ -72,7 +76,8 @@ export default function CarReplacement(props) {
   }
 
   const onClickUpdate = async (row) => {
-    const response = await EditCarReplacement(localStorage.getItem('userToken'), row);
+    const rowInfo = addIdToRow(confirmedDataRows, row, Constants.component.name);
+    const response = await EditData(rowInfo, Constants.component.name,localStorage.getItem('userToken'));
 
     if (response.success) {
       getCarReplacement();
@@ -89,7 +94,7 @@ export default function CarReplacement(props) {
 
   const deleteCarReplacement = async () => {
     setIsLoading(true);
-    const response = await DeleteCarReplacement(localStorage.getItem('userToken'), selectedRowIds[0]);
+    const response = await DeleteData(selectedRowIds, Constants.component.name, localStorage.getItem('userToken'));
 
     if (response.success) {
       getCarReplacement();
@@ -121,7 +126,7 @@ export default function CarReplacement(props) {
   };
 
   const handleAddNewCarReplacement = async (obj) => {
-    const response = await AddNewCarReplacement(localStorage.getItem('userToken'), obj);
+    const response = await AddNewData([obj], Constants.component.name, localStorage.getItem('userToken'));
 
     if (response.success) {
       getCarReplacement();
@@ -194,7 +199,7 @@ export default function CarReplacement(props) {
                 </Button>
               </Grid>
             }
-            {selectedRowIds.length === 1 &&
+            {selectedRowIds.length > 0 &&
               <Grid item>
                 <Button
                   disableElevation

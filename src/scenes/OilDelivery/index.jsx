@@ -16,7 +16,10 @@ import AddNewDailog from './components/AddNewDialog';
 import DataTable from './components/DataTable';
 
 //Services
-import { GetOilDelivery, AddOilDelivery, UpdateOilDelivery, DeleteOilDelivery } from "./services/OilDeliveryServices";
+import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
+
+//Constants
+import * as Constants from "./constants/Constants";
 
 export default function OilDelivery(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -32,7 +35,7 @@ export default function OilDelivery(props) {
   }, []);
 
   const getOilDelivery = async () => {
-    const response = await GetOilDelivery(localStorage.getItem('userToken'));
+    const response = await GetComponent(Constants.component.name, localStorage.getItem('userToken'))
 
     if (response.success) {
       setDataRow(response.data);
@@ -70,7 +73,7 @@ export default function OilDelivery(props) {
     setIsLoading(true);
 
     const dataRows = createData(factory, dateFrom, dateTo, oilInfoArr);
-    const response = await AddOilDelivery(localStorage.getItem('userToken'), [dataRows]);
+    const response = await AddNewData([dataRows], Constants.component.name, localStorage.getItem('userToken'));
 
     if (response.success) {
       getOilDelivery();
@@ -87,13 +90,13 @@ export default function OilDelivery(props) {
   const editPrice = async (oilInfoArr, factory, dateFrom, dateTo) => {
     setIsLoading(true);
 
-    const response = await UpdateOilDelivery(localStorage.getItem('userToken'), {
+    const response = await EditData({
       _id: selectedRow[0]._id,
       factory: factory,
       from: dateFrom,
       to: dateTo,
       arr: oilInfoArr,
-    })
+    }, Constants.component.name, localStorage.getItem('userToken'))
 
     if (response.success) {
       getOilDelivery();
@@ -112,7 +115,7 @@ export default function OilDelivery(props) {
   const removePrice = async (selectedRow) => {
     setIsLoading(true);
 
-    const response = await DeleteOilDelivery(localStorage.getItem('userToken'), selectedRow);
+    const response = await DeleteData(selectedRow, Constants.component.name, localStorage.getItem('userToken'));
 
     if (response.success) {
       getOilDelivery();
@@ -197,6 +200,7 @@ export default function OilDelivery(props) {
         </Grid>
         <Grid item xs={12}>
           <DataTable
+            isLoading={isLoading}
             rows={dataRow}
             selectedRow={selectedRow}
             openDeleteDialog={openDeleteDialog}

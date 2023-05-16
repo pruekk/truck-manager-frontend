@@ -560,3 +560,7 @@ export const dummyData = [
         ],
     },
 ];
+
+export const component = {
+    name: "transports"
+}

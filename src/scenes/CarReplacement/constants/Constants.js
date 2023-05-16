@@ -17,3 +17,7 @@ export const carReplacements = [
         driver: "นพรัตน์ ชนะประเสริฐ",
     },
 ]
+
+export const component = {
+    name: "car-replacement"
+}

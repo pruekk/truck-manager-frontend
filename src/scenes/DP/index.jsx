@@ -37,10 +37,10 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 
 //Constatns
 import * as FactoryConstants from "../../constants/FactoryConstants";
+import * as Constants from "./constants/Constants";
 
-//Services
-import { GetCarReplacement } from "../CarReplacement/services/CarReplacementServices";
-import { AddNewDP, GetDP, DeleteDP, EditDP } from "./services/DPServices";
+import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
+import { addIdToRow } from "../../functions/prepareDataForApi";
 
 //Functions
 import handleUploadExcel from "../../functions/handleUploadExcel";
@@ -130,7 +130,7 @@ export default function DP(props) {
     }, [factory.name, dateFrom]);
 
     const getDP = async () => {
-        const response = await GetDP(localStorage.getItem('userToken'));
+        const response = await GetComponent(Constants.component.name, localStorage.getItem('userToken'))
         /* 
             GET /dp/factoryId?from=01-{dateFrom.currentMonth}-{dateFrom.currentYear}&to=31-{dateFrom.currentMonth}-{dateFrom.currentYear}
         */
@@ -180,7 +180,8 @@ export default function DP(props) {
 
     const [carReplacement, setCarReplacement] = React.useState([]);
     const getCarReplacement = async () => {
-        const response = await GetCarReplacement(localStorage.getItem('userToken'));
+        const response = await GetComponent("car-replacement", localStorage.getItem('userToken'))
+        console.log(response);
 
         if (response.success) {
             setCarReplacement(response.data);
@@ -215,7 +216,9 @@ export default function DP(props) {
 
     const onClickUpdate = async (row) => {
         setIsLoading(true);
-        const response = await EditDP(localStorage.getItem('userToken'), row);
+        const rowInfo = addIdToRow(confirmedDataRows, row);
+
+        const response = await EditData(rowInfo, Constants.component.name, localStorage.getItem('userToken'));
 
         if (response.success) {
             getDP();
@@ -231,7 +234,7 @@ export default function DP(props) {
 
     const deleteDP = async () => {
         setIsLoading(true);
-        const response = await DeleteDP(localStorage.getItem('userToken'), selectedRowIds);
+        const response = await DeleteData(selectedRowIds, Constants.component.name, localStorage.getItem('userToken'));
 
         if (response.success) {
             getDP();
@@ -264,7 +267,7 @@ export default function DP(props) {
 
     const handleConfirmImportedData = async (dataRows) => {
         setIsLoading(true);
-        const response = await AddNewDP(localStorage.getItem('userToken'), dataRows);
+        const response = await AddNewData(dataRows, 'dp', localStorage.getItem('userToken'));
 
         if (response.success) {
             getDP();

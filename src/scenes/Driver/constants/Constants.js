@@ -36,3 +36,8 @@ export const drivers = [
 ];
 
 export const titles = ["นาย", "นาง", "นางสาว", "Mr", "Mrs", "Miss"]
+
+export const component = {
+    name: "drivers"
+}
+

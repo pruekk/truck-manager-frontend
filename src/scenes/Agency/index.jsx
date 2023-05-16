@@ -25,7 +25,7 @@ import * as Constants from "./constants/Constants";
 import handleUploadExcel from "../../functions/handleUploadExcel";
 
 //Services
-import { AddNewAgency, GetAgency, DeleteAgency, EditAgency } from "./services/AgencyServices";
+import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
 
 export default function Agency(props) {
     const [dataRows, setDataRows] = React.useState([]);
@@ -38,7 +38,7 @@ export default function Agency(props) {
     }, []);
 
     const getAgency = async () => {
-        const response = await GetAgency(localStorage.getItem('userToken'));
+        const response = await GetComponent(Constants.component.name, localStorage.getItem('userToken'))
 
         if (response.success) {
             setConfirmedDataRows(response.data);
@@ -83,7 +83,7 @@ export default function Agency(props) {
 
     const onClickUpdate = async (row) => {
         setIsLoading(true);
-        const response = await EditAgency(localStorage.getItem('userToken'), row);
+        const response = await EditData(row, Constants.component.name, localStorage.getItem('userToken'));
 
         if (response.success) {
             getAgency();
@@ -100,7 +100,7 @@ export default function Agency(props) {
     const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
     const deleteAgency = async () => {
         setIsLoading(true);
-        const response = await DeleteAgency(localStorage.getItem('userToken'), selectedRowIds);
+        const response = await DeleteData(selectedRowIds, Constants.component.name, localStorage.getItem('userToken'));
 
         if (response.success) {
             getAgency();
@@ -136,7 +136,7 @@ export default function Agency(props) {
             index === self.findIndex((i) => i.id === item.id)
         );
 
-        const response = await AddNewAgency(localStorage.getItem('userToken'), uniqueDataRows);
+        const response = await AddNewData(uniqueDataRows, Constants.component.name, localStorage.getItem('userToken'));
 
         if (response.success) {
             getAgency();

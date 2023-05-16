@@ -16,7 +16,11 @@ import DeleteDialog from "../../components/DeleteDialog";
 import EditDialog from './components/EditDialog';
 
 //Services
-import { GetCars, AddNewCar, DeleteCar, EditCar } from "./services/CarServices";
+import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
+
+//Constants
+import * as Constants from "./constants/Constants";
+import { addIdToRow } from "../../functions/prepareDataForApi";
 
 export default function Car(props) {
   const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
@@ -28,7 +32,7 @@ export default function Car(props) {
   }, []);
 
   const getCars = async () => {
-    const response = await GetCars(localStorage.getItem('userToken'));
+    const response = await GetComponent("cars", localStorage.getItem('userToken'))
 
     if (response.success) {
       setConfirmedDataRows(response.data);
@@ -41,7 +45,7 @@ export default function Car(props) {
   }
 
   const handleAddNewCar = async (obj) => {
-    const response = await AddNewCar(localStorage.getItem('userToken'), [obj]);
+    const response = await AddNewData([obj], 'cars', localStorage.getItem('userToken'));
 
     if (response.success) {
       getCars();
@@ -80,7 +84,8 @@ export default function Car(props) {
   }
 
   const onClickUpdate = async (row) => {
-    const response = await EditCar(localStorage.getItem('userToken'), row);
+    const rowInfo = addIdToRow(confirmedDataRows, row);
+    const response = await EditData(rowInfo, Constants.component.name, localStorage.getItem('userToken'));
 
     if (response.success) {
       getCars();
@@ -97,8 +102,7 @@ export default function Car(props) {
 
   const deleteCar = async () => {
     setIsLoading(true);
-
-    const response = await DeleteCar(localStorage.getItem('userToken'), selectedRowIds[0]);
+    const response = await DeleteData(selectedRowIds, Constants.component.name, localStorage.getItem('userToken'));
 
     if (response.success) {
       getCars();
@@ -187,7 +191,7 @@ export default function Car(props) {
                 </Button>
               </Grid>
             }
-            {selectedRowIds.length === 1 &&
+            {selectedRowIds.length > 0 &&
               <Grid item>
                 <Button
                   disableElevation
