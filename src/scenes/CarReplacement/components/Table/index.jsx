@@ -8,9 +8,9 @@ import * as TableConstants from '../../../../constants/TableConstants';
 
 export const columns = [
     { field: 'date', headerName: 'วันที่', type: 'date', minWidth: TableConstants.columnsSize.medium },
-    { field: 'time', headerName: 'เวลา', minWidth: TableConstants.columnsSize.small },
-    { field: 'carId', headerName: 'รหัสรถ', minWidth: TableConstants.columnsSize.medium },
-    { field: 'driver', headerName: 'คนขับรถโม่', minWidth: TableConstants.columnsSize.large },
+    { field: 'time', headerName: 'เวลา', type: 'time', minWidth: TableConstants.columnsSize.small },
+    { field: 'carId', headerName: 'รหัสรถ', type: 'selection', minWidth: TableConstants.columnsSize.medium },
+    { field: 'driver', headerName: 'คนขับรถโม่', type: 'selection', minWidth: TableConstants.columnsSize.large },
     { field: 'editBy', headerName: 'แก้ไขโดย', minWidth: TableConstants.columnsSize.xlarge },
 ];
 
