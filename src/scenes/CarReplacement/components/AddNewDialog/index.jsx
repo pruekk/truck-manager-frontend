@@ -9,6 +9,7 @@ import { GetDrivers } from '../../../Driver/services/DriverServices';
 
 //Function
 import { addKeyValuePairToObjectArray } from '../../../../functions/prepareDataForDialog';
+import { transformCarsData, transformDriverData } from "../../functions/prepareColumnData";
 
 //Others
 import moment from "moment";
@@ -29,20 +30,10 @@ export default function AddNewDialog(props) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const onChangeInput = (event, value) => {
-        const key = event.target.name === 'date' ? 'date' : `${event.currentTarget.id.split("-")[0]}`
+    const onChangeInput = (event) => {
         let updatedValue = {};
-        switch (key) {
-            case "carId":
-                updatedValue[key] = value ? value.carId : "";
-                break;
-            case "driver":
-                updatedValue[key] = value ? `${value.firstName} ${value.lastName}` : "";
-                break;
-            default:
-                updatedValue[`${event.target.name}`] = event.target.value;
-                break;
-        }
+        
+        updatedValue[`${event.target.name}`] = event.target.value;
         setCarReplacementObj((prevCarReplacementObj) => ({
             ...prevCarReplacementObj,
             ...updatedValue
@@ -73,7 +64,8 @@ export default function AddNewDialog(props) {
         const response = await GetDrivers(localStorage.getItem('userToken'));
 
         if (response.success) {
-            const tempColumnArr = addKeyValuePairToObjectArray(columnArr, 'field', 'driver', { valueOptions: response.data });
+            const driverArr = transformDriverData(response.data);
+            const tempColumnArr = addKeyValuePairToObjectArray(columnArr, 'field', 'driver', driverArr);
             setColumnArr(tempColumnArr)
             setDrivers(response.data);
         }
@@ -88,18 +80,6 @@ export default function AddNewDialog(props) {
             setColumnArr(tempColumnArr)
             setCars(sortedList);
         }
-    }
-
-    const transformCarsData = (cars) => {
-        const carsCategories = cars.map((car) => {
-            const firstLetter = car.carId[0].toUpperCase();
-            return {
-                firstLetter: /[0-9]/.test(firstLetter) ? '0-9' : firstLetter,
-                ...car,
-            };
-        });
-
-        return carsCategories.sort((a, b) => -b.firstLetter.localeCompare(a.firstLetter));
     }
 
     return (
