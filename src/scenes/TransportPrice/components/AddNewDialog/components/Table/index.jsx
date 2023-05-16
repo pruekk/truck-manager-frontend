@@ -44,6 +44,8 @@ export default function Table(props) {
     const onChangeValue = async (event, xAxis, index) => {
         props.priceListArr.filter((obj) => obj.name === xAxis)[0].value[index] =
             Number(event.target.value);
+
+        checkSumAll();
     };
 
     const onChangeRowKey = (event, index) => {
@@ -70,6 +72,7 @@ export default function Table(props) {
     const prepSumY = () => {
         const sumY = calculateSumY(props.priceListArr);
         setIsCheckedY(sumY);
+        props.setIsSumCorrect(true);
     }
 
     return (
