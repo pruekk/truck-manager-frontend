@@ -335,3 +335,7 @@ export const dummyData = [
         ]
     },
 ];
+
+export const component = {
+    name: "oil-delivery"
+}

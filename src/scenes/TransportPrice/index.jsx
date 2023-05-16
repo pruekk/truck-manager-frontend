@@ -16,7 +16,10 @@ import DataTable from './components/DataTable';
 import { createData } from "./functions/Functions";
 
 //Services
-import { GetTransports, AddTransports, DeleteTransports, UpdateTransport } from "./services/TransportServices";
+import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
+
+//Constants
+import * as Constants from "./constants/Constants";
 
 export default function Transport(props) {
   const [openDialog, setOpenDialog] = React.useState(false);
@@ -32,7 +35,8 @@ export default function Transport(props) {
   }, []);
 
   const getTransports = async () => {
-    const response = await GetTransports(localStorage.getItem('userToken'));
+    const response = await GetComponent(Constants.component.name, localStorage.getItem('userToken'))
+    console.log(response);
 
     if (response.success) {
       setDataRow(response.data);
@@ -71,7 +75,7 @@ export default function Transport(props) {
     setIsLoading(true);
 
     const dataRows = createData(factory, dateFrom, dateTo, priceListArr);
-    const response = await AddTransports(localStorage.getItem('userToken'), [dataRows]);
+    const response = await AddNewData([dataRows], Constants.component.name, localStorage.getItem('userToken'));
 
     if (response.success) {
       getTransports();
@@ -88,14 +92,13 @@ export default function Transport(props) {
   const editPrice = async (priceListArr, factory, dateFrom, dateTo) => {
     setIsLoading(true);
 
-    const response = await UpdateTransport(localStorage.getItem('userToken'), {
+    const response = await EditData({
       _id: selectedRow[0]._id,
       factory: factory,
       from: dateFrom,
       to: dateTo,
       arr: priceListArr,
-
-    })
+    }, Constants.component.name, localStorage.getItem('userToken'))
 
     if (response.success) {
       getTransports();
@@ -112,8 +115,7 @@ export default function Transport(props) {
 
   const removePrice = async (selectedRow) => {
     setIsLoading(true);
-
-    const response = await DeleteTransports(localStorage.getItem('userToken'), selectedRow);
+    const response = await DeleteData(selectedRow, Constants.component.name, localStorage.getItem('userToken'));
 
     if (response.success) {
       getTransports();
@@ -226,6 +228,7 @@ export default function Transport(props) {
         </Grid>
         <Grid item xs={12}>
           <DataTable
+            isLoading={isLoading}
             rows={dataRow}
             selectedRow={selectedRow}
             openDeleteDialog={openDeleteDialog}

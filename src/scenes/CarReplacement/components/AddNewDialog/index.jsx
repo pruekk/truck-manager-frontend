@@ -18,8 +18,7 @@ import IconButton from "@mui/material/IconButton";
 import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
 
 //Services
-import { GetCars } from '../../../Car/services/CarServices';
-import { GetDrivers } from '../../../Driver/services/DriverServices';
+import { GetComponent } from "../../../../services/TruckManagerApiServices";
 
 //Others
 import moment from "moment";
@@ -76,7 +75,7 @@ export default function AddNewDialog(props) {
     }
 
     const getDrivers = async () => {
-        const response = await GetDrivers(localStorage.getItem('userToken'));
+        const response = await GetComponent('drivers', localStorage.getItem('userToken'));
 
         if (response.success) {
             setDrivers(response.data);
@@ -84,7 +83,7 @@ export default function AddNewDialog(props) {
     }
 
     const getCars = async () => {
-        const response = await GetCars(localStorage.getItem('userToken'));
+        const response = await GetComponent('cars', localStorage.getItem('userToken'));
 
         if (response.success) {
             const sortedList = response.data.sort((current, next) => (current.carId > next.carId) ? 1 : -1);

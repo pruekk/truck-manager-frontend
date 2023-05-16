@@ -23,13 +23,12 @@ import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
 
 //Constatns
 import * as FactoryConstants from "../../constants/FactoryConstants";
-
-//Services
-import { GetCarReplacement } from "../CarReplacement/services/CarReplacementServices";
-import { AddNewDP, GetDP, DeleteDP, EditDP } from "./services/DPServices";
+import * as Constants from "./constants/Constants";
 
 //Functions
 import handleUploadExcel from "../../functions/handleUploadExcel";
+import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
+import { addIdToRow } from "../../functions/prepareDataForApi";
 
 export default function DP(props) {
     const [dataRows, setDataRows] = React.useState([]);
@@ -46,11 +45,12 @@ export default function DP(props) {
     }, []);
 
     const getDP = async () => {
-        const response = await GetDP(localStorage.getItem('userToken'));
+        const response = await GetComponent("dp", localStorage.getItem('userToken'))
+        console.log(response);
 
         if (response.success) {
             setConfirmedDataRows(response.data);
-            
+
             const acceptedRecords = response.data.filter((record) => record.status === "Accepted")
             const canceledRecords = response.data.filter((record) => record.status === "Canceled")
             const spoiledRecords = response.data.filter((record) => record.status === "Spoiled")
@@ -81,7 +81,8 @@ export default function DP(props) {
 
     const [carReplacement, setCarReplacement] = React.useState([]);
     const getCarReplacement = async () => {
-        const response = await GetCarReplacement(localStorage.getItem('userToken'));
+        const response = await GetComponent("car-replacement", localStorage.getItem('userToken'))
+        console.log(response);
 
         if (response.success) {
             setCarReplacement(response.data);
@@ -116,7 +117,9 @@ export default function DP(props) {
 
     const onClickUpdate = async (row) => {
         setIsLoading(true);
-        const response = await EditDP(localStorage.getItem('userToken'), row);
+        const rowInfo = addIdToRow(confirmedDataRows, row);
+
+        const response = await EditData(rowInfo, Constants.component.name, localStorage.getItem('userToken'));
 
         if (response.success) {
             getDP();
@@ -132,7 +135,7 @@ export default function DP(props) {
 
     const deleteDP = async () => {
         setIsLoading(true);
-        const response = await DeleteDP(localStorage.getItem('userToken'), selectedRowIds);
+        const response = await DeleteData(selectedRowIds, Constants.component.name, localStorage.getItem('userToken'));
 
         if (response.success) {
             getDP();
@@ -165,7 +168,7 @@ export default function DP(props) {
 
     const handleConfirmImportedData = async (dataRows) => {
         setIsLoading(true);
-        const response = await AddNewDP(localStorage.getItem('userToken'), dataRows);
+        const response = await AddNewData(dataRows, 'dp', localStorage.getItem('userToken'));
 
         if (response.success) {
             getDP();
@@ -296,7 +299,7 @@ export default function DP(props) {
                                 />
                                 <Divider flexItem />
                                 <CardContent>
-                                    <Grid container sx={{ textAlign: "center", alignContent: "center"  }}>
+                                    <Grid container sx={{ textAlign: "center", alignContent: "center" }}>
                                         <Grid item xs="auto" md={4}>
                                             <Typography variant="h5" component="div">
                                                 {summarizeTrip.accept}
@@ -338,7 +341,7 @@ export default function DP(props) {
                                 />
                                 <Divider flexItem />
                                 <CardContent>
-                                    <Grid container sx={{ textAlign: "center", alignContent: "center"  }}>
+                                    <Grid container sx={{ textAlign: "center", alignContent: "center" }}>
                                         <Grid item xs="auto" md={4}>
                                             <Typography variant="h5" component="div">
                                                 {summarizeAmount.accept}

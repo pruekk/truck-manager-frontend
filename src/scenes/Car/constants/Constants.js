@@ -21,3 +21,7 @@ export const cars = [
         price: 2300000
     },
 ];
+
+export const component = {
+    name: "cars"
+}
