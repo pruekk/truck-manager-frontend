@@ -9,7 +9,14 @@ import * as TableConstants from '../../../../constants/TableConstants';
 function Table(props) {
     const columns = [
         { field: 'id', headerName: 'เลขดีพี', minWidth: TableConstants.columnsSize.medium },
-        { field: 'date', headerName: 'วันที่', minWidth: TableConstants.columnsSize.medium },
+        {
+            field: 'date',
+            headerName: 'วันที่',
+            type: 'date',
+            minWidth: TableConstants.columnsSize.medium,
+            valueGetter: ({ value }) => value && new Date(value.split('/')[2], parseInt(value.split('/')[1]) - 1, value.split('/')[0]),
+            valueFormatter: ({ value }) => value && value.toLocaleDateString('en-GB'),
+        },
         { field: 'time', headerName: 'เวลา', minWidth: TableConstants.columnsSize.small },
         { field: 'destination', headerName: 'หน่วยงาน', minWidth: TableConstants.columnsSize.large },
         { field: 'distance', headerName: 'ระยะทาง', type: 'number', minWidth: TableConstants.columnsSize.small },
@@ -49,14 +56,22 @@ function Table(props) {
 
     const formattedData = props.dataRows.map(item => {
         return {
-          ...item,
-          amount: item.amount.toFixed(2),
-          price: item.price.toFixed(2),
+            ...item,
+            amount: item.amount.toFixed(2),
+            price: item.price.toFixed(2),
         }
     });
 
     return (
-        <DataGridTable dataRows={formattedData} columns={columns} checkboxSelection={true} customStyle={customStyle} getRowClassName={getRowClassName} onSelectionModelChange={props.onSelectionModelChange} />
+        <DataGridTable 
+            dataRows={formattedData}
+            columns={columns}
+            checkboxSelection={true}
+            customStyle={customStyle}
+            getRowClassName={getRowClassName}
+            onSelectionModelChange={props.onSelectionModelChange}
+            isLoading={props.isLoading}
+        />
     );
 }
 

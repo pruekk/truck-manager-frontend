@@ -22,6 +22,10 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
+import InputLabel from '@mui/material/InputLabel';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+
 import * as MenusConstants from "../../constants/NavigationBarConstants";
 import { drawerWidth } from '../../App.js';
 const settings = ["ออกจากระบบ"];
@@ -80,6 +84,12 @@ export default function PersistentDrawerLeft(props) {
     return;
   };
 
+  const [factory, setFactory] = React.useState("หนองใหญ่");
+
+  const handleChange = (event) => {
+    setFactory(event.target.value);
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -97,8 +107,27 @@ export default function PersistentDrawerLeft(props) {
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
             {title}
           </Typography>
-          <ListItemButton 
-            sx={{ maxWidth: '25%', justifyContent: 'flex-end', ...(!props.isLoggedIn && { display: 'none' }) }} 
+
+          {/* <FormControl sx={{ minWidth: 120, ...(!props.isLoggedIn && { display: 'none' }) }} size="small">
+            <InputLabel id="demo-select-small-label" >โรงงาน</InputLabel>
+            <Select
+              labelId="demo-select-small-label"
+              id="demo-select-small"
+              value={factory}
+              label="โรงงาน"
+              onChange={handleChange}
+              sx={{ color: "#fbfbfb" }}
+            >
+              <MenuItem value={"หนองใหญ่"}>หนองใหญ่</MenuItem>
+              <MenuItem value={"บ้านบึง"}>บ้านบึง</MenuItem>
+              <MenuItem value={"ปลวกแดง"}>ปลวกแดง</MenuItem>
+              <MenuItem value={"หนองไผ่แก้ว"}>หนองไผ่แก้ว</MenuItem>
+              <MenuItem value={"วังจันทร์"}>วังจันทร์</MenuItem>
+            </Select>
+          </FormControl> */}
+
+          <ListItemButton
+            sx={{ maxWidth: '20%', justifyContent: 'flex-end', ...(!props.isLoggedIn && { display: 'none' }) }}
             onClick={handleOpenUserMenu}
             dense
           >
@@ -115,27 +144,27 @@ export default function PersistentDrawerLeft(props) {
               {JSON.parse(localStorage.getItem('userObject'))?.email}
             </Typography>
           </ListItemButton>
-            <Menu
-              sx={{ mt: '45px' }}
-              id="menu-appbar"
-              anchorEl={anchorElUser}
-              anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-              }}
-              transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right',
-              }}
-              open={anchorElUserOpen}
-              onClose={handleCloseUserMenu}
-            >
-              {settings.map((setting) => (
-                <MenuItem key={setting} onClick={() => { handleCloseUserMenu(setting); }}>
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
-            </Menu>
+          <Menu
+            sx={{ mt: '45px' }}
+            id="menu-appbar"
+            anchorEl={anchorElUser}
+            anchorOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            transformOrigin={{
+              vertical: 'top',
+              horizontal: 'right',
+            }}
+            open={anchorElUserOpen}
+            onClose={handleCloseUserMenu}
+          >
+            {settings.map((setting) => (
+              <MenuItem key={setting} onClick={() => { handleCloseUserMenu(setting); }}>
+                <Typography textAlign="center">{setting}</Typography>
+              </MenuItem>
+            ))}
+          </Menu>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -163,8 +192,8 @@ export default function PersistentDrawerLeft(props) {
         <DrawerHeader>
           <Toolbar>
             <Avatar src="logo_2.png" sx={{ ml: 1, mr: 3 }} />
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               style={{ textDecoration: 'none', color: 'black' }}
               onClick={() => setTitle('Dashboard')}
             >

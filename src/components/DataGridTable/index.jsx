@@ -28,6 +28,7 @@ export default function DataGridTable(props) {
                     components={props.customComponent ? props.customComponent : {}}
                     disableSelectionOnClick
                     experimentalFeatures={{ newEditingApi: true }}
+                    loading={props.isLoading}
                 />
             </Box>
         </div>
