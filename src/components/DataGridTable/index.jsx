@@ -27,8 +27,9 @@ export default function DataGridTable(props) {
                     isRowSelectable={props.isRowSelectable ? props.isRowSelectable : () => { return true }}
                     components={props.customComponent ? props.customComponent : {}}
                     disableSelectionOnClick
-                    experimentalFeatures={{ newEditingApi: true }}
+                    experimentalFeatures={{ newEditingApi: true, columnGrouping: true }}
                     loading={props.isLoading}
+                    columnGroupingModel={props.columnGroupingModel ? props.columnGroupingModel : []}
                 />
             </Box>
         </div>

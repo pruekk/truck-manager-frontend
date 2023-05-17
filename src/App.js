@@ -34,6 +34,7 @@ import Home from './scenes/Home';
 import Login from './scenes/Login';
 import OilDelivery from './scenes/OilDelivery';
 import TransportPrice from './scenes/TransportPrice';
+import Permission from './scenes/Permission';
 import Trip from './scenes/Trip';
 
 //Others
@@ -66,6 +67,7 @@ const App = (props) => {
     { path: "/farm", element: props.isLoggedIn ? <Farm logOut={props.logOut} /> : <Navigate to='/login' /> },
     { path: "/farm-income", element: props.isLoggedIn ? <FarmIncome logOut={props.logOut} /> : <Navigate to='/login' /> },
     { path: "/farm-expense", element: props.isLoggedIn ? <FarmExpense logOut={props.logOut} /> : <Navigate to='/login' /> },
+    { path: "/permission", element: props.isLoggedIn ? <Permission logOut={props.logOut} /> : <Navigate to='/login' /> },
     { path: "/trip", element: props.isLoggedIn ? <Trip logOut={props.logOut} /> : <Navigate to='/login' /> },
     { path: "/login", element: <Login onLogIn={props.logIn} /> },
     { path: "*", element: <NotFound /> }

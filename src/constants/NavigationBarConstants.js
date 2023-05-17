@@ -278,8 +278,8 @@ export const menus = [
       },
       {
         name: "ข้อมูลสิทธิการเข้าดู",
-        url: "/",
-        isAvailable: false,
+        url: "/permission",
+        isAvailable: true,
         icon: <AdminPanelSettingsRoundedIcon />
       },
     ],
