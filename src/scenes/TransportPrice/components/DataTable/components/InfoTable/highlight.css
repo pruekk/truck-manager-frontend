@@ -1,0 +1,50 @@
+table {
+    width: 100%;
+    border: 1px solid #dcdcdc;
+    border-spacing: 0;
+    border-collapse: collapse;
+    overflow: hidden;
+}
+
+tr,
+th,
+td {
+    border: 1px solid #dcdcdc;
+    height: 35px;
+    min-width: 90px;
+    padding-right: 5px;
+    text-align: right;
+}
+
+td,
+th {
+    position: relative;
+}
+
+table:hover {
+    background-color: #fbfbfb;
+}
+
+tr:hover {
+    background-color: rgba(48, 196, 100, 0.2);
+}
+
+th:hover::after {
+    background-color: rgba(48, 196, 100, 0.2);
+    position: absolute;
+    content: '\00a0';
+    height: 10000px;
+    left: 0;
+    top: -1000px;
+    width: 90px;
+}
+
+td:hover::after {
+    background-color: rgba(48, 196, 100, 0.2);
+    position: absolute;
+    content: '\00a0';
+    height: 10000px;
+    left: 0;
+    bottom: 0;
+    width: 90px;
+}

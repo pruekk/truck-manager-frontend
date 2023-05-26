@@ -43,12 +43,6 @@ export const menus = [
         icon: <LocalShippingRoundedIcon />
       },
       {
-        name: "ข้อมูลการวิ่งเที่ยว",
-        url: "/trip",
-        isAvailable: true,
-        icon: <DepartureBoardRoundedIcon />
-      },
-      {
         name: "หน่วยงาน",
         url: "/agency",
         isAvailable: true,
@@ -263,6 +257,12 @@ export const menus = [
         url: "/oil-transaction",
         isAvailable: true,
         icon: <OilBarrelIcon />
+      },
+      {
+        name: "ข้อมูลการวิ่งเที่ยว",
+        url: "/trip",
+        isAvailable: true,
+        icon: <DepartureBoardRoundedIcon />
       },
       {
         name: "ข้อมูลโรงงาน",

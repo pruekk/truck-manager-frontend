@@ -19,9 +19,8 @@ import MenuItem from "@mui/material/MenuItem";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
-import moment, { isDate } from "moment";
+import moment from "moment";
 import TextField from "@mui/material/TextField";
-import * as CalendarConstants from "../../constants/CalendarConstants";
 
 //Components
 import ImportDialog from './components/ImportDialog';
@@ -38,6 +37,7 @@ import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 //Constatns
 import * as FactoryConstants from "../../constants/FactoryConstants";
 import * as Constants from "./constants/Constants";
+import * as CalendarConstants from "../../constants/CalendarConstants";
 
 import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
 import { addIdToRow } from "../../functions/prepareDataForApi";
