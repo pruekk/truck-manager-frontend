@@ -1,11 +1,11 @@
 import React from "react";
 
 //Components
-import AddDialog from "../../../../components/AddDialog";
+import AddDialog from "../../../components/AddDialog";
 
 //Constants
-import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
-import { columns } from "../Table";
+import * as NavigationBarConstants from "../../../constants/NavigationBarConstants";
+import { driverColumns } from "../constants/Constants";
 
 export default function AddNewDialog(props) {
     const [driverObj, setDriverObj] = React.useState({});
@@ -42,10 +42,10 @@ export default function AddNewDialog(props) {
 
     return (
         <AddDialog
-            pageName={NavigationBarConstants.menus[0].sub[3].name}
+            pageName={NavigationBarConstants.menus[2].sub[0].name}
             openDialog={props.openDialog}
             handleCloseDialog={props.handleCloseDialog}
-            columns={columns}
+            columns={driverColumns}
             dataObj={driverObj}
             excludeFields={excludeFields}
             onChangeInput={onChangeInput}

@@ -1,70 +1,43 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 //Material UI
-import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-
-//Icons
-import AddCircleRoundedIcon from "@mui/icons-material/AddCircleRounded";
+import Typography from "@mui/material/Typography";
+import Divider from "@mui/material/Divider";
 
 //components
-import Table from './components/Table';
+import DriverTable from './components/RenderTable';
+import HandleAlert from "../../components/HandleAlert";
+import GroupButton from "../../components/GroupButton";
 
 //Services
-import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
+import { AddNewData, DeleteData, EditData, GetData } from "../../services/TruckManagerApiServices";
 
 //Dialogs
-import AddNewDialog from "./components/AddNewDialog";
+import AddNewDialog from "./components/AddDriverDialog";
+import EditDialog from "./components/EditDriverDialog";
 import DeleteDialog from "../../components/DeleteDialog";
-import EditDialog from "./components/EditDialog";
 
 //Constants
 import * as Constants from "./constants/Constants";
 import { addIdToRow } from "../../functions/prepareDataForApi";
 
 export default function Driver(props) {
-  const [drivers, setDrivers] = React.useState([]);
-  const [isLoading, setIsLoading] = React.useState(false);
-
-  useEffect(() => {
-    getDrivers();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  const getDrivers = async () => {
-    const response = await GetComponent("drivers", localStorage.getItem('userToken'))
-
-    if (response.success) {
-      setDrivers(response.data);
-      setIsLoading(false);
-
-      return;
-    }
-
-    props.logOut();
-  }
+  const { data, error, isLoading } = GetData({ component: "drivers" })
 
   const [isOpenDialog, setIsOpenDialog] = React.useState(false);
-  const handleOpenDialog = () => {
-    setIsOpenDialog(true);
-  };
-
   const handleCloseDialog = () => {
     setIsOpenDialog(false);
   };
 
-  const handleAddNewDriver = async (obj) => {
-    const response = await AddNewData([obj], 'drivers', localStorage.getItem('userToken'));
+  const handleAddNewDriver = async (newDriver) => {
+    const response = await AddNewData({ component: "drivers", data: [newDriver]});
 
     if (response.success) {
-      getDrivers();
       handleCloseDialog();
 
       return;
     }
-
-    props.logOut();
-    alert("Something went wrong! Please try again later.");
   };
 
   const [selectedRowIds, setSelectedRowIds] = React.useState([]);
@@ -75,7 +48,7 @@ export default function Driver(props) {
   }
 
   const onClickEditRow = () => {
-    const selectedRow = drivers.filter((row) => { return row.id === selectedRowIds[0] });
+    const selectedRow = data.filter((row) => { return row.id === selectedRowIds[0] });
     setSelectedRow(selectedRow);
     setIsEditing(true);
     handleOpenEditDialog();
@@ -93,11 +66,10 @@ export default function Driver(props) {
   }
 
   const handleUpdateDriver = async (row) => {
-    const rowInfo = addIdToRow(drivers, row);
+    const rowInfo = addIdToRow(data, row);
     const response = await EditData(rowInfo, 'drivers', localStorage.getItem('userToken'));
 
     if (response.success) {
-      getDrivers();
       setSelectedRow({});
       setIsEditing(false);
       handleCloseEditDialog();
@@ -110,11 +82,9 @@ export default function Driver(props) {
   }
 
   const deleteDriver = async () => {
-    setIsLoading(true);
     const response = await DeleteData(selectedRowIds, Constants.component.name, localStorage.getItem('userToken'));
 
     if (response.success) {
-      getDrivers();
       onCloseDeleteDialog();
 
       return;
@@ -124,14 +94,11 @@ export default function Driver(props) {
   }
 
   const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
-  const onOpenDeleteDialog = () => {
-    setIsOpenDeleteDialog(true);
-  }
-
   const onCloseDeleteDialog = () => {
     setIsOpenDeleteDialog(false)
   }
 
+  if (error) return <HandleAlert msg={error.response.data.message} status_code={error.response.status} />
   return (
     <>
       <AddNewDialog
@@ -156,66 +123,30 @@ export default function Driver(props) {
         onCloseDeleteDialog={onCloseDeleteDialog}
       />
 
+      <Grid container alignItems="center">
+        <Grid item xs sx={{ margin: "1rem 0rem 0rem 1rem" }}>
+          <Typography variant="h5" component="div" gutterBottom>
+            รายชื่อคนขับรถโม่
+          </Typography>
+        </Grid>
+        <Grid item>
+          <GroupButton
+            command={[
+              { name: "Add", disabled: false, setOpenDialog: setIsOpenDialog }, // disabled will check from permission
+              { name: "Edit", disabled: !(selectedRowIds.length === 1), setOpenDialog: setIsOpenEditDialog, setEditData: onClickEditRow },
+              { name: "Delete", disabled: !(selectedRowIds.length > 0), setOpenDialog: setIsOpenDeleteDialog },
+            ]}
+          />
+        </Grid>
+      </Grid>
+      <Divider variant="fullWidth" sx={{ marginBottom: "1rem" }} />
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <Grid container spacing={1}>
-            <Grid item>
-              <Button
-                disableElevation
-                variant="contained"
-                component="label"
-                onClick={handleOpenDialog}
-                startIcon={<AddCircleRoundedIcon />}
-                sx={{
-                  backgroundColor: "#419b45",
-                  "&:hover": {
-                    backgroundColor: "#94da98",
-                  },
-                }}
-              >
-                Add
-              </Button>
-            </Grid>
-            {selectedRowIds.length === 1 &&
-              <Grid item>
-                <Button
-                  disableElevation
-                  variant="contained"
-                  component="label"
-                  onClick={onClickEditRow}
-                  sx={{
-                    backgroundColor: "#7b7a7a",
-                    "&:hover": {
-                      backgroundColor: "#c8cccc",
-                    },
-                  }}
-                >
-                  Edit
-                </Button>
-              </Grid>
-            }
-            {selectedRowIds.length > 0 &&
-              <Grid item>
-                <Button
-                  disableElevation
-                  variant="contained"
-                  component="label"
-                  onClick={onOpenDeleteDialog}
-                  sx={{
-                    backgroundColor: "#bd0101",
-                    "&:hover": {
-                      backgroundColor: "#cd6a6a",
-                    },
-                  }}
-                >
-                  Delete
-                </Button>
-              </Grid>
-            }
-          </Grid>
-        </Grid>
-        <Grid item xs={12}>
-          <Table dataRows={drivers} onSelectionModelChange={onSelectionModelChange} />
+          <DriverTable
+            dataRows={data}
+            onSelectionModelChange={onSelectionModelChange}
+            isLoading={isLoading}
+          />
         </Grid>
       </Grid>
     </>

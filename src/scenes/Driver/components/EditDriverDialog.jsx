@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 //Components
-import EditDialog from "../../../../components/EditDialog";
+import EditDialog from "../../../components/EditDialog";
 
 //Constants
-import * as NavigationBarConstants from "../../../../constants/NavigationBarConstants";
-import { columns } from "../Table";
+import * as NavigationBarConstants from "../../../constants/NavigationBarConstants";
+import { driverColumns } from "../constants/Constants";
 
 export default function Edit(props) {
     const [driverObj, setDriverObj] = useState({});
@@ -32,7 +32,7 @@ export default function Edit(props) {
     const onClickUpdate = async () => {
         setIsLoading(true);
 
-        const requiredFields = columns
+        const requiredFields = driverColumns
             .filter(column => !excludeFields.includes(column.field))
             .filter(column => !optionalFields.includes(column.field))
             .map(column => column.field);
@@ -56,7 +56,7 @@ export default function Edit(props) {
             openDialog={props.openDialog}
             handleCloseDialog={props.handleCloseDialog}
             pageName={NavigationBarConstants.menus[6].sub[0].name}
-            columns={columns}
+            columns={driverColumns}
             dataObj={driverObj}
             excludeFields={excludeFields}
             isError={isError}
@@ -64,43 +64,5 @@ export default function Edit(props) {
             onChangeInput={onChangeInput}
             onClickUpdate={onClickUpdate}
         />
-        // <Dialog 
-        //     fullWidth={true} 
-        //     maxWidth="sm" 
-        //     open={props.openDialog}
-        // >
-        //     <DialogTitle>
-        //         แก้ไข{NavigationBarConstants.menus[0].sub[3].name}
-        //         <IconButton
-        //             aria-label="close"
-        //             onClick={props.handleCloseDialog}
-        //             sx={{
-        //                 position: "absolute",
-        //                 right: 8,
-        //                 top: 8,
-        //                 color: (theme) => theme.palette.grey[500],
-        //             }}
-        //         >
-        //             <CloseIcon />
-        //         </IconButton>
-        //     </DialogTitle>
-        //     <DialogContent dividers>
-        //         <DynamicDialogContent
-        //             columns={columns}
-        //             inputObj={driverObj}
-        //             excludeFields={excludeFields}
-        //             onChangeInput={onChangeInput}
-        //             isError={isError} 
-        //         />
-        //     </DialogContent>
-        //     <DialogActions>
-        //         <LoadingButton 
-        //             loading={isLoading} 
-        //             onClick={onClickUpdate}
-        //         >
-        //                 อัพเดท
-        //         </LoadingButton>
-        //     </DialogActions>
-        // </Dialog>
     );
 }

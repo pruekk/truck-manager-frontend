@@ -35,7 +35,7 @@ export default function Agency(props) {
     //const [isLoading, setIsLoading] = React.useState(false);
 
     const getAgency = async () => {
-        const response = await GetComponent(Constants.component.name, localStorage.getItem('userToken'))
+        const response = await GetComponent(Constants.component.name)
 
         if (response.success) {
             setConfirmedDataRows(response.data);
@@ -80,7 +80,7 @@ export default function Agency(props) {
 
     const onClickUpdate = async (row) => {
         //setIsLoading(true);
-        const response = await EditData(row, Constants.component.name, localStorage.getItem('userToken'));
+        const response = await EditData(row, Constants.component.name);
 
         if (response.success) {
             getAgency();
@@ -97,7 +97,7 @@ export default function Agency(props) {
     const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
     const deleteAgency = async () => {
         //setIsLoading(true);
-        const response = await DeleteData(selectedRowIds, Constants.component.name, localStorage.getItem('userToken'));
+        const response = await DeleteData(selectedRowIds, Constants.component.name);
 
         if (response.success) {
             getAgency();
@@ -133,7 +133,7 @@ export default function Agency(props) {
             index === self.findIndex((i) => i.id === item.id)
         );
 
-        const response = await AddNewData(uniqueDataRows, Constants.component.name, localStorage.getItem('userToken'));
+        const response = await AddNewData(uniqueDataRows, Constants.component.name);
 
         if (response.success) {
             getAgency();

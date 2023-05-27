@@ -9,12 +9,12 @@ const fetcher = url => axios({
     headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` }
 }).then(res => res.data)
 
-export function GetData() {
-    const { data, error, isLoading } = useSWR('https://languid-flaxen-organization.glitch.me/truck-manager-system/v1/api/agency', fetcher)
+export function GetData({component}) {
+    const { data, error, isLoading } = useSWR(`${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/${component}`, fetcher, { refreshInterval: 1000 })
     return { data, error, isLoading }
 }
 
-export async function GetComponent(component, token) {
+export async function GetComponent(component) {
     try {
         const response = await axios({
             method: 'get',
@@ -37,13 +37,15 @@ export async function GetComponent(component, token) {
     }
 }
 
-export async function AddNewData(data, component, token) {
+export async function AddNewData({data, component}) {
+    console.log(data)
+    console.log(component)
     try {
         const response = await axios({
             method: 'post',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/${component}`,
             headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` },
-            data: { dataRows: data, editBy: JSON.parse(localStorage.getItem('userObject'))?.email }
+            data: { dataRows: data, editBy: JSON.parse(localStorage.getItem('userObject')).email }
         });
 
         return {
@@ -61,7 +63,7 @@ export async function AddNewData(data, component, token) {
     }
 }
 
-export async function EditData(data, component, token) {
+export async function EditData(data, component) {
     try {
         data['editBy'] = JSON.parse(localStorage.getItem('userObject')).email;
 
@@ -87,7 +89,7 @@ export async function EditData(data, component, token) {
     }
 }
 
-export async function DeleteData(data, component, token) {
+export async function DeleteData(data, component) {
     try {
         let deleteRows = [];
         if (["oil-delivery", "transports"].includes(component)) {

@@ -132,7 +132,7 @@ export default function AppWrapper() {
             // sx={{ width: { sm: `calc(100% - ${drawerWidth}px)` } }}
           >
             <Toolbar />
-            <Container maxWidth={false} sx={{ paddingBottom: '2rem' }}>
+            <Container maxWidth="100%" sx={{ paddingBottom: '2rem' }}>
               <App isLoggedIn={isLoggedIn} logIn={logIn} logOut={logOut} />
             </Container>
           </Main>
