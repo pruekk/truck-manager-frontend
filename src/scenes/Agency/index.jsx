@@ -25,30 +25,27 @@ import * as Constants from "./constants/Constants";
 import handleUploadExcel from "../../functions/handleUploadExcel";
 
 //Services
-import { AddNewData, DeleteData, EditData, GetComponent } from "../../services/TruckManagerApiServices";
+import { AddNewData, DeleteData, EditData, GetComponent, GetData } from "../../services/TruckManagerApiServices";
 
 export default function Agency(props) {
+    const { data, error, isLoading } = GetData(Constants.component.name);
+
     const [dataRows, setDataRows] = React.useState([]);
     const [confirmedDataRows, setConfirmedDataRows] = React.useState([]);
-    const [isLoading, setIsLoading] = React.useState(false);
-
-    useEffect(() => {
-        getAgency();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    //const [isLoading, setIsLoading] = React.useState(false);
 
     const getAgency = async () => {
         const response = await GetComponent(Constants.component.name, localStorage.getItem('userToken'))
 
         if (response.success) {
             setConfirmedDataRows(response.data);
-            setIsLoading(false);
+            //setIsLoading(false);
 
             return;
         }
 
         props.logOut();
-        setIsLoading(false);
+        //setIsLoading(false);
     }
 
     const clearFileCache = (event) => {
@@ -82,7 +79,7 @@ export default function Agency(props) {
     }
 
     const onClickUpdate = async (row) => {
-        setIsLoading(true);
+        //setIsLoading(true);
         const response = await EditData(row, Constants.component.name, localStorage.getItem('userToken'));
 
         if (response.success) {
@@ -94,12 +91,12 @@ export default function Agency(props) {
 
         props.logOut();
         alert("Something went wrong! Please try again later.");
-        setIsLoading(false);
+        //setIsLoading(false);
     }
 
     const [isOpenDeleteDialog, setIsOpenDeleteDialog] = React.useState(false);
     const deleteAgency = async () => {
-        setIsLoading(true);
+        //setIsLoading(true);
         const response = await DeleteData(selectedRowIds, Constants.component.name, localStorage.getItem('userToken'));
 
         if (response.success) {
@@ -130,7 +127,7 @@ export default function Agency(props) {
     };
 
     const handleConfirmImportedData = async (dataRows) => {
-        setIsLoading(true);
+        //setIsLoading(true);
 
         const uniqueDataRows = dataRows.filter((item, index, self) =>
             index === self.findIndex((i) => i.id === item.id)
@@ -146,7 +143,7 @@ export default function Agency(props) {
         }
 
         alert("Something went wrong! Please try again later.");
-        setIsLoading(false);
+        //setIsLoading(false);
     };
 
     const [tabIndex, setTabIndex] = React.useState(0);
@@ -162,7 +159,7 @@ export default function Agency(props) {
                     openDialog={isOpenDialog}
                     dataRows={dataRows}
                     confirmedDataRows={confirmedDataRows}
-                    setDataRows={setDataRows}
+                    //setDataRows={setDataRows}
                     handleCloseDialog={handleCloseDialog}
                     handleConfirmImportedData={handleConfirmImportedData}
                 />
@@ -260,7 +257,7 @@ export default function Agency(props) {
                 </Grid>
 
                 <Grid item xs={12}>
-                    <Table dataRows={confirmedDataRows} onSelectionModelChange={onSelectionModelChange} />
+                    <Table dataRows={data ? data : []} onSelectionModelChange={onSelectionModelChange} />
                 </Grid>
             </Grid>
         </>

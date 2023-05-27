@@ -22,10 +22,6 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 
-import InputLabel from '@mui/material/InputLabel';
-import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-
 import * as MenusConstants from "../../constants/NavigationBarConstants";
 import { drawerWidth } from '../../App.js';
 const settings = ["ออกจากระบบ"];
@@ -59,8 +55,6 @@ const DrawerHeader = styled('div')(({ theme }) => ({
 export default function PersistentDrawerLeft(props) {
   const navigate = useNavigate();
   const theme = useTheme();
-
-  const [title, setTitle] = React.useState("Dashboard");
   const [open, setOpen] = React.useState(false);
 
   const handleDrawerOpen = () => {
@@ -90,6 +84,17 @@ export default function PersistentDrawerLeft(props) {
     setFactory(event.target.value);
   };
 
+  const getMenuName = (path) => {
+    if (path === "/login") {
+      return "ลงชื่อเข้าใช้"
+    }
+    
+    const mainObj = MenusConstants.menus.filter((menu) => { return menu.sub.some((sub) => sub.url === path) })[0];
+    const subObj = mainObj.sub.filter((sub) => { return sub.url === path })[0];
+
+    return subObj.name
+  }
+
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
@@ -105,7 +110,7 @@ export default function PersistentDrawerLeft(props) {
             <MenuIcon />
           </IconButton>
           <Typography variant="h6" noWrap component="div" sx={{ flexGrow: 1 }}>
-            {title}
+            {window.location.pathname === "/" ? 'หน้าหลัก' : getMenuName(window.location.pathname)}
           </Typography>
 
           {/* <FormControl sx={{ minWidth: 120, ...(!props.isLoggedIn && { display: 'none' }) }} size="small">
@@ -195,7 +200,6 @@ export default function PersistentDrawerLeft(props) {
             <Link
               to="/"
               style={{ textDecoration: 'none', color: 'black' }}
-              onClick={() => setTitle('Dashboard')}
             >
               <Typography
                 variant="h5"
@@ -233,7 +237,6 @@ export default function PersistentDrawerLeft(props) {
                   <ListItemButton
                     sx={{ paddingTop: 0, paddingBottom: 0 }}
                     disabled={!sub_menu.isAvailable}
-                    onClick={() => setTitle(`${sub_menu.name}`)}
                     component={Link}
                     to={!sub_menu.isAvailable ? '#' : sub_menu.url}
                   >

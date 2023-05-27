@@ -1,13 +1,25 @@
 import axios from 'axios';
+import useSWR from "swr";
 
 import * as APIConstants from "../constants/APIConstants";
+
+const fetcher = url => axios({
+    method: 'get',
+    url: url,
+    headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` }
+}).then(res => res.data)
+
+export function GetData() {
+    const { data, error, isLoading } = useSWR('https://languid-flaxen-organization.glitch.me/truck-manager-system/v1/api/agency', fetcher)
+    return { data, error, isLoading }
+}
 
 export async function GetComponent(component, token) {
     try {
         const response = await axios({
             method: 'get',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/${component}`,
-            headers: { 'Authorization': `Bearer ${token}` }
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` }
         });
 
         return {
@@ -30,7 +42,7 @@ export async function AddNewData(data, component, token) {
         const response = await axios({
             method: 'post',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/${component}`,
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` },
             data: { dataRows: data, editBy: JSON.parse(localStorage.getItem('userObject'))?.email }
         });
 
@@ -56,7 +68,7 @@ export async function EditData(data, component, token) {
         const response = await axios({
             method: 'put',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/v2/${component}/${data._id}`,
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` },
             data: data
         });
 
@@ -87,7 +99,7 @@ export async function DeleteData(data, component, token) {
         const response = await axios({
             method: 'delete',
             url: `${APIConstants.TRUCK_MANAGER_SYSTEM_API_BASE_URL}/v2/${component}`,
-            headers: { 'Authorization': `Bearer ${token}` },
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('userToken')}` },
             data: { deleteRows: deleteRows }
         });
 
