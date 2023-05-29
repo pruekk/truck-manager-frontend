@@ -8,7 +8,7 @@ import Divider from "@mui/material/Divider";
 //components
 import DriverTable from './components/RenderTable';
 import HandleAlert from "../../components/HandleAlert";
-import GroupButton from "../../components/GroupButton";
+import GroupButton from "../../components/GroupButtons";
 
 //Services
 import { AddNewData, DeleteData, EditData, GetData } from "../../services/TruckManagerApiServices";

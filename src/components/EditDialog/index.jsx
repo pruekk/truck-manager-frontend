@@ -17,7 +17,7 @@ export default function EditDialog(props) {
     return (
         <Dialog
             fullWidth={true}
-            maxWidth="md"
+            maxWidth="sm"
             open={openDialog}
             onClose={handleCloseDialog}
         >
