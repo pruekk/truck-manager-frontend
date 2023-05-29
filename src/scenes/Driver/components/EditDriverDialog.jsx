@@ -7,7 +7,7 @@ import EditDialog from "../../../components/EditDialog";
 import * as NavigationBarConstants from "../../../constants/NavigationBarConstants";
 import { driverColumns } from "../constants/Constants";
 
-export default function Edit(props) {
+export default function Edit({ dataRows, handleUpdateDriver, openDialog, handleCloseDialog }) {
     const [driverObj, setDriverObj] = useState({});
     const excludeFields = ['id', 'fullName', 'age', 'editBy'];
     const optionalFields = ['ssoStartDate', 'endDate', 'ssoEndDate', 'reason'];
@@ -15,9 +15,8 @@ export default function Edit(props) {
     const [isError, setIsError] = useState(false);
 
     useEffect(() => {
-        setDriverObj(props.dataRows);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+        setDriverObj(dataRows);
+    }, [dataRows]);
 
     const onChangeInput = (event) => {
         const { name, value } = event.target;
@@ -42,7 +41,7 @@ export default function Edit(props) {
                 ...driverObj,
                 salary: Number(driverObj.salary),
             };
-            await props.handleUpdateDriver(formattedData);
+            await handleUpdateDriver(formattedData);
             setIsError(false);
         } else {
             setIsError(true);
@@ -53,8 +52,8 @@ export default function Edit(props) {
 
     return (
         <EditDialog
-            openDialog={props.openDialog}
-            handleCloseDialog={props.handleCloseDialog}
+            openDialog={openDialog}
+            handleCloseDialog={handleCloseDialog}
             pageName={NavigationBarConstants.menus[6].sub[0].name}
             columns={driverColumns}
             dataObj={driverObj}

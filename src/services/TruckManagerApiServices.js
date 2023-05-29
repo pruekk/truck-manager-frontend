@@ -38,8 +38,6 @@ export async function GetComponent(component) {
 }
 
 export async function AddNewData({data, component}) {
-    console.log(data)
-    console.log(component)
     try {
         const response = await axios({
             method: 'post',

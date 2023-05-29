@@ -7,7 +7,7 @@ import AddDialog from "../../../components/AddDialog";
 import * as NavigationBarConstants from "../../../constants/NavigationBarConstants";
 import { driverColumns } from "../constants/Constants";
 
-export default function AddNewDialog(props) {
+export default function AddNewDialog({ handleAddNewDriver, openDialog, handleCloseDialog }) {
     const [driverObj, setDriverObj] = React.useState({});
     const excludeFields = ['id', 'fullName', 'age', 'ssoStartDate', 'endDate', 'ssoEndDate', 'reason', 'editBy'];
 
@@ -26,7 +26,7 @@ export default function AddNewDialog(props) {
     const onClickAdd = async () => {
         setIsLoading(true);
 
-        if (Object.values(driverObj).some((value) => !value)) {
+        if (Object.keys(driverObj).length === 0 || Object.values(driverObj).some((value) => !value)) {
             setIsError(true);
         } else {
             setIsError(false);
@@ -34,7 +34,8 @@ export default function AddNewDialog(props) {
                 ...driverObj,
                 salary: Number(driverObj["salary"])
             }
-            await props.handleAddNewDriver(formattedData);
+            await handleAddNewDriver(formattedData);
+            setDriverObj({}) // clear state after add driver
         }
 
         setIsLoading(false);
@@ -43,8 +44,8 @@ export default function AddNewDialog(props) {
     return (
         <AddDialog
             pageName={NavigationBarConstants.menus[2].sub[0].name}
-            openDialog={props.openDialog}
-            handleCloseDialog={props.handleCloseDialog}
+            openDialog={openDialog}
+            handleCloseDialog={handleCloseDialog}
             columns={driverColumns}
             dataObj={driverObj}
             excludeFields={excludeFields}

@@ -18,11 +18,13 @@ import EditRoundedIcon from '@mui/icons-material/EditRounded';
 import DeleteForeverRoundedIcon from '@mui/icons-material/DeleteForeverRounded';
 
 const options = [
-    { name: 'Import', icon: <FileDownloadRoundedIcon fontSize="small" /> },
-    { name: 'Add', icon: <AddCircleRoundedIcon fontSize="small" /> },
-    { name: 'Edit', icon: <EditRoundedIcon fontSize="small" /> },
-    { name: 'Delete', icon: <DeleteForeverRoundedIcon fontSize="small" /> },
+    { displayName: "นำเข้าข้อมูล", name: 'Import', icon: <FileDownloadRoundedIcon fontSize="small" /> },
+    { displayName: "เพิ่มข้อมูล", name: 'Add', icon: <AddCircleRoundedIcon fontSize="small" /> },
+    { displayName: "แก้ไขข้อมูล", name: 'Edit', icon: <EditRoundedIcon fontSize="small" /> },
+    { displayName: "ลบข้อมูล", name: 'Delete', icon: <DeleteForeverRoundedIcon fontSize="small" /> },
 ];
+
+const buttonSize = "10rem";
 
 export default function GroupButton({ command }) {
     const [open, setOpen] = React.useState(false);
@@ -42,7 +44,7 @@ export default function GroupButton({ command }) {
     const updatedCommand = command.map((cmd) => {
         const option = options.find((opt) => opt.name === cmd.name);
         if (option) {
-            return { ...cmd, icon: option.icon };
+            return { ...cmd, ...option };
         }
         return cmd;
     });
@@ -60,42 +62,26 @@ export default function GroupButton({ command }) {
             <ButtonGroup
                 variant="contained"
                 ref={anchorRef}
-                sx={{
-                    ".MuiButtonGroup-grouped:not(:last-of-type)": {
-                        borderColor: "#FFFFFF",
-                    },
-                }}
             >
                 <Button
                     onClick={handleToggle}
                     endIcon={<ArrowDropDownIcon />}
                     sx={{
-                        width: "8rem",
+                        width: buttonSize,
                         backgroundColor: "#30c464",
                         "&:hover": {
                             backgroundColor: "#269c50",
                         },
+                        fontSize: "1rem"
                     }}
                 >
-                    ACTIONS
+                    จัดการข้อมูล
                 </Button>
-                {/* <Button
-                    size="small"
-                    onClick={handleToggle}
-                    sx={{
-                        backgroundColor: "#30c464",
-                        "&:hover": {
-                            backgroundColor: "#269c50",
-                        },
-                    }}
-                >
-                    <ArrowDropDownIcon />
-                </Button> */}
             </ButtonGroup>
             <Popper
                 sx={{
                     zIndex: 1,
-                    width: "8rem"
+                    width: buttonSize
                 }}
                 open={open}
                 anchorEl={anchorRef.current}
@@ -124,7 +110,7 @@ export default function GroupButton({ command }) {
                                                 {option.icon}
                                             </ListItemIcon>
                                             <ListItemText>
-                                                {option.name}
+                                                {option.displayName}
                                             </ListItemText>
                                         </MenuItem>
                                     ))}
