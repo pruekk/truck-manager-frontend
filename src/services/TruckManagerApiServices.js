@@ -14,7 +14,7 @@ export function GetData({component}) {
     return { data, error, isLoading }
 }
 
-export async function GetComponent(component) {
+export async function GetComponent({component}) {
     try {
         const response = await axios({
             method: 'get',

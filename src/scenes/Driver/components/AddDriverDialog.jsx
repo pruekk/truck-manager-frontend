@@ -6,8 +6,39 @@ import AddDialog from "../../../components/AddDialog";
 //Constants
 import * as NavigationBarConstants from "../../../constants/NavigationBarConstants";
 import { driverColumns } from "../constants/Constants";
+import { GetComponent } from "../../../services/TruckManagerApiServices";
 
-export default function AddNewDialog({ handleAddNewDriver, openDialog, handleCloseDialog }) {
+const validateDriver = async (newDriver) => {
+    const { data: driverList, status, success } = await GetComponent({ component: "drivers" })
+    const errors = [];
+    driverList.some(driver => {
+        if (driver.firstName === newDriver.firstName && driver.lastName === newDriver.lastName) {
+            return errors.push({
+                reason: `driver is duplicated.`
+            })
+        }
+    });
+    driverColumns.forEach(column => {
+        const { field, headerName, required } = column;
+        const value = newDriver[field];
+
+        if (required && !value) {
+            errors.push({
+                reason: `${headerName} is required.`
+            });
+        }
+
+        if (field === 'idCard' && value && (value.length !== 13 || isNaN(value))) {
+            errors.push({
+                reason: `${headerName} must be a 13-digit number.`
+            });
+        }
+    });
+
+    return errors
+}
+
+export default function AddDriverDialog({ openDialog, handleCloseDialog, handleAddNewDriver }) {
     const [driverObj, setDriverObj] = React.useState({});
     const excludeFields = ['id', 'fullName', 'age', 'ssoStartDate', 'endDate', 'ssoEndDate', 'reason', 'editBy'];
 
@@ -34,8 +65,13 @@ export default function AddNewDialog({ handleAddNewDriver, openDialog, handleClo
                 ...driverObj,
                 salary: Number(driverObj["salary"])
             }
-            await handleAddNewDriver(formattedData);
-            setDriverObj({}) // clear state after add driver
+            const errors = await validateDriver(formattedData);
+            if (errors.length > 0) {
+                alert(errors.map((error) => error.reason).join("\n"));
+            } else {
+                await handleAddNewDriver(formattedData);
+                setDriverObj({}) // clear state after add driver
+            }
         }
 
         setIsLoading(false);
@@ -51,7 +87,7 @@ export default function AddNewDialog({ handleAddNewDriver, openDialog, handleClo
             excludeFields={excludeFields}
             onChangeInput={onChangeInput}
             isError={isError}
-            isLoading={isLoading}
+            isLoading={false}
             onClickAdd={onClickAdd}
         />
     );

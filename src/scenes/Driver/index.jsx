@@ -14,7 +14,7 @@ import GroupButton from "../../components/GroupButtons";
 import { AddNewData, DeleteData, EditData, GetData } from "../../services/TruckManagerApiServices";
 
 //Dialogs
-import AddNewDialog from "./components/AddDriverDialog";
+import AddDriverDialog from "./components/AddDriverDialog";
 import EditDialog from "./components/EditDriverDialog";
 import DeleteDialog from "../../components/DeleteDialog";
 
@@ -101,7 +101,7 @@ export default function Driver(props) {
   if (error) return <HandleAlert msg={error.response.data.message} status_code={error.response.status} />
   return (
     <>
-      <AddNewDialog
+      <AddDriverDialog
         openDialog={isOpenDialog}
         handleCloseDialog={handleCloseDialog}
         handleAddNewDriver={handleAddNewDriver}

@@ -152,7 +152,7 @@ function DateInput(props) {
   );
 }
 
-function DefaultInput(props) {
+function TextInput(props) {
   const { column, inputObj, onChangeInput } = props;
 
   return (
@@ -181,7 +181,7 @@ const getInputComponent = (inputObj, onChangeInput, column) => {
     case "time":
       return <TimeInput inputObj={inputObj} onChangeInput={onChangeInput} column={column} />;
     default:
-      return <DefaultInput inputObj={inputObj} onChangeInput={onChangeInput} column={column} />;
+      return <TextInput inputObj={inputObj} onChangeInput={onChangeInput} column={column} />;
   }
 }
 
