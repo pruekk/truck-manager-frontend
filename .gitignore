@@ -20,7 +20,6 @@ dist-ssr
 .eslintrc.cjs
 .env
 yarn.lock
-package-lock.json
 *.suo
 *.ntvs*
 *.njsproj
