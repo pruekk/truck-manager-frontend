@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { BrowserRouter as Router, useRoutes, Navigate } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 
 //Material UI
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -45,35 +45,48 @@ const NotFound = () => {
 };
 
 const App = (props) => {
-  let routes = useRoutes([
-    { path: "/", element: props.isLoggedIn ? <Home /> : <Navigate to='/login' /> },
-    { path: "/agency", element: props.isLoggedIn ? <Agency logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/car-replacement", element: props.isLoggedIn ? <CarReplacement logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/transport-price", element: props.isLoggedIn ? <TransportPrice logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/dp-schedule", element: props.isLoggedIn ? <DP logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/oil-transaction", element: props.isLoggedIn ? <OilDelivery logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/car-information", element: props.isLoggedIn ? <Car logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/driver", element: props.isLoggedIn ? <Driver logOut={props.logOut} /> : <Navigate to='/login' /> },
-
-    { path: "/company", element: props.isLoggedIn ? <Company logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/company-income", element: props.isLoggedIn ? <CompanyIncome logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/company-expense", element: props.isLoggedIn ? <CompanyExpense logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/factory", element: props.isLoggedIn ? <Factory logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/engine-detail", element: props.isLoggedIn ? <EngineDetail logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/engine-replacement", element: props.isLoggedIn ? <EngineReplacement logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/engine-store", element: props.isLoggedIn ? <EngineStore logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/extra-fuel", element: props.isLoggedIn ? <ExtraFuel logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/fuel", element: props.isLoggedIn ? <Fuel logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/farm", element: props.isLoggedIn ? <Farm logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/farm-income", element: props.isLoggedIn ? <FarmIncome logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/farm-expense", element: props.isLoggedIn ? <FarmExpense logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/permission", element: props.isLoggedIn ? <Permission logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/trip", element: props.isLoggedIn ? <Trip logOut={props.logOut} /> : <Navigate to='/login' /> },
-    { path: "/login", element: <Login onLogIn={props.logIn} /> },
+  const loggedInRoutes = [
+    { path: "/", element: <Home /> },
+    { path: "/agency", element: <Agency logOut={props.logOut} /> },
+    { path: "/car-replacement", element: <CarReplacement logOut={props.logOut} /> },
+    { path: "/transport-price", element: <TransportPrice logOut={props.logOut} /> },
+    { path: "/dp-schedule", element: <DP logOut={props.logOut} /> },
+    { path: "/oil-transaction", element: <OilDelivery logOut={props.logOut} /> },
+    { path: "/car-information", element: <Car logOut={props.logOut} /> },
+    { path: "/driver", element: <Driver logOut={props.logOut} /> },
+    { path: "/company", element: <Company logOut={props.logOut} /> },
+    { path: "/company-income", element: <CompanyIncome logOut={props.logOut} /> },
+    { path: "/company-expense", element: <CompanyExpense logOut={props.logOut} /> },
+    { path: "/factory", element: <Factory logOut={props.logOut} /> },
+    { path: "/engine-detail", element: <EngineDetail logOut={props.logOut} /> },
+    { path: "/engine-replacement", element: <EngineReplacement logOut={props.logOut} /> },
+    { path: "/engine-store", element: <EngineStore logOut={props.logOut} /> },
+    { path: "/extra-fuel", element: <ExtraFuel logOut={props.logOut} /> },
+    { path: "/fuel", element: <Fuel logOut={props.logOut} /> },
+    { path: "/farm", element: <Farm logOut={props.logOut} /> },
+    { path: "/farm-income", element: <FarmIncome logOut={props.logOut} /> },
+    { path: "/farm-expense", element: <FarmExpense logOut={props.logOut} /> },
+    { path: "/permission", element: <Permission logOut={props.logOut} /> },
+    { path: "/trip", element: <Trip logOut={props.logOut} /> },
     { path: "*", element: <NotFound /> }
-  ]);
+  ];
 
-  return routes;
+  return (
+    <>
+      {props.isLoggedIn ? (
+        <Routes>
+          {loggedInRoutes.map((route) => (
+            <Route key={route.path} path={route.path} element={route.element} />
+          ))}
+        </Routes>
+      ) : (
+        <Routes>
+          <Route path="/login" element={<Login onLogIn={props.logIn} />} />
+          <Route path="*" element={<Navigate to="/login" />} />
+        </Routes>
+      )}
+    </>
+  );
 };
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(

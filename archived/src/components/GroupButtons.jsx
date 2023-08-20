@@ -51,8 +51,12 @@ export default function GroupButton({ command }) {
 
     const handleMenuItemClick = (event, index) => {
         updatedCommand[index].setOpenDialog(true)
-        if (updatedCommand[index].name === "Edit") {
-            updatedCommand[index].setEditData()
+        switch (updatedCommand[index].name) {
+            case 'Edit':
+                updatedCommand[index].setEditData()
+                return;
+            case 'Import':
+                return;
         }
         setOpen(false);
     };
@@ -106,12 +110,8 @@ export default function GroupButton({ command }) {
                                             disabled={option.disabled}
                                             onClick={(event) => handleMenuItemClick(event, index)}
                                         >
-                                            <ListItemIcon>
-                                                {option.icon}
-                                            </ListItemIcon>
-                                            <ListItemText>
-                                                {option.displayName}
-                                            </ListItemText>
+                                            <ListItemIcon>{option.icon}</ListItemIcon>
+                                            <ListItemText>{option.displayName}</ListItemText>
                                         </MenuItem>
                                     ))}
                                 </MenuList>

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 
 import Box from '@mui/material/Box';
 import Button from "@mui/material/Button";
@@ -22,14 +22,16 @@ import IconButton from "@mui/material/IconButton";
 //Others
 import moment from 'moment';
 import { GetOilDelivery } from "../../../OilDelivery/services/OilDeliveryServices";
+import { GetData } from "../../../../services/TruckManagerApiServices";
+import * as Constants from "../../constants/Constants";
 
 const steps = ['นำเข้าข้อมูล', 'แก้ไขรหัส', 'ดึงข้อมูล/แก้ไขน้ำมัน', 'เช็คซ้ำ', 'เพิ่มระยะทาง'];
 
-const validateNewAgency = (newAgencyList, existingAgencyList) => {
+const validateNewAgency = async (newAgencyList, existingAgencyList) => {
     const duplicates = [];
     const notDuplicates = [];
-  
-    newAgencyList.forEach(newAgency => {
+
+    newAgencyList?.forEach(newAgency => {
         const matchingAgencies = existingAgencyList.filter(existingAgency => existingAgency.id === newAgency.id);
         let isDuplicate = false;
         // This code below make sure that we aren't loop to much when we have mutiple matchingAgencies
@@ -49,10 +51,10 @@ const validateNewAgency = (newAgencyList, existingAgencyList) => {
                 const newAgencyStartDate = moment(newAgency.dateStart, "DD/MM/YYYY");
                 const agencyStartDate = moment(agency.dateStart, "DD/MM/YYYY");
                 const agencyEndDate = moment(agency.dateEnd, "DD/MM/YYYY");
-                return newAgency.id === agency.id && newAgencyStartDate.isSameOrAfter(agencyStartDate) && newAgencyStartDate.isSameOrBefore(agencyEndDate);
+                return newAgency.id === agency.id && (newAgencyStartDate.isSameOrAfter(agencyStartDate) || newAgencyStartDate.isSameOrBefore(agencyEndDate));
             });
         }
-    
+
         if (isDuplicate) {
             // duplicate but first seen
             if (!duplicates.some(agency => agency.id === newAgency.id)) {
@@ -74,22 +76,22 @@ const validateNewAgency = (newAgencyList, existingAgencyList) => {
                 const existingEndDate = moment(existingObject.dateEnd, "DD/MM/YYYY");
                 const newStartDate = moment(newAgency.dateStart, "DD/MM/YYYY");
                 const newEndDate = moment(newAgency.dateEnd, "DD/MM/YYYY");
-        
+
                 if (newStartDate <= existingStartDate) {
                     existingObject.dateStart = newAgency.dateStart;
                 }
                 if (newEndDate > existingEndDate) {
                     existingObject.dateEnd = newAgency.dateEnd;
                 }
-        
+
                 notDuplicates[index] = existingObject;
             }
         }
     });
-  
+
     return {
-      duplicates: duplicates,
-      notDuplicates: notDuplicates
+        duplicates: duplicates,
+        notDuplicates: notDuplicates
     };
 }
 
@@ -97,20 +99,22 @@ export default function ImportDialog(props) {
     const [selectedRows, setSelectedRows] = React.useState([]);
     const [duplicateAgency, setDuplicateAgency] = React.useState([])
 
-    useEffect(() => {
-        formattedDataRows();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    const { data: existingAgencyList } = GetData({ component: Constants.component.name })
+    const [isLoading, setIsLoading] = React.useState(false);
 
     const onUpdateRow = (updateObj) => {
-        const objIndex = props.dataRows.findIndex((obj => obj.id === updateObj.id));
-        props.dataRows[objIndex].distance = Number(updateObj.distance);
+        console.log("Update column in Datagrid row")
+        console.log(props.newAgency)
 
-        props.setDataRows(props.dataRows);
+        const objIndex = props.newAgency.findIndex((obj => obj.id === updateObj.id));
+        props.newAgency[objIndex].newId = updateObj.newId;
+        props.newAgency[objIndex].distance = Number(updateObj.distance);
+
+        props.setDataRows(props.newAgency);
     }
 
     const onClickDeleteSelectedRows = () => {
-        const filtered = props.dataRows.filter((row) => !selectedRows.includes(row.id))
+        const filtered = props.newAgency.filter((row) => !selectedRows.includes(row.id))
         props.setDataRows(filtered);
     };
 
@@ -118,44 +122,34 @@ export default function ImportDialog(props) {
         props.setDataRows(dataRows);
     }
 
-    const [activeStep, setActiveStep] = React.useState(0);
-
-    const handleNext = () => {
-        if (activeStep === 0) {
-            getOilDelivery();
-        }
-        if (activeStep === 1) {
-            removeDuplicate();
-        }
+    const [activeStep, setActiveStep] = React.useState(1);
+    const handleNext = async () => {
         setActiveStep((prevActiveStep) => prevActiveStep + 1);
+        setIsLoading(true);
+        switch (activeStep) {
+            case 1:
+                await getOilDelivery();
+                break;
+            case 2:
+                const { duplicates, notDuplicates } = await validateNewAgency(props.newAgency, existingAgencyList);
+                props.setDataRows(notDuplicates);
+                setDuplicateAgency(duplicates)
+                break;
+            default:
+                break;
+        }
+        setIsLoading(false);
     };
 
     const handleBack = () => {
         setActiveStep((prevActiveStep) => prevActiveStep - 1);
     };
 
-    const formattedDataRows = () => {
-        const existingAgency = props.confirmedDataRows
-        const newAgency = props.dataRows
-
-        const { duplicates, notDuplicates } = validateNewAgency(newAgency, existingAgency)
-        props.setDataRows(notDuplicates);
-        setDuplicateAgency(duplicates)
-    }
-
-    const removeDuplicate = () => {
-        const uniqueDataRows = props.dataRows.filter((item, index, self) =>
-            index === self.findIndex((i) => i.id === item.id)
-        );
-
-        props.setDataRows(uniqueDataRows);
-    }
-
     const getOilDelivery = async () => {
         const response = await GetOilDelivery(localStorage.getItem('userToken'));
 
         if (response.success) {
-            props.dataRows.map(function (row) {
+            props.newAgency.map((row) => {
                 const filterDate = response.data.filter((oil) => { return moment(row.dateStart, 'YYYY-MM-DD').isSameOrAfter(moment(oil.from, 'YYYY-MM-DD')) && moment(row.dateEnd, 'YYYY-MM-DD').isSameOrBefore(moment(oil.to, 'YYYY-MM-DD')) })
                 if (filterDate.length === 0) {
                     return row;
@@ -170,7 +164,7 @@ export default function ImportDialog(props) {
                 return row;
             });
 
-            props.setDataRows(props.dataRows);
+            props.setDataRows(props.newAgency);
         }
     }
 
@@ -184,11 +178,9 @@ export default function ImportDialog(props) {
                 เพิ่มหน่วยงาน
                 <Stepper activeStep={activeStep} alternativeLabel>
                     {steps.map((label) => {
-                        const stepProps = {};
-                        const labelProps = {};
                         return (
-                            <Step key={label} {...stepProps}>
-                                <StepLabel {...labelProps}>{label}</StepLabel>
+                            <Step key={label}>
+                                <StepLabel>{label}</StepLabel>
                             </Step>
                         );
                     })}
@@ -211,7 +203,7 @@ export default function ImportDialog(props) {
                     <Grid item xs={12}>
                         หน่วยงานใหม่
                         <Table
-                            dataRows={props.dataRows}
+                            dataRows={props.newAgency}
                             activeStep={activeStep}
                             selectedRows={selectedRows}
                             setSelectedRows={setSelectedRows}
@@ -240,13 +232,17 @@ export default function ImportDialog(props) {
                         <LoadingButton
                             loading={props.isLoading}
                             onClick={() => {
-                                props.handleConfirmImportedData(props.dataRows);
+                                props.handleConfirmImportedData(props.newAgency);
                             }}
                         >
                             Confirm
-                        </LoadingButton> : <Button onClick={handleNext}>
+                        </LoadingButton> 
+                        : <LoadingButton
+                            loading={isLoading}
+                            onClick={() => handleNext()}
+                        >
                             Next
-                        </Button>
+                        </LoadingButton>
                     }
                 </React.Fragment>
             </DialogActions>

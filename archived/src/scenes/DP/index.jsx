@@ -3,9 +3,6 @@ import React, { useEffect } from "react";
 //Material UI
 import Button from "@mui/material/Button";
 import Grid from "@mui/material/Grid";
-import Box from '@mui/material/Box';
-import Tabs from '@mui/material/Tabs';
-import Tab from '@mui/material/Tab';
 import Divider from '@mui/material/Divider';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -27,6 +24,7 @@ import ImportDialog from './components/ImportDialog';
 import DeleteDialog from "../../components/DeleteDialog";
 import EditDialog from './components/EditDialog';
 import Table from './components/Table';
+import GroupButton from "../../components/GroupButtons";
 
 //Icons
 import FileDownloadRoundedIcon from '@mui/icons-material/FileDownloadRounded';
@@ -55,7 +53,7 @@ const isDateBetween = (date, start, end) => {
             compare with getTime() will return false
         */
         return true;
-    } 
+    }
     const result = start.getTime() <= date.getTime() && date.getTime() <= end.getTime();
     return result;
 };
@@ -90,7 +88,7 @@ export default function DP(props) {
             code: currentFactory.code
         });
 
-        const dataWithFilter = dataFromAPI.filter((dp) => 
+        const dataWithFilter = dataFromAPI.filter((dp) =>
             dp.id.startsWith(currentFactory.code)
         )
         setConfirmedDataRows(dataWithFilter);
@@ -119,7 +117,6 @@ export default function DP(props) {
             // Filter with factoryCode will remove later when backend support
         )
         setConfirmedDataRows(dataWithFilter);
-        console.log(dataWithFilter)
     };
 
     useEffect(() => {
@@ -129,7 +126,7 @@ export default function DP(props) {
     }, [factory.name, dateFrom]);
 
     const getDP = async () => {
-        const response = await GetComponent(Constants.component.name, localStorage.getItem('userToken'))
+        const response = await GetComponent({ component: Constants.component.name })
         /* 
             GET /dp/factoryId?from=01-{dateFrom.currentMonth}-{dateFrom.currentYear}&to=31-{dateFrom.currentMonth}-{dateFrom.currentYear}
         */
@@ -180,7 +177,6 @@ export default function DP(props) {
     const [carReplacement, setCarReplacement] = React.useState([]);
     const getCarReplacement = async () => {
         const response = await GetComponent("car-replacement", localStorage.getItem('userToken'))
-        console.log(response);
 
         if (response.success) {
             setCarReplacement(response.data);
@@ -305,101 +301,6 @@ export default function DP(props) {
                 onClickDelete={deleteDP}
                 onCloseDeleteDialog={onCloseDeleteDialog}
             />
-            {/* <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Grid container spacing={1}>
-                        <Grid item>
-                            <Button
-                                disableElevation
-                                variant="contained"
-                                component="label"
-                                startIcon={<FileDownloadRoundedIcon />}
-                                sx={{
-                                    backgroundColor: "#7b7a7a",
-                                    "&:hover": {
-                                        backgroundColor: "#c8cccc",
-                                    },
-                                }}
-                            >
-                                Import
-                                <input
-                                    hidden
-                                    multiple
-                                    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
-                                    type="file"
-                                    onChange={(e) => handleUploadExcel(e, "DP", confirmedDataRows, handleOpenDialog, dataRows, setDataRows, carReplacement)}
-                                    onClick={clearFileCache} //Clear cache
-                                />
-                            </Button>
-                        </Grid>
-                        {selectedRowIds.length === 1 &&
-                            <Grid item>
-                                <Button
-                                    disableElevation
-                                    variant="contained"
-                                    component="label"
-                                    onClick={onClickEditRow}
-                                    sx={{
-                                        backgroundColor: "#7b7a7a",
-                                        "&:hover": {
-                                            backgroundColor: "#c8cccc",
-                                        },
-                                    }}
-                                >
-                                    Edit
-                                </Button>
-                            </Grid>
-                        }
-                        {selectedRowIds.length > 0 &&
-                            <Grid item>
-                                <Button
-                                    disableElevation
-                                    variant="contained"
-                                    component="label"
-                                    onClick={onOpenDeleteDialog}
-                                    sx={{
-                                        backgroundColor: "#bd0101",
-                                        "&:hover": {
-                                            backgroundColor: "#cd6a6a",
-                                        },
-                                    }}
-                                >
-                                    Delete
-                                </Button>
-                            </Grid>
-                        }
-                    </Grid>
-                </Grid>
-            </Grid> */}
-
-            {/* <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                        <Tabs value={tabIndex} onChange={handleChangeTabs}>
-                            {FactoryConstants.factories.map((factory) =>
-                                <Tab key={factory.name} label={factory.name} />
-                            )}
-                        </Tabs>
-                    </Box>
-                </Grid>
-            </Grid>
-
-            <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Box sx={{ borderBottom: 1, borderColor: 'divider', maxWidth: { sm: 480*2.8 } }}>
-                        <Tabs 
-                            value={tabIndex} 
-                            onChange={handleChangeTabs}
-                            variant="scrollable"
-                            scrollButtons
-                        >
-                            {[...uniqueDates].map((date) =>
-                                <Tab key={date} label={date} />
-                            )}
-                        </Tabs>
-                    </Box>
-                </Grid>
-            </Grid> */}
 
             <Grid container alignItems="center">
                 <Grid item xs sx={{ margin: "1rem 0rem 0rem 1rem" }}>
@@ -407,12 +308,18 @@ export default function DP(props) {
                         รายการเที่ยวรถโม่{factory.name}
                     </Typography>
                 </Grid>
+                {/* Still not working */}
                 {/* <Grid item>
-                    <GroupButton />
+                    <GroupButton
+                        command={[
+                            { name: "Import", disabled: false, setOpenDialog: setIsOpenDialog }, // disabled will check from permission
+                            { name: "Edit", disabled: !(selectedRowIds.length === 1), setOpenDialog: setIsOpenEditDialog, setEditData: onClickEditRow },
+                            { name: "Delete", disabled: !(selectedRowIds.length > 0), setOpenDialog: setIsOpenDeleteDialog },
+                        ]}
+                    />
                 </Grid> */}
-                {/* <Grid item>
+                <Grid item>
                     <Button
-                        disableElevation
                         variant="contained"
                         component="label"
                         startIcon={<FileDownloadRoundedIcon />}
@@ -422,6 +329,7 @@ export default function DP(props) {
                                 backgroundColor: "#269c50",
                             },
                             width: "100px",
+                            fontSize: "1rem"
                         }}
                     >
                         Import
@@ -448,6 +356,8 @@ export default function DP(props) {
                             "&:hover": {
                                 backgroundColor: "#b24319",
                             },
+                            width: "100px",
+                            fontSize: "1rem"
                         }}
                     >
                         Edit
@@ -466,11 +376,13 @@ export default function DP(props) {
                             "&:hover": {
                                 backgroundColor: "#970000",
                             },
+                            width: "100px",
+                            fontSize: "1rem"
                         }}
                     >
                         Delete
                     </Button>
-                </Grid> */}
+                </Grid>
                 <Grid item>
                     <LocalizationProvider dateAdapter={AdapterMoment}>
                         <DatePicker
@@ -654,22 +566,12 @@ export default function DP(props) {
                                 </CardContent>
                             </Card>
                         </Grid>
-                        <Grid item xs={12}>
-                            <StickyHeadTable data={dataFromAPI}/>
-                        </Grid>
+                        {/* <Grid item xs={12}>
+                            <StickyHeadTable data={dataFromAPI} />
+                        </Grid> */}
                     </Grid>
                 </Grid>
             </Grid>
-
-            {/* <Grid container spacing={2}>
-                <Grid item xs={12}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12}>
-                            <StickyHeadTable />
-                        </Grid>
-                    </Grid>
-                </Grid>
-            </Grid> */}
         </>
     );
 }

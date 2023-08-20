@@ -252,7 +252,7 @@ export default function PersistentDrawerLeft(props) {
           <Divider sx={{ paddingTop: '1rem' }} />
           <Toolbar disableGutters>
             <ListItem disablePadding>
-              <ListItemButton disabled onClick={handleOpenUserMenu}>
+              <ListItemButton disabled>
                 <Typography variant="body1">
                   {new Date().getFullYear()} © บริษัท ธ.นุชาพร จำกัด
                 </Typography>

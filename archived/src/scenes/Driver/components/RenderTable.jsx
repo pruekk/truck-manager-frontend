@@ -32,7 +32,7 @@ export default function DriverTable({ dataRows, onSelectionModelChange, isLoadin
     const formattedData = dataRows ? dataRows.map(item => {
         return {
           ...item,
-          telephone: item.telephone?.replace(/(.{3})(.{3})(.{4})/, "$1-$2-$3"),
+          telephone: item.telephone.replace(/(.{3})(.{3})(.{4})/, "$1-$2-$3"),
           startDate: displayDate(item.startDate),
           birthDate: displayDate(item.birthDate),
           idCard: item.idCard.replace(/(.{1})(.{4})(.{5})(.{2})(.{1})/, "$1-$2-$3-$4-$5"),

@@ -47,7 +47,7 @@ export function matchDriver(car, date, time, replacementHistory) {
 }
 
 export default function prepareDataForTable(formatType, date, data, confirmedDataRows, carReplacement) {
-    const dpList = [];
+    const importedData = [];
     const factoryStruct = [
         {
             code: "F272",
@@ -78,7 +78,7 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
     if (formatType === "DP") {
         data.slice(3).map(async (row) => {
             if (row[1]?.includes(factory.code)) {
-                dpList.push({
+                importedData.push({
                     "id": row[1],
                     "date": customDate,
                     "time": convertToTimeFormat(row[20]),
@@ -94,30 +94,30 @@ export default function prepareDataForTable(formatType, date, data, confirmedDat
                     "duplicated": confirmedDataRows?.some(list => list.id === row[1])
                 });
             }
-            return dpList;
+            return importedData;
         });
     } else {
         // Agency
         data.slice(3).map((row) => {
             if (row[1]?.includes(factory.code)) {
-                dpList.push({
+                importedData.push({
                     "id": row[6],
+                    "factoryCode": row[1].substring(0,4),
                     "dateStart": customDate,
                     "dateEnd": customDate,
                     "agent": row[7],
                     "oldId": row[10],
                     "newId": row[10],
                     "distance": 0,
-                    "oil": 0,
-                    "duplicated": confirmedDataRows?.some(list => list.id === row[6])
+                    "oil": 0
                 });
             }
-            return dpList;
+            return importedData;
         });
     }
     
     // filter unique DP and Agency using "id" as key
-    const uniqueDataRows = dpList.filter((item, index, self) =>
+    const uniqueDataRows = importedData.filter((item, index, self) =>
         index === self.findIndex((i) => i.id === item.id)
     );
 

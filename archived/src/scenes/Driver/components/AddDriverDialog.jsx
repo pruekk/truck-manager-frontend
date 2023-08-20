@@ -9,14 +9,15 @@ import { driverColumns } from "../constants/Constants";
 import { GetComponent } from "../../../services/TruckManagerApiServices";
 
 const validateDriver = async (newDriver) => {
-    const { data: driverList, status, success } = await GetComponent({ component: "drivers" })
+    const { data: driverList, success } = await GetComponent({ component: "drivers" })
     const errors = [];
-    driverList.some(driver => {
+    success && driverList.some(driver => {
         if (driver.firstName === newDriver.firstName && driver.lastName === newDriver.lastName) {
             return errors.push({
                 reason: `driver is duplicated.`
             })
         }
+        return ''
     });
     driverColumns.forEach(column => {
         const { field, headerName, required } = column;
@@ -87,7 +88,7 @@ export default function AddDriverDialog({ openDialog, handleCloseDialog, handleA
             excludeFields={excludeFields}
             onChangeInput={onChangeInput}
             isError={isError}
-            isLoading={false}
+            isLoading={isLoading}
             onClickAdd={onClickAdd}
         />
     );

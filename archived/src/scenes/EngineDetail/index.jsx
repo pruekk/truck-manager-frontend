@@ -3,9 +3,9 @@ import React, { useEffect } from "react";
 //Material UI
 import Grid from "@mui/material/Grid";
 
-
-//Table
+// Component
 import Table from './components/Table';
+import MyQRCodeComponent from "./components/Scanner";
 
 //Services
 import { /*AddNewData, DeleteData, EditData,*/ GetComponent } from "../../services/TruckManagerApiServices";
@@ -212,6 +212,9 @@ export default function Scene(props) {
             isLoading={isLoading}
           />
         </Grid>
+        {/* <Grid item xs={12}>
+          <MyQRCodeComponent />
+        </Grid> */}
       </Grid>
     </>
   );
