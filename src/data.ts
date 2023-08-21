@@ -1,3 +1,7 @@
+export const GOOGLE = {
+  clientId: "122246639521-9lag1a2kpgqssjd56lukmb6r8qrs3gbb.apps.googleusercontent.com"
+};
+
 export const menu = [
   {
     id: 1,
