@@ -17,4 +17,4 @@ jobs:
           firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_TNUCHAPORN_TRUCKMANAGER }}"
           projectId: tnuchaporn-truckmanager
           expires: 15d
-          channelId: tnuchaporn-truckmanager-demo
+          channelId: demo
