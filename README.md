@@ -1,6 +1,6 @@
 # Truck Manager UI
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Truck Manager is a personal project designed to manage the in-house work of Tnuchaporn company. Unauthorized use of this project may result in a prohibition.
 
 ## Getting Started
 
