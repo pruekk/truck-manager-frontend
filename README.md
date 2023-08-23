@@ -18,3 +18,6 @@ Truck Manager is a personal project designed to manage the in-house work of Tnuc
    - Waiting a few second
      > Note: It may take 5 minutes to a few hours for settings to take effect
    - Go to that site
+4. After merge
+    - Application will deploy to [Prod](https://tnuchaporn-truckmanager.web.app)
+    - Remove unused `details_url`
