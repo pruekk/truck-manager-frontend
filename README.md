@@ -10,3 +10,5 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 ## Deploy Application
 
 1. Run `npm run build` to pack all assets to `dist`
+2. Run `npm run preview` to see how it look like on production
+3. Create PR to main
