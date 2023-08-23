@@ -1,6 +1,6 @@
 export const GOOGLE = {
-  clientId: "122246639521-9lag1a2kpgqssjd56lukmb6r8qrs3gbb.apps.googleusercontent.com"
-};
+  CLIENT_ID: "122246639521-9lag1a2kpgqssjd56lukmb6r8qrs3gbb.apps.googleusercontent.com",
+}
 
 export const menu = [
   {
@@ -117,7 +117,7 @@ export const menu = [
       },
     ],
   },
-];
+]
 
 export const topDealUsers = [
   {
@@ -169,7 +169,7 @@ export const topDealUsers = [
     email: "angel@gmail.com",
     amount: "1.560",
   },
-];
+]
 
 export const chartBoxUser = {
   color: "#8884d8",
@@ -187,7 +187,7 @@ export const chartBoxUser = {
     { name: "Fri", users: 500 },
     { name: "Sat", users: 450 },
   ],
-};
+}
 
 export const chartBoxProduct = {
   color: "skyblue",
@@ -205,7 +205,7 @@ export const chartBoxProduct = {
     { name: "Fri", products: 500 },
     { name: "Sat", products: 450 },
   ],
-};
+}
 export const chartBoxRevenue = {
   color: "teal",
   icon: "/revenueIcon.svg",
@@ -222,7 +222,7 @@ export const chartBoxRevenue = {
     { name: "Fri", revenue: 500 },
     { name: "Sat", revenue: 450 },
   ],
-};
+}
 export const chartBoxConversion = {
   color: "gold",
   icon: "/conversionIcon.svg",
@@ -239,7 +239,7 @@ export const chartBoxConversion = {
     { name: "Fri", ratio: 500 },
     { name: "Sat", ratio: 450 },
   ],
-};
+}
 
 export const barChartBoxRevenue = {
   title: "Profit Earned",
@@ -275,7 +275,7 @@ export const barChartBoxRevenue = {
       profit: 3490,
     },
   ],
-};
+}
 
 export const barChartBoxVisit = {
   title: "Total Visit",
@@ -311,7 +311,7 @@ export const barChartBoxVisit = {
       visit: 3490,
     },
   ],
-};
+}
 
 export const userRows = [
   {
@@ -457,7 +457,7 @@ export const userRows = [
     phone: "123 456 789",
     createdAt: "01.02.2023",
   },
-];
+]
 
 export const products = [
   {
@@ -557,9 +557,7 @@ export const products = [
     createdAt: "01.02.2023",
     inStock: true,
   },
-];
-
-
+]
 
 export const singleUser = {
   id: 1,
@@ -641,7 +639,7 @@ export const singleUser = {
       time: "2 months ago",
     },
   ],
-};
+}
 export const singleProduct = {
   id: 1,
   title: "Playstation 5 Digital Edition",
@@ -722,4 +720,4 @@ export const singleProduct = {
       time: "2 months ago",
     },
   ],
-};
+}
