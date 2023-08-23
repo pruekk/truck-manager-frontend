@@ -2,6 +2,11 @@ name: Deploy Preview Version
 on:
   pull_request:
 
+permissions:
+  checks: write
+  contents: read
+  pull-requests: write
+
 jobs:
   build_and_preview:
     runs-on: ubuntu-20.04
@@ -10,7 +15,8 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm ci && npm run build
+      - run: npm ci
+      - run: npm run build
       - uses: FirebaseExtended/action-hosting-deploy@v0
         with:
           repoToken: "${{ secrets.GH_TOKEN }}"
