@@ -44,21 +44,16 @@
         font-size: 16px;
       }
 
-      .loginWithGoogle {
-        width: 250px;
-        padding: 10px;
+      .buttonLoad {
+        background-color: #04AA6D;
         border: none;
-        border-radius: 10px;
-        cursor: pointer;
+        color: white;
+        padding: 12px 24px;
+        font-size: 16px;
 
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        gap: 15px;
-        
-        img {
-          width: 20px;
-          height: 20px;
+        .fa {
+          margin-left: -12px;
+          margin-right: 8px;
         }
       }
   

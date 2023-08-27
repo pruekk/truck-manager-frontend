@@ -12,11 +12,11 @@ import { useAuth } from "../../context/AuthContext"
 
 const Login = () => {
   const navigate = useNavigate()
-  const { dispatch } = useAuth()
+  const { loading, error, dispatch } = useAuth()
 
   const handleLoginSuccess = async (credentialResponse: CredentialResponse) => {
     dispatch({ type: "LOGIN_START" })
-    const customTokenWithEmail = await fetch(import.meta.env.VITE_LOGIN_API, {
+    const result = await fetch(import.meta.env.VITE_LOGIN_API, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -30,21 +30,28 @@ const Login = () => {
         console.error(err)
       })
 
-    if (customTokenWithEmail) {
+    if (!result.error) {
       dispatch({
         type: "LOGIN_SUCCESS",
         payload: {
-          token: customTokenWithEmail.customToken,
-          email: customTokenWithEmail.email,
+          token: result.customToken,
+          email: result.email,
         },
       })
       navigate("/")
+    } else {
+      dispatch({
+        type: "LOGIN_FAILURE",
+        payload: `${result.message} ${result.email}`,
+      })
     }
   }
 
   const handleLoginFailed = () => {
-    dispatch({ type: "LOGIN_FAILURE", payload: "Error: Login Failed" })
-    console.error("Login Failed!")
+    dispatch({
+      type: "LOGIN_FAILURE",
+      payload: "Error: Unexpected failed to login",
+    })
   }
 
   return (
@@ -55,14 +62,21 @@ const Login = () => {
           <p>Truck Manager</p>
         </span>
         <span className="title">Login</span>
-        <GoogleOAuthProvider clientId={GOOGLE.CLIENT_ID}>
-          <GoogleLogin
-            onSuccess={handleLoginSuccess}
-            onError={handleLoginFailed}
-            // type="icon"
-            width={250}
-          />
-        </GoogleOAuthProvider>
+        {loading ? (
+          <button className="buttonLoad">
+            <i className="fa fa-spinner fa-spin"></i>Loading
+          </button>
+        ) : (
+          <GoogleOAuthProvider clientId={GOOGLE.CLIENT_ID}>
+            <GoogleLogin
+              onSuccess={handleLoginSuccess}
+              onError={handleLoginFailed}
+              // type="icon"
+              width={250}
+            />
+          </GoogleOAuthProvider>
+        )}
+        {error && <h3>{error}</h3>}
         <p>
           You don't have an account?{" "}
           <Link className="link" to="/register">
