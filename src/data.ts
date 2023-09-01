@@ -1,5 +1,6 @@
 export const GOOGLE = {
-  CLIENT_ID: "122246639521-9lag1a2kpgqssjd56lukmb6r8qrs3gbb.apps.googleusercontent.com",
+  CLIENT_ID:
+    "122246639521-9lag1a2kpgqssjd56lukmb6r8qrs3gbb.apps.googleusercontent.com",
 }
 
 export const menu = [
@@ -9,7 +10,7 @@ export const menu = [
     listItems: [
       {
         id: 1,
-        title: "Homepage",
+        title: "Dashboard",
         url: "/",
         icon: "home.svg",
       },
@@ -39,12 +40,18 @@ export const menu = [
       },
       {
         id: 3,
+        title: "Cars",
+        url: "/cars",
+        icon: "truck.svg",
+      },
+      {
+        id: 4,
         title: "Orders",
         url: "/orders",
         icon: "order.svg",
       },
       {
-        id: 4,
+        id: 5,
         title: "Posts",
         url: "/posts",
         icon: "post.svg",
@@ -721,3 +728,26 @@ export const singleProduct = {
     },
   ],
 }
+
+export const cars = [
+  {
+    _id: "64c894f4ad30b662c42beb7b",
+    carId: "A201",
+    licensePlate: "xx-0000",
+    carType: "รถโม่",
+    initialWeight: 25000,
+    buyDate: "2020-01-25T01:00:00.000Z",
+    buyFrom: "Place",
+    taxDate: "2020-01-26T01:00:00.000Z",
+    proposalDate: "2020-01-27T01:00:00.000Z",
+    insuranceDate: "2020-01-29T01:00:00.000Z",
+    registrationDate: "2020-01-30T01:00:00.000Z",
+    price: 1000000,
+    vatPrice: 70000,
+    netPrice: 1070000,
+    status: "ใช้งาน",
+    editBy: "pruekanw@gmail.com",
+    createdAt: "2023-08-01T05:15:32.408Z",
+    updatedAt: "2023-08-01T08:36:26.686Z",
+  },
+]

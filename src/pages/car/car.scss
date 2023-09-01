@@ -1,0 +1,223 @@
+.sell__car {
+  padding: 0px 30px;
+  padding-bottom: 50px;
+
+  .sell__car-title {
+    margin-bottom: 2rem;
+    color: #fff;
+    font-weight: 500;
+    font-size: 1.5rem;
+  }
+
+  .sell__car-top {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 2rem;
+
+    .sell__car-img {
+      padding: 20px 0px;
+      background: var(--primary-color);
+      border-radius: 5px;
+      text-align: center;
+      cursor: pointer;
+
+      h2 {
+        color: var(--heading-color);
+        text-align-last: left;
+      }
+
+      .sell__car-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(2, 10vw);
+
+        .sell__car-grid-column img {
+          object-fit: cover;
+          width: 80%;
+        }
+      }
+    }
+
+    .detail {
+      padding: 20px;
+      border-radius: 5px;
+      background: var(--primary-color);
+      height: 370px;
+      padding-bottom: 70px;
+    
+      h3 {
+        color: var(--heading-color);
+        font-weight: 600;
+        margin-bottom: 30px;
+      }
+    
+      .item {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    
+        .property {
+          display: flex;
+          align-items: center;
+    
+          .itemTitle {
+            width: 150px;
+            font-weight: 400;
+          }
+          
+          .itemValue {
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+  }
+}
+
+.tracking__history {
+  padding: 20px 20px 20px 0;
+  border-radius: 5px;
+  background: var(--primary-color);
+  height: 370px;
+  padding-bottom: 70px;
+  cursor: pointer;
+
+    h3 {
+    color: var(--heading-color);
+    font-weight: 400;
+    margin-bottom: 30px;
+  }
+}
+
+.offer__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.offer__item {
+  padding: 20px;
+  border-radius: 5px;
+  // background: var(--primary-color);
+  background: rgba(220, 220, 220, 0.1);
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  column-gap: 2rem;
+  margin-bottom: 2rem;
+
+  .box__01 {
+    .client__name {
+      font-size: 1.2rem;
+      color: var(--heading-color);
+      margin-bottom: 10px;
+      font-weight: 400;
+    }
+
+    .avg__price {
+      color: #ef621c;
+      font-size: 1.1rem;
+      margin-bottom: 5px;
+
+      span {
+        color: #ddd;
+        font-size: 0.7rem;
+        font-weight: 400;
+      }
+    }
+
+    .market__price {
+      color: #ddd;
+      font-size: 0.8rem;
+      margin-bottom: 15px;
+      font-weight: 400;
+    }
+
+    .arrow__key {
+      width: 50px;
+      height: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ef621c;
+      color: #fff;
+      border-radius: 50px;
+      cursor: pointer;
+    }
+  }
+
+  .circle__wrapper {
+    .box__02 {
+      height: 80px;
+      width: 80px;
+    }
+
+    h4 {
+      color: var(--heading-color);
+      font-weight: 400;
+      font-size: 1rem;
+      margin-top: 15px;
+    }
+  }
+}
+
+.model__spend-icon {
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  border-radius: 5px;
+  margin-bottom: 10px;
+}
+
+.icon_text {
+  display: flex;
+  align-items: baseline;
+  gap: 10px
+}
+
+.spend__amount {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+}
+
+.spend__title {
+  color: #ddd;
+  font-weight: 400;
+  font-size: 0.8rem;
+}
+
+.box__03 {
+  .model__spend-icon {
+    background: rgba(64, 126, 249, 0.1);
+    color: #2884ff;
+  }
+
+  .spend__amount {
+    color: #2884ff;
+  }
+}
+
+.box__04 {
+  .model__spend-icon {
+    background: rgba(255, 126, 134, 0.1);
+    color: #ef621c;
+  }
+
+  .spend__amount {
+    color: #ef621c;
+  }
+}
+
+.box__05 {
+  .model__spend-icon {
+    background: rgba(161, 98, 247, 0.1);
+    color: #725cff;
+  }
+
+  .spend__amount {
+    color: #725cff;
+  }
+}
