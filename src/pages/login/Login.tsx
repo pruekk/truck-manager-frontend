@@ -9,7 +9,7 @@ import {
 } from "@react-oauth/google"
 import { GOOGLE } from "../../data"
 import { useAuth } from "../../context/AuthContext"
-import { useFilter } from "../../context/FilterContext"
+import { INIT_DATE, useFilter } from "../../context/FilterContext"
 
 const Login = () => {
   const navigate = useNavigate()
@@ -47,8 +47,11 @@ const Login = () => {
         },
       })
       filterDispatch({
-        type: "SET_FACTORY",
-        payload: result.allowedFactories[0],
+        type: "SETUP_FILTER_AFTER_LOGIN",
+        payload: {
+          date: INIT_DATE,
+          factory: result.allowedFactories[0],
+        },
       })
       navigate("/")
     } else {

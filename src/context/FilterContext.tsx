@@ -13,12 +13,14 @@ interface FilterState {
   dispatch: React.Dispatch<Action>
 }
 
+const newDate = new Date()
+export const INIT_DATE = [
+  { startDate: newDate, endDate: newDate, key: "selection" },
+]
+
 const factory = sessionStorage.getItem("factory") ?? "{}"
 const localDate = sessionStorage.getItem("date")
-const newDate = new Date()
-const date = localDate
-  ? JSON.parse(localDate)
-  : [{ startDate: newDate, endDate: newDate, key: "selection" }]
+const date = localDate ? JSON.parse(localDate) : INIT_DATE
 
 const INITIAL_STATE: FilterState = {
   date: date,
@@ -30,6 +32,12 @@ export const FilterContext = createContext<FilterState>(INITIAL_STATE)
 
 const FilterReducer = (state: FilterState, action: Action): FilterState => {
   switch (action.type) {
+    case "SETUP_FILTER_AFTER_LOGIN":
+      return {
+        ...state,
+        date: action.payload.date,
+        factory: action.payload.factory,
+      }
     case "SET_DATE":
       return {
         ...state,
