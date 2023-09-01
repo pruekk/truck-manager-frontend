@@ -14,13 +14,13 @@ interface FilterState {
 }
 
 const newDate = new Date()
-export const INIT_DATE = [
+export const INIT_DATE: Range[] = [
   { startDate: newDate, endDate: newDate, key: "selection" },
 ]
 
 const factory = sessionStorage.getItem("factory") ?? "{}"
 const localDate = sessionStorage.getItem("date")
-const date = localDate ? JSON.parse(localDate) : INIT_DATE
+const date: Range[] = localDate ? JSON.parse(localDate) : INIT_DATE
 
 const INITIAL_STATE: FilterState = {
   date: date,
