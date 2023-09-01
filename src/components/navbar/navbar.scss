@@ -18,6 +18,34 @@
     align-items: center;
     gap: 20px;
 
+    .headerSearchItem {
+      position: relative;
+
+      .headerSearchText {
+        cursor: pointer;
+        height: 42px;
+        width: 200px;
+        font-size: 14px;
+      }
+
+      .date {
+        position: absolute;
+        left: -60px;
+        top: 50px;
+        z-index: 1;
+      }
+    }
+
+    .filterFactory {
+      color: #3e484f;
+      width: 200px;
+
+      .css-13cymwt-control {
+        cursor: pointer;
+        background-color: #efefef;
+      }
+    }
+
     .icon{
       @include sm{
         display: none;
@@ -53,6 +81,10 @@
         height: 26px;
         border-radius: 50%;
         object-fit: cover;
+      }
+
+      i {
+        cursor: pointer;
       }
     }
   }

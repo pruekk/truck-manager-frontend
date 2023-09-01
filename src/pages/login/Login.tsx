@@ -9,13 +9,15 @@ import {
 } from "@react-oauth/google"
 import { GOOGLE } from "../../data"
 import { useAuth } from "../../context/AuthContext"
+import { useFilter } from "../../context/FilterContext"
 
 const Login = () => {
   const navigate = useNavigate()
-  const { loading, error, dispatch } = useAuth()
+  const { loading, error, dispatch: authDispatch } = useAuth()
+  const { dispatch: filterDispatch } = useFilter()
 
   const handleLoginSuccess = async (credentialResponse: CredentialResponse) => {
-    dispatch({ type: "LOGIN_START" })
+    authDispatch({ type: "LOGIN_START" })
     const result = await fetch(import.meta.env.VITE_LOGIN_API, {
       method: "POST",
       headers: {
@@ -29,18 +31,28 @@ const Login = () => {
       .catch((err) => {
         console.error(err)
       })
+    // console.log(result)
 
     if (!result.error) {
-      dispatch({
+      authDispatch({
         type: "LOGIN_SUCCESS",
         payload: {
           token: result.customToken,
           email: result.email,
+          picture: result.picture,
+          displayName: result.displayName,
+          isAdmin: result.isAdmin,
+          allowedFactories: result.allowedFactories,
+          allowedFeatures: result.allowedFeatures,
         },
+      })
+      filterDispatch({
+        type: "SET_FACTORY",
+        payload: result.allowedFactories[0],
       })
       navigate("/")
     } else {
-      dispatch({
+      authDispatch({
         type: "LOGIN_FAILURE",
         payload: `${result.message} ${result.email}`,
       })
@@ -48,7 +60,7 @@ const Login = () => {
   }
 
   const handleLoginFailed = () => {
-    dispatch({
+    authDispatch({
       type: "LOGIN_FAILURE",
       payload: "Error: Unexpected failed to login",
     })

@@ -1,13 +1,36 @@
 import { createContext, useEffect, useReducer, useContext } from "react"
+import {
+  checkAdminPermission,
+  getAllowedFactories,
+  getAllowedFeatures,
+} from "../utils/handleJwt"
 
 interface Action {
   type: string
   payload?: any
 }
 
-interface User {
-  token: string | null
-  email: string | null
+export interface Factories {
+  factoryId: string
+  factoryName: string
+}
+
+export interface Features {
+  name: string
+  view: boolean
+  add: boolean
+  edit: boolean
+  delete: boolean
+}
+
+export interface User {
+  token: string
+  email: string
+  picture: string
+  displayName: string
+  isAdmin: boolean
+  allowedFactories: Factories[]
+  allowedFeatures: Features[]
 }
 
 interface AuthState {
@@ -17,11 +40,33 @@ interface AuthState {
   dispatch: React.Dispatch<Action>
 }
 
+const noUser = {
+  token: "",
+  email: "",
+  picture: "",
+  displayName: "",
+  isAdmin: false,
+  allowedFactories: [],
+  allowedFeatures: [],
+}
+const token = sessionStorage.getItem("customToken") ?? ""
+const email = sessionStorage.getItem("email") ?? ""
+const picture = sessionStorage.getItem("picture") ?? ""
+const displayName = sessionStorage.getItem("displayName") ?? ""
+const isAdmin = checkAdminPermission(token)
+const allowedFactories = getAllowedFactories(token)
+const allowedFeatures = getAllowedFeatures(token)
+
 const INITIAL_STATE: AuthState = {
-  user: localStorage.getItem("customToken")
+  user: sessionStorage.getItem("customToken")
     ? {
-        token: localStorage.getItem("customToken"),
-        email: null,
+        token: token,
+        email: email,
+        picture: picture,
+        displayName: displayName,
+        isAdmin: isAdmin,
+        allowedFactories: allowedFactories,
+        allowedFeatures: allowedFeatures,
       }
     : null,
   loading: false,
@@ -68,10 +113,13 @@ export const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [authState, dispatch] = useReducer(AuthReducer, INITIAL_STATE)
+  const user = authState.user ?? noUser
 
   useEffect(() => {
-    authState.user?.token &&
-      localStorage.setItem("customToken", authState.user.token)
+    sessionStorage.setItem("customToken", user.token)
+    sessionStorage.setItem("email", user.email)
+    sessionStorage.setItem("picture", user.picture)
+    sessionStorage.setItem("displayName", user.displayName)
   }, [authState])
 
   return (
