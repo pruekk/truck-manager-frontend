@@ -46,11 +46,9 @@ const Login = () => {
           allowedFeatures: result.allowedFeatures,
         },
       })
-      const newDate = new Date()
       filterDispatch({
         type: "SETUP_FILTER_AFTER_LOGIN",
         payload: {
-          date: [{ startDate: newDate, endDate: newDate, key: "selection" }],
           factory: result.allowedFactories[0],
         },
       })

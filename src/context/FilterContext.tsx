@@ -35,7 +35,7 @@ const FilterReducer = (state: FilterState, action: Action): FilterState => {
     case "SETUP_FILTER_AFTER_LOGIN":
       return {
         ...state,
-        date: action.payload.date,
+        date: INIT_DATE,
         factory: action.payload.factory,
       }
     case "SET_DATE":
