@@ -14,7 +14,7 @@ interface FilterState {
 }
 
 const newDate = new Date()
-export const INIT_DATE: Range[] = [
+const INIT_DATE: Range[] = [
   { startDate: newDate, endDate: newDate, key: "selection" },
 ]
 
