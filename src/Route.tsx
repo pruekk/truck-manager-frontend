@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate, Outlet } from "react-router-dom"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import { useEffect, useState } from "react"
 
 import Navbar from "./components/navbar/Navbar"
 import Menu from "./components/menu/Menu"
@@ -20,16 +21,26 @@ import { isTokenExpired } from "./utils/handleJwt"
 const queryClient = new QueryClient()
 
 const Layout = () => {
-  const { user } = useAuth()
+  const { user, dispatch } = useAuth()
   const token = user?.token || ""
+  const [tokenExpired, setTokenExpired] = useState(false)
 
-  if (!user || isTokenExpired(token)) {
-    return <Navigate to="/login" />
+  const [theme, setTheme] = useState("dark")
+  const toggleTheme = () => {
+    setTheme(theme === "light" ? "dark" : "light")
   }
 
+  useEffect(() => {
+    if (isTokenExpired(token)) {
+      setTokenExpired(true)
+      dispatch({ type: "LOGOUT" })
+    }
+  }, [])
+
+  if (!user || tokenExpired) return <Navigate to="/login" />
   return (
-    <div className="main">
-      <Navbar />
+    <div className="main" app-theme={theme}>
+      <Navbar theme={theme} handleThemeChange={toggleTheme} />
       <div className="container">
         <div className="menuContainer">
           <Menu />
@@ -82,7 +93,7 @@ const routes = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <Login />,
+    element: <Login theme="dark" />,
   },
 ])
 

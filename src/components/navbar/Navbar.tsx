@@ -10,10 +10,11 @@ import DateFormat from "../../utils/DateFormat"
 import { Factories, useAuth } from "../../context/AuthContext"
 import { useFilter } from "../../context/FilterContext"
 
-const Navbar = () => {
+const Navbar = ({ theme, handleThemeChange }: any) => {
   const { user, dispatch: authDispatch } = useAuth()
   const { date, factory, dispatch: filterDispatch } = useFilter()
   const [openDate, setOpenDate] = useState(false)
+  const factoryOptions = user?.allowedFactories || []
 
   const handleSetDate = (dateList: Range[]) => {
     filterDispatch({ type: "SET_DATE", payload: dateList })
@@ -25,7 +26,6 @@ const Navbar = () => {
     }
   }
 
-  const factoryOptions = user?.allowedFactories || []
   const handleFactoryChanged = (fac: Factories) => {
     filterDispatch({ type: "SET_FACTORY", payload: fac })
   }
@@ -82,6 +82,13 @@ const Navbar = () => {
           <img src="/notifications.svg" alt="" />
           <span>1</span>
         </div> */}
+        <div className="theme" onClick={handleThemeChange}>
+          {theme === "dark" ? (
+            <i className="fa-regular fa-lightbulb"></i>
+          ) : (
+            <i className="fa-solid fa-lightbulb"></i>
+          )}
+        </div>
         <div className="user">
           <img src={user?.picture ? user.picture : undefined} alt="" />
           <span>{user?.displayName}</span>

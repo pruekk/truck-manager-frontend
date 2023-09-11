@@ -11,7 +11,7 @@ import { GOOGLE } from "../../data"
 import { useAuth } from "../../context/AuthContext"
 import { useFilter } from "../../context/FilterContext"
 
-const Login = () => {
+const Login = ({ theme }: any) => {
   const navigate = useNavigate()
   const { loading, error, dispatch: authDispatch } = useAuth()
   const { dispatch: filterDispatch } = useFilter()
@@ -69,7 +69,7 @@ const Login = () => {
   }
 
   return (
-    <div className="formContainer">
+    <div className="formContainer" app-theme={theme}>
       <div className="formWrapper">
         <span className="logo">
           <img src={CompanyLogo} />
