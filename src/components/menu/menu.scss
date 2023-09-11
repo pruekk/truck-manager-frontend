@@ -2,6 +2,9 @@
 @import "../../styles/responsive.scss";
 
 .menu {
+  height: 95vh;
+  overflow: hidden;
+
   .item {
     display: flex;
     flex-direction: column;
@@ -11,7 +14,7 @@
     .title {
       font-size: 12px;
       font-weight: 200;
-      color: $soft-color;
+      color: var(--soft-color);
       text-transform: uppercase;
 
       @include lg{
@@ -27,14 +30,22 @@
       border-radius: 5px;
 
       &:hover {
-        background-color: $soft-bg;
+        background-color: var(--soft-bg);
       }
 
-      .listItemTitle{
+      img {
+        filter: invert(33%) sepia(7%) saturate(1194%) hue-rotate(181deg) brightness(97%) contrast(88%);
+      }
+
+      .listItemTitle {
         @include lg{
           display: none;
         }
       }
     }
   }
+}
+
+.menu:hover {
+  overflow: auto;
 }

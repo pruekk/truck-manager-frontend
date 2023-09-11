@@ -1,10 +1,18 @@
+@import "../../styles/variables.scss";
+@import "../../styles/responsive.scss";
+
 .footer{
+  // position: fixed;
+  // bottom: 0;
+  // width: 100%;
+
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 30px;
 
   span{
+    color: var(--main-color);
 
     &:first-child{
       font-weight: bold;

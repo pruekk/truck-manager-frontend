@@ -28,11 +28,11 @@ const Menu = () => {
 
   return (
     <div className="menu">
-      {filteredMenu.map((item) => (
-        <div className="item" key={item.id}>
+      {filteredMenu.map((item, mainIndex) => (
+        <div className="item" key={mainIndex}>
           <span className="title">{item.title}</span>
-          {item.listItems.map((listItem) => (
-            <Link to={listItem.url} className="listItem" key={listItem.id}>
+          {item.listItems.map((listItem, itemIndex) => (
+            <Link to={listItem.url} className="listItem" key={itemIndex}>
               <img src={listItem.icon} alt="" />
               <span className="listItemTitle">{listItem.title}</span>
             </Link>

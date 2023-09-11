@@ -1,6 +1,7 @@
 import { createContext, useReducer, useContext, useEffect } from "react"
 import { Range } from "react-date-range"
 import { Factories } from "./AuthContext"
+import dayjs from "dayjs"
 
 interface Action {
   type: string
@@ -13,14 +14,27 @@ interface FilterState {
   dispatch: React.Dispatch<Action>
 }
 
-const newDate = new Date()
+const start = dayjs()
+const end = start.add(10, "hour")
 const INIT_DATE: Range[] = [
-  { startDate: newDate, endDate: newDate, key: "selection" },
+  { startDate: start.toDate(), endDate: end.toDate(), key: "selection" },
 ]
 
 const factory = sessionStorage.getItem("factory") ?? "{}"
 const localDate = sessionStorage.getItem("date")
-const date: Range[] = localDate ? JSON.parse(localDate) : INIT_DATE
+let date: Range[]
+if (localDate) {
+  const parseLocalDate = JSON.parse(localDate)
+  date = [
+    {
+      startDate: dayjs(parseLocalDate[0]?.startDate).toDate(),
+      endDate: dayjs(parseLocalDate[0]?.endDate).toDate(),
+      key: "selection",
+    },
+  ]
+} else {
+  date = INIT_DATE
+}
 
 const INITIAL_STATE: FilterState = {
   date: date,
@@ -35,7 +49,7 @@ const FilterReducer = (state: FilterState, action: Action): FilterState => {
     case "SETUP_FILTER_AFTER_LOGIN":
       return {
         ...state,
-        date: INIT_DATE,
+        date: INITIAL_STATE.date,
         factory: action.payload.factory,
       }
     case "SET_DATE":
