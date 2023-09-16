@@ -5,122 +5,187 @@ export const GOOGLE = {
 
 export const menu = [
   {
-    id: 1,
-    title: "main",
+    title: "Main",
     listItems: [
       {
-        id: 1,
         title: "Dashboard",
         url: "/",
-        icon: "home.svg",
+        icon: "fa-solid fa-chart-line",
       },
       {
-        id: 2,
         title: "Profile",
         url: "/users/1",
-        icon: "user.svg",
+        icon: "fa-regular fa-user",
       },
     ],
   },
   {
-    id: 2,
-    title: "lists",
+    title: "Setting",
     listItems: [
       {
-        id: 1,
-        title: "Users",
-        url: "/users",
-        icon: "user.svg",
+        title: "Permission",
+        url: "/permissions",
+        icon: "fa-solid fa-gear",
+      },
+    ],
+  },
+  {
+    title: "Base",
+    listItems: [
+      {
+        title: "Factory",
+        url: "/factories",
+        icon: "fa-regular fa-building",
       },
       {
-        id: 2,
-        title: "Products",
-        url: "/products",
-        icon: "product.svg",
-      },
-      {
-        id: 3,
         title: "Cars",
         url: "/cars",
-        icon: "truck.svg",
+        icon: "fa-solid fa-truck",
       },
       {
-        id: 4,
-        title: "Orders",
-        url: "/orders",
-        icon: "order.svg",
+        title: "Employee",
+        url: "/employees",
+        icon: "fa-solid fa-people-group",
       },
       {
-        id: 5,
-        title: "Posts",
-        url: "/posts",
-        icon: "post.svg",
+        title: "Fuel",
+        url: "/fuels",
+        icon: "fa-solid fa-droplet",
+      },
+      {
+        title: "Pricing",
+        url: "/prices",
+        icon: "fa-solid fa-coins",
       },
     ],
   },
   {
-    id: 3,
-    title: "general",
-    listItems: [
-      {
-        id: 1,
-        title: "Elements",
-        url: "/",
-        icon: "element.svg",
-      },
-      {
-        id: 2,
-        title: "Notes",
-        url: "/",
-        icon: "note.svg",
-      },
-      {
-        id: 3,
-        title: "Forms",
-        url: "/",
-        icon: "form.svg",
-      },
-      {
-        id: 4,
-        title: "Calendar",
-        url: "/",
-        icon: "calendar.svg",
-      },
-    ],
-  },
-  {
-    id: 4,
     title: "Maintenance",
     listItems: [
       {
-        id: 1,
-        title: "Settings",
-        url: "/",
-        icon: "setting.svg",
+        title: "Replacement",
+        url: "/replacements",
+        icon: "fa-solid fa-shuffle",
       },
       {
-        id: 2,
-        title: "Backups",
-        url: "/",
-        icon: "backup.svg",
+        title: "Repair",
+        url: "/repairs",
+        icon: "fa-solid fa-screwdriver-wrench",
+      },
+      {
+        title: "Stock",
+        url: "/stocks",
+        icon: "fa-solid fa-barcode",
+      },
+      {
+        title: "Store",
+        url: "/stores",
+        icon: "fa-solid fa-store",
       },
     ],
   },
   {
-    id: 5,
-    title: "analytics",
+    title: "Tax",
     listItems: [
       {
-        id: 1,
-        title: "Charts",
-        url: "/",
-        icon: "chart.svg",
+        title: "PND",
+        url: "/tax-pnd",
+        icon: "fa-solid fa-percent",
       },
       {
-        id: 2,
-        title: "Logs",
+        title: "SSO",
+        url: "/tax-sso",
+        icon: "fa-solid fa-percent",
+      },
+    ],
+  },
+  {
+    title: "Company",
+    listItems: [
+      {
+        title: "Company Detail",
+        url: "/company-detail",
+        icon: "fa-solid fa-info",
+      },
+      {
+        title: "Company Income",
+        url: "/company-income",
+        icon: "fa-solid fa-money-bill-trend-up",
+      },
+      {
+        title: "Company Expense",
+        url: "/company-expense",
+        icon: "fa-solid fa-baht-sign",
+      },
+      {
+        title: "Customer",
+        url: "/customers",
+        icon: "fa-solid fa-user-tie",
+      },
+    ],
+  },
+  {
+    title: "Order",
+    listItems: [
+      {
+        title: "Transportation Price",
+        url: "/transportation-prices",
+        icon: "fa-solid fa-file-invoice-dollar",
+      },
+      {
+        title: "Agency",
+        url: "/agencies",
+        icon: "fa-solid fa-location-dot",
+      },
+      {
+        title: "DP",
+        url: "/dps",
+        icon: "fa-solid fa-receipt",
+      },
+      {
+        title: "Place Order",
         url: "/",
-        icon: "log.svg",
+        icon: "fa-solid fa-file-invoice",
+      },
+    ],
+  },
+  {
+    title: "Employee",
+    listItems: [
+      {
+        title: "Employee Income",
+        url: "/emplyee-income",
+        icon: "fa-solid fa-money-bill-trend-up",
+      },
+      {
+        title: "Employee Expense",
+        url: "/employee-expense",
+        icon: "fa-solid fa-baht-sign",
+      },
+      {
+        title: "Employee Summary",
+        url: "/employee-summary",
+        icon: "fa-solid fa-magnifying-glass-chart",
+      },
+    ],
+  },
+  {
+    title: "Energy",
+    listItems: [
+      {
+        title: "Oil",
+        url: "/oils",
+        icon: "fa-solid fa-gas-pump",
+      },
+      {
+        title: "Allocation",
+        url: "/",
+        icon: "fa-solid fa-right-left",
+      },
+      {
+        title: "Oil Summary",
+        url: "/",
+        icon: "fa-solid fa-magnifying-glass-chart",
       },
     ],
   },

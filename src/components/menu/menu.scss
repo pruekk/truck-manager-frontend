@@ -37,6 +37,11 @@
         filter: invert(33%) sepia(7%) saturate(1194%) hue-rotate(181deg) brightness(97%) contrast(88%);
       }
 
+      i {
+        width: 20px;
+        height: 20px;
+      }
+
       .listItemTitle {
         @include lg{
           display: none;
