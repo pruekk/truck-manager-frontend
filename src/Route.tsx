@@ -8,6 +8,7 @@ import Footer from "./components/footer/Footer"
 
 import PageNotFound from "./pages/404/404"
 import Home from "./pages/home/Home"
+import Dashboard from "./pages/dashboard/Dashboard"
 import Login from "./pages/login/Login"
 
 import Users from "./pages/users/Users"
@@ -72,6 +73,10 @@ const routes = createBrowserRouter([
       {
         path: "/",
         element: <Home />,
+      },
+      {
+        path: "/dashboard",
+        element: <Dashboard />,
       },
       {
         path: "/users",

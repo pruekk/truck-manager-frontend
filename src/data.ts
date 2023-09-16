@@ -9,7 +9,7 @@ export const menu = [
     listItems: [
       {
         title: "Dashboard",
-        url: "/",
+        url: "/dashboard",
         icon: "fa-solid fa-chart-line",
       },
       {

@@ -37,10 +37,10 @@ const Navbar = ({ theme, handleThemeChange }: any) => {
 
   return (
     <div className="navbar">
-      <div className="logo">
+      <a className="logo" href="/">
         <img src="company_logo.png" alt="" />
         <span>Truck Manager</span>
-      </div>
+      </a>
       <div className="icons">
         <div className="headerSearchItem">
           {/* <i className="fa-regular fa-calendar-days"></i> */}

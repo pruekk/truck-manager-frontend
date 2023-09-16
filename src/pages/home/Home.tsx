@@ -1,50 +1,23 @@
-import BarChartBox from "../../components/barChartBox/BarChartBox";
-import BigChartBox from "../../components/bigChartBox/BigChartBox";
-import ChartBox from "../../components/chartBox/ChartBox";
-import PieChartBox from "../../components/pieCartBox/PieChartBox";
-import TopBox from "../../components/topBox/TopBox";
-import {
-  barChartBoxRevenue,
-  barChartBoxVisit,
-  chartBoxConversion,
-  chartBoxProduct,
-  chartBoxRevenue,
-  chartBoxUser,
-} from "../../data";
-import "./home.scss";
+import "./home.scss"
 
-const Home = () => {
+const Home = ({ theme }: any) => {
   return (
-    <div className="home">
-      <div className="box box1">
-        <TopBox />
-      </div>
-      <div className="box box2">
-        <ChartBox {...chartBoxUser} />
-      </div>
-      <div className="box box3">
-        <ChartBox {...chartBoxProduct} />
-      </div>
-      <div className="box box4">
-        <PieChartBox />
-      </div>
-      <div className="box box5">
-        <ChartBox {...chartBoxConversion} />
-      </div>
-      <div className="box box6">
-        <ChartBox {...chartBoxRevenue} />
-      </div>
-      <div className="box box7">
-        <BigChartBox />
-      </div>
-      <div className="box box8">
-        <BarChartBox {...barChartBoxVisit} />
-      </div>
-      <div className="box box9">
-        <BarChartBox {...barChartBoxRevenue} />
+    <div className="home" app-theme={theme}>
+      <div className="content">
+        <h2 className="header">Truck Manager</h2>
+        <h4>Transportation Service Portal</h4>
+        <p>
+          We provided <p className="hightlight">high-quality</p> service with a
+          prompt and <p className="hightlight">professional</p> driver.
+        </p>
+        <div className="icons">
+          <i className="fa-solid fa-truck-fast"></i>
+          <i className="fa-solid fa-building-shield"></i>
+          <i className="fa-regular fa-face-smile"></i>
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
