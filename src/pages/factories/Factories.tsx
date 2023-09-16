@@ -80,7 +80,7 @@ const Factories = () => {
   // });
 
   return (
-    <div className="cars">
+    <div className="factories">
       <div className="info">
         <h1>Factories</h1>
         <button onClick={() => setOpen(true)}>Add</button>

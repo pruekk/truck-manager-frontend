@@ -16,6 +16,7 @@ import Login from "./pages/login/Login"
 import User from "./pages/user/User"
 import Product from "./pages/product/Product"
 import Car from "./pages/car/Car"
+import Factory from "./pages/factory/Factory"
 
 import { useAuth } from "./context/AuthContext"
 import { isTokenExpired } from "./utils/handleJwt"
@@ -95,6 +96,10 @@ const routes = createBrowserRouter([
       {
         path: "/cars/:id",
         element: <Car />,
+      },
+      {
+        path: "/factories/:id",
+        element: <Factory />,
       },
     ],
   },
