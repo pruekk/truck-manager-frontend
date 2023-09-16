@@ -6,6 +6,7 @@ import Navbar from "./components/navbar/Navbar"
 import Menu from "./components/menu/Menu"
 import Footer from "./components/footer/Footer"
 
+import PageNotFound from "./pages/404/404"
 import Home from "./pages/home/Home"
 import Users from "./pages/users/Users"
 import Products from "./pages/products/Products"
@@ -60,6 +61,7 @@ const routes = createBrowserRouter([
   {
     path: "/",
     element: <Layout />,
+    errorElement: <PageNotFound theme="dark" />,
     children: [
       {
         path: "/",
