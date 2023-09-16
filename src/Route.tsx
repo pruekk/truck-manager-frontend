@@ -10,6 +10,7 @@ import PageNotFound from "./pages/404/404"
 import Home from "./pages/home/Home"
 import Users from "./pages/users/Users"
 import Products from "./pages/products/Products"
+import Factories from "./pages/factories/Factories"
 import Cars from "./pages/cars/Cars"
 import Login from "./pages/login/Login"
 import User from "./pages/user/User"
@@ -74,6 +75,10 @@ const routes = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+      },
+      {
+        path: "/factories",
+        element: <Factories />,
       },
       {
         path: "/cars",

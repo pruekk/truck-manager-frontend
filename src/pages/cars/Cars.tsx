@@ -3,9 +3,30 @@ import { GridColDef } from "@mui/x-data-grid"
 import DataTable from "../../components/dataTable/DataTable"
 import Add from "../../components/addModal/AddModal"
 import DateFormat from "../../utils/DateFormat"
-import { cars } from "../../data"
-
 import "./cars.scss"
+
+const dummyCars = [
+  {
+    _id: "64c894f4ad30b662c42beb7b",
+    carId: "A201",
+    licensePlate: "xx-0000",
+    carType: "รถโม่",
+    initialWeight: 25000,
+    buyDate: "2020-01-25T01:00:00.000Z",
+    buyFrom: "Place",
+    taxDate: "2020-01-26T01:00:00.000Z",
+    proposalDate: "2020-01-27T01:00:00.000Z",
+    insuranceDate: "2020-01-29T01:00:00.000Z",
+    registrationDate: "2020-01-30T01:00:00.000Z",
+    price: 1000000,
+    vatPrice: 70000,
+    netPrice: 1070000,
+    status: "ใช้งาน",
+    editBy: "pruekanw@gmail.com",
+    createdAt: "2023-08-01T05:15:32.408Z",
+    updatedAt: "2023-08-01T08:36:26.686Z",
+  },
+]
 
 const columns: GridColDef[] = [
   {
@@ -124,7 +145,7 @@ const Cars = () => {
         <h1>Cars</h1>
         <button onClick={() => setOpen(true)}>Add</button>
       </div>
-      <DataTable slug="cars" columns={columns} rows={cars} customId="carId" />
+      <DataTable slug="cars" columns={columns} rows={dummyCars} customId="carId" />
       {/* TEST THE API */}
 
       {/* {isLoading ? (
