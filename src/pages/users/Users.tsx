@@ -1,9 +1,9 @@
-import { GridColDef } from "@mui/x-data-grid";
-import DataTable from "../../components/dataTable/DataTable";
-import "./users.scss";
-import { useState } from "react";
-import Add from "../../components/add/Add";
-import { userRows } from "../../data";
+import { GridColDef } from "@mui/x-data-grid"
+import DataTable from "../../components/dataTable/DataTable"
+import "./users.scss"
+import { useState } from "react"
+import Add from "../../components/addModal/AddModal"
+import { userRows } from "../../data"
 // import { useQuery } from "@tanstack/react-query";
 
 const columns: GridColDef[] = [
@@ -13,7 +13,7 @@ const columns: GridColDef[] = [
     headerName: "Avatar",
     width: 100,
     renderCell: (params) => {
-      return <img src={params.row.img || "/noavatar.png"} alt="" />;
+      return <img src={params.row.img || "/noavatar.png"} alt="" />
     },
   },
   {
@@ -52,10 +52,10 @@ const columns: GridColDef[] = [
     width: 150,
     type: "boolean",
   },
-];
+]
 
 const Users = () => {
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   // TEST THE API
 
@@ -83,7 +83,7 @@ const Users = () => {
       )} */}
       {open && <Add slug="user" columns={columns} setOpen={setOpen} />}
     </div>
-  );
-};
+  )
+}
 
-export default Users;
+export default Users

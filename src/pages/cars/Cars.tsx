@@ -1,7 +1,7 @@
 import { useState } from "react"
 import { GridColDef } from "@mui/x-data-grid"
 import DataTable from "../../components/dataTable/DataTable"
-import Add from "../../components/add/Add"
+import Add from "../../components/addModal/AddModal"
 import DateFormat from "../../utils/DateFormat"
 import { cars } from "../../data"
 
@@ -122,7 +122,7 @@ const Cars = () => {
     <div className="cars">
       <div className="info">
         <h1>Cars</h1>
-        <button onClick={() => setOpen(true)}>Add New Cars</button>
+        <button onClick={() => setOpen(true)}>Add</button>
       </div>
       <DataTable slug="cars" columns={columns} rows={cars} customId="carId" />
       {/* TEST THE API */}

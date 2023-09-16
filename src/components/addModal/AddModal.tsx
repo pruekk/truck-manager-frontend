@@ -1,15 +1,14 @@
-import { GridColDef } from "@mui/x-data-grid";
-import "./add.scss";
+import { GridColDef } from "@mui/x-data-grid"
+import "./addModal.scss"
 // import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 type Props = {
-  slug: string;
-  columns: GridColDef[];
-  setOpen: React.Dispatch<React.SetStateAction<boolean>>;
-};
+  slug: string
+  columns: GridColDef[]
+  setOpen: React.Dispatch<React.SetStateAction<boolean>>
+}
 
 const Add = (props: Props) => {
-
   // TEST THE API
 
   // const queryClient = useQueryClient();
@@ -40,22 +39,34 @@ const Add = (props: Props) => {
   // });
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+    e.preventDefault()
 
     //add new item
     // mutation.mutate();
     props.setOpen(false)
-  };
+  }
+
+  const handleClose = () => {
+    props.setOpen(false)
+    document.body.style.overflowY = "unset"
+  }
+
+  document.body.style.overflowY = "hidden"
   return (
     <div className="add">
       <div className="modal">
-        <span className="close" onClick={() => props.setOpen(false)}>
-          X
+        <span className="close" onClick={handleClose}>
+          <i className="fa-regular fa-circle-xmark"></i>
         </span>
         <h1>Add new {props.slug}</h1>
         <form onSubmit={handleSubmit}>
           {props.columns
-            .filter((item) => item.field !== "id" && item.field !== "img")
+            .filter(
+              (item) =>
+                item.field !== "id" &&
+                item.field !== "img" &&
+                item.field !== "editBy"
+            )
             .map((column) => (
               <div className="item">
                 <label>{column.headerName}</label>
@@ -66,7 +77,7 @@ const Add = (props: Props) => {
         </form>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Add;
+export default Add
