@@ -8,15 +8,19 @@ import Footer from "./components/footer/Footer"
 
 import PageNotFound from "./pages/404/404"
 import Home from "./pages/home/Home"
+import Login from "./pages/login/Login"
+
 import Users from "./pages/users/Users"
 import Products from "./pages/products/Products"
 import Factories from "./pages/factories/Factories"
 import Cars from "./pages/cars/Cars"
-import Login from "./pages/login/Login"
+import Employees from "./pages/employees/Employees"
+
 import User from "./pages/user/User"
 import Product from "./pages/product/Product"
 import Car from "./pages/car/Car"
 import Factory from "./pages/factory/Factory"
+import Employee from "./pages/employee/Employee"
 
 import { useAuth } from "./context/AuthContext"
 import { isTokenExpired } from "./utils/handleJwt"
@@ -74,32 +78,40 @@ const routes = createBrowserRouter([
         element: <Users />,
       },
       {
-        path: "/products",
-        element: <Products />,
-      },
-      {
-        path: "/factories",
-        element: <Factories />,
-      },
-      {
-        path: "/cars",
-        element: <Cars />,
-      },
-      {
         path: "/users/:id",
         element: <User />,
+      },
+      {
+        path: "/products",
+        element: <Products />,
       },
       {
         path: "/products/:id",
         element: <Product />,
       },
       {
-        path: "/cars/:id",
-        element: <Car />,
+        path: "/factories",
+        element: <Factories />,
       },
       {
         path: "/factories/:id",
         element: <Factory />,
+      },
+      {
+        path: "/cars",
+        element: <Cars />,
+      },
+      {
+        path: "/cars/:id",
+        element: <Car />,
+      },
+      {
+        path: "/employees",
+        element: <Employees />,
+      },
+      {
+        path: "/employees/:id",
+        element: <Employee />,
       },
     ],
   },
