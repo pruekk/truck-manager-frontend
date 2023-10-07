@@ -8,6 +8,7 @@ type Props = {
   rows: object[]
   slug: string
   customId?: string
+  disabledEdit?: boolean
 }
 
 const DataTable = (props: Props) => {
@@ -34,14 +35,20 @@ const DataTable = (props: Props) => {
   const actionColumn: GridColDef = {
     field: "action",
     headerName: "Action",
-    width: 100,
+    headerAlign: 'center',
+    width: 70,
+    align: "center",
     renderCell: (params) => {
       const id = props.customId ? params.row[props.customId] : params.id
       return (
         <div className="action">
-          <Link to={`/${props.slug}/${id}`}>
-            <img src="/view.svg" alt="" />
-          </Link>
+          {props.disabledEdit ? (
+            <></>
+          ) : (
+            <Link to={`/${props.slug}/${id}`}>
+              <img src="/view.svg" alt="" />
+            </Link>
+          )}
           <div className="delete" onClick={() => handleDelete(id)}>
             <img src="/delete.svg" alt="" />
           </div>

@@ -3,30 +3,37 @@ import { GridColDef } from "@mui/x-data-grid"
 import DataTable from "../../components/dataTable/DataTable"
 import Add from "../../components/addModal/AddModal"
 import DateFormat from "../../utils/DateFormat"
-import "./factories.scss"
+import "./fuels.scss"
 
-const dummyFactories = [
+const dummyFuels = [
   {
     _id: "64c894f4ad30b662c42beb7b",
+    date: "2020-01-26T01:00:00.000Z",
     factoryId: "FC272",
-    name: "Nong Yai",
-    factoryCode: "F272",
-    startDate: "2020-01-26T01:00:00.000Z",
-    address: "30 M1 Nong Yai Nong Yai Chonburi 20190",
+    distanceId: "1",
+    cubicId: "5.00",
+    amount: "6.5",
     editBy: "pruekanw@gmail.com",
   },
   {
     _id: "64c894f4ad30b662c42beb7a",
-    factoryId: "FC256",
-    name: "Ban Bueng",
-    factoryCode: "F256",
-    startDate: "2020-01-26T01:00:00.000Z",
-    address: "Ban Bueng Chonburi 20190",
+    date: "2020-01-26T01:00:00.000Z",
+    factoryId: "FC272",
+    distanceId: "A",
+    cubicId: "5.00",
+    amount: "30.0",
     editBy: "pruekanw@gmail.com",
   },
 ]
 
 const columns: GridColDef[] = [
+  {
+    field: "date",
+    headerName: "date",
+    type: "Date",
+    minWidth: 100,
+    valueFormatter: (date) => DateFormat(date.value),
+  },
   {
     field: "factoryId",
     headerName: "factoryId",
@@ -34,39 +41,32 @@ const columns: GridColDef[] = [
     minWidth: 100,
   },
   {
-    field: "name",
-    headerName: "name",
-    type: "string",
-    minWidth: 150
-  },
-  {
-    field: "factoryCode",
-    headerName: "factoryCode",
+    field: "distanceId",
+    headerName: "distanceId",
     type: "string",
     minWidth: 100,
   },
   {
-    field: "startDate",
-    headerName: "startDate",
-    type: "Date",
+    field: "cubicId",
+    headerName: "cubicId",
+    type: "string",
     minWidth: 100,
-    valueFormatter: (date) => DateFormat(date.value),
   },
   {
-    field: "address",
-    headerName: "address",
+    field: "amount",
+    headerName: "amount",
     type: "string",
-    flex: 2,
+    minWidth: 100,
   },
   {
     field: "editBy",
     headerName: "editBy",
     type: "string",
-    flex: 1,
+    flex: 1
   },
 ]
 
-const Factories = () => {
+const Fuels = () => {
   const [open, setOpen] = useState(false)
 
   // TEST THE API
@@ -80,16 +80,16 @@ const Factories = () => {
   // });
 
   return (
-    <div className="factories">
+    <div className="fuels">
       <div className="info">
-        <h1>Factories</h1>
+        <h1>Fuels</h1>
         <button onClick={() => setOpen(true)}>Add</button>
       </div>
       <DataTable
-        slug="factories"
+        slug="fuels"
         columns={columns}
-        rows={dummyFactories}
-        customId="factoryId"
+        rows={dummyFuels}
+        disabledEdit
       />
       {/* TEST THE API */}
 
@@ -103,4 +103,4 @@ const Factories = () => {
   )
 }
 
-export default Factories
+export default Fuels

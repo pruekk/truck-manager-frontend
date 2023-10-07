@@ -16,6 +16,7 @@ import Products from "./pages/products/Products"
 import Factories from "./pages/factories/Factories"
 import Cars from "./pages/cars/Cars"
 import Employees from "./pages/employees/Employees"
+import Fuels from "./pages/fuels/Fuels"
 
 import User from "./pages/user/User"
 import Product from "./pages/product/Product"
@@ -117,6 +118,10 @@ const routes = createBrowserRouter([
       {
         path: "/employees/:id",
         element: <Employee />,
+      },
+      {
+        path: "/fuels",
+        element: <Fuels />,
       },
     ],
   },

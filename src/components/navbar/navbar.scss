@@ -18,15 +18,23 @@
     display: flex;
     align-items: center;
     gap: 20px;
+    height: 38px;
+    cursor: pointer;
 
     .headerSearchItem {
       position: relative;
+      height: 100%;
 
       .headerSearchText {
         cursor: pointer;
-        height: 42px;
+        height: 100%;
         width: 200px;
         font-size: 14px;
+        border-color: hsl(0, 0%, 80%);
+        border-radius: 4px;
+        border-style: solid;
+        border-width: 1px;
+        background-color: #ffffff;
       }
 
       .date {
@@ -41,9 +49,8 @@
       color: #3e484f;
       width: 200px;
 
-      .css-13cymwt-control {
+      .css-13cymwt-control{
         cursor: pointer;
-        background-color: #efefef;
       }
     }
 

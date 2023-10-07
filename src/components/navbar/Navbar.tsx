@@ -68,6 +68,7 @@ const Navbar = ({ theme, handleThemeChange }: any) => {
           <Select
             isSearchable
             options={factoryOptions}
+            classNamePrefix="react-select"
             defaultValue={factory}
             getOptionLabel={(option) => option.factoryName}
             getOptionValue={(option) => option.factoryId}
